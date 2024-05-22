@@ -1,4 +1,4 @@
-/* 新人单次WR
+/* 新人单次WR Newcomer World Record
 ChatGPT提示词
 用MySQL Workbench, 有表格competitions，列名有：id, year, month, day. 其中year, month, day表示比赛的年月日。
 有表格results，列名有：competitionId, eventId, personName, personId, best. 其中year, month, day表示比赛的年月日。
