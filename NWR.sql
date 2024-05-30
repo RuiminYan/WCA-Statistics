@@ -1,8 +1,8 @@
 /* 新人单次WR Newcomer World Record
 ChatGPT提示词
 用MySQL Workbench, 有表格competitions，列名有：id, year, month, day. 其中year, month, day表示比赛的年月日。
-有表格results，列名有：competitionId, eventId, personName, personId, best. 其中year, month, day表示比赛的年月日。
-希望eventId固定为skewb, best都只取正数，对于每一个personId, 在competition日期最早的competition (注意日期如何比较大小) 下，取所有 best的最小值，记为firstCompSingle。
+有表格results，列名有：competitionId, eventId, personName, personId, best.
+希望eventId固定为333, best都只取正数，对于每一个personId, 在competition日期最早的competition (注意日期如何比较大小) 下，取所有 best的最小值，记为firstCompSingle。
 输出的列有personName，personId，firstCompSingle, 按照firstCompSingle从小到大排序
 */
 
