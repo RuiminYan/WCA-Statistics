@@ -58,10 +58,10 @@ SELECT
     Ao4R.R2,
     Ao4R.R3,
     Ao4R.Fi,
-    c.name,
     c.year,
     c.month,
-    c.day
+    c.day,
+    c.name
 FROM
     Ao4R
 JOIN
