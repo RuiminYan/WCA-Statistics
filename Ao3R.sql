@@ -16,7 +16,7 @@ WITH temp AS (
     FROM
         results r
     WHERE
-        r.eventId = '333' AND r.personId = '2019WANY36'
+        r.eventId = '333' AND r.personId = '2016KOLA02'
     GROUP BY
         r.competitionId, r.personName, r.personId
     HAVING
@@ -44,11 +44,8 @@ SELECT
     Ao3R.R1,
     Ao3R.R2,
     Ao3R.Fi,
-    c.name,
-    CASE
-        WHEN Ao3R.Ao3R = 'DNF' THEN 999999 -- 给 DNF 一个很大的数值
-        ELSE CAST(Ao3R.Ao3R AS SIGNED)
-    END AS Ao3R_value
+    c.name
+
 FROM
     Ao3R
 JOIN
@@ -56,4 +53,4 @@ JOIN
 WHERE
     Ao3R.Ao3R IS NOT NULL
 ORDER BY
-    Ao3R_value;
+    Ao3R.Ao3R;
