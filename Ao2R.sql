@@ -27,7 +27,7 @@ Ao2R AS (
         personName,
         personId,
         CASE
-            WHEN Fi <= 0 THEN 'DNF'
+            WHEN Fi <= 0 THEN -1
             ELSE ROUND((R1 + Fi) / 2)
         END AS Ao2R,
         R1,
