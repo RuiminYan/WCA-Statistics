@@ -38,6 +38,9 @@ SELECT
     Ao1R.personId,
     Ao1R.Ao1R,
     Ao1R.Fi,
+    c.year,
+    c.month,
+    c.day,
     c.name
 FROM
     Ao1R
