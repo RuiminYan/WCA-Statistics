@@ -1,4 +1,4 @@
-# 这里以Ao4R WR History为例. 先在MySQL Workbench中运行Ao4R.sql中的语句, 导出csv, 重命名为Ao4R.csv, 放到D:\Jupyter Notebook\ , 然后按时间递增排序.
+# 这里以Ao4R WR History为例. 先在MySQL Workbench中运行Ao4R.sql中的代码 (注意：代码最后应使用按日期排序), 导出csv, 重命名为Ao4R.csv, 放到D:\Jupyter Notebook\
 
 import pandas as pd
 
