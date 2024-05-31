@@ -1,3 +1,5 @@
+# 这里以Ao4R WR History为例. 先在MySQL Workbench中运行Ao4R.sql中的语句, 导出csv, 重命名为Ao4R.csv, 放到D:\Jupyter Notebook\ , 然后按时间递增排序.
+
 import pandas as pd
 
 # 读取CSV文件
@@ -11,4 +13,4 @@ for i in range(1, len(df)):
 
 # 将结果保存为CSV文件
 filtered_df = pd.DataFrame(filtered_df)
-filtered_df.to_csv('filtered_output_file.csv', sep=',', encoding='utf-8-sig', index=False)
+filtered_df.to_csv('History of Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
