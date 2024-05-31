@@ -10,7 +10,7 @@ ChatGPT提示词
 
 设置eventId为333, personId为2019WANY36, 在相同competition下, 排除掉仅有小于等于3个average的情况, 仅考虑有4个average的情况, 按照roundTypeId的以下顺序排序: 1 (或d), 2  (或e), 3  (或g), f, 将这4个average分别记为R1, R2, R3, Fi. 当Fi小于等于0时，记Ao4R为-1; 否则, 记Ao4R为它们的平均数 (四舍五入到个位).
 
-输出列有personName, personId, Ao4R, R1, R2, R3, Fi, name, 按照Ao4R从小到大排序
+输出列有personName, personId, Ao4R, R1, R2, R3, Fi, name, 按照Ao4R从小到大排序. 注意: 需要排除掉Ao4R为Null的数据.
 
 */
 
