@@ -71,3 +71,7 @@ WHERE
 ORDER BY
     Ao4R.Ao4R;
 
+/* 按日期排
+ORDER BY
+    c.year, c.month, c.day;
+*/
