@@ -27,7 +27,7 @@ WITH temp AS (
     FROM
         results r
     WHERE
-        r.eventId = '333' AND r.personId = '2019WANY36'
+        r.eventId = '333' AND r.personId = '2016KOLA02'
     GROUP BY
         r.competitionId, r.personName, r.personId
     HAVING
