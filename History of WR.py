@@ -13,4 +13,4 @@ for i in range(1, len(df)):
 
 # 将结果保存为CSV文件
 filtered_df = pd.DataFrame(filtered_df)
-filtered_df.to_csv('History of Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
+filtered_df.to_csv(r'D:\Jupyter Notebook\Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
