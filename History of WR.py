@@ -3,7 +3,7 @@
 import pandas as pd
 
 # 读取CSV文件
-df = pd.read_csv(r'D:\Jupyter Notebook\Ao4R.csv', sep=',')
+df = pd.read_csv(r'D:\Jupyter Notebook\cubing\Ao4R.csv', sep=',')
 
 # 过滤数据
 filtered_df = [df.iloc[0]]  # 保留第一行数据
@@ -13,4 +13,4 @@ for i in range(1, len(df)):
 
 # 将结果保存为CSV文件
 filtered_df = pd.DataFrame(filtered_df)
-filtered_df.to_csv(r'D:\Jupyter Notebook\Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
+filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
