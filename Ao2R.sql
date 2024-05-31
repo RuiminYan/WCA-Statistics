@@ -52,9 +52,5 @@ JOIN
 WHERE
     Ao2R.Ao2R  > 0
 ORDER BY
-    Ao2R.Ao2R;
+    Ao2R.Ao2R; -- 按日期排 c.year, c.month, c.day;
 
-/* 按日期排
-ORDER BY
-    c.year, c.month, c.day;
-*/
