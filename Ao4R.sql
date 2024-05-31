@@ -14,8 +14,6 @@ ChatGPT提示词
 
 */
 
-SET @row_number = 0;
-
 WITH temp AS (
     SELECT
         r.competitionId,
