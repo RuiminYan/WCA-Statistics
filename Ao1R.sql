@@ -49,9 +49,4 @@ JOIN
 WHERE
     Ao1R.Ao1R  > 0
 ORDER BY
-    Ao1R.Ao1R;
-
-/* 按日期排
-ORDER BY
-    c.year, c.month, c.day;
-*/
+    Ao1R.Ao1R; -- 按日期排 c.year, c.month, c.day;
