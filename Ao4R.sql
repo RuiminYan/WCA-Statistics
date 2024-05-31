@@ -62,5 +62,7 @@ FROM
     Ao4R
 JOIN
     competitions c ON Ao4R.competitionId = c.id
+WHERE
+    Ao4R.Ao4R IS NOT NULL
 ORDER BY
     Ao4R.Ao4R;
