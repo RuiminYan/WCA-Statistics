@@ -48,7 +48,6 @@ SELECT
     c.month,
     c.day,
     c.name
-
 FROM
     Ao3R
 JOIN
