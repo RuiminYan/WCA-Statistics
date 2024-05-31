@@ -10,7 +10,7 @@ ChatGPT提示词
 
 设置eventId为333, personId为2019WANY36, 在相同competition下, 排除掉仅有小于等于3个average的情况, 仅考虑有4个average的情况, 按照roundTypeId的以下顺序排序: 1 (或d), 2  (或e), 3  (或g), f, 将这4个average分别记为R1, R2, R3, Fi. 当Fi小于等于0时，记Ao4R为-1; 否则, 记Ao4R为它们的平均数 (四舍五入到个位).
 
-输出列有personName, personId, Ao4R, R1, R2, R3, Fi, name, 按照Ao4R从小到大排序. 注意: 需要排除掉Ao4R为Null的数据. 给每个条目标上序号.
+输出列有personName, personId, Ao4R, R1, R2, R3, Fi, name, 按照Ao4R从小到大排序. 注意: 需要排除掉Ao4R为Null的数据. 加入year, month, day.
 
 */
 
@@ -27,7 +27,8 @@ WITH temp AS (
     FROM
         results r
     WHERE
-        r.eventId = '333' AND r.personId IN ('2019WANY36', '2016KOLA02', '2017XURU04', '2012PARK03', '2017GARR05', '2016INAB01', '2023GENG02', '2023DUYU01', '2015BORR01', '2021ZHAN01', '2023CAOQ01', '2018DULL01', '2015MILL01', '2015GRIE02', '2009ZEMD01')
+        r.eventId = '333'
+        AND r.personId IN ('2019WANY36', '2016KOLA02', '2017XURU04', '2012PARK03', '2017GARR05', '2016INAB01', '2023GENG02', '2023DUYU01', '2015BORR01', '2021ZHAN01', '2023CAOQ01', '2018DULL01', '2015MILL01', '2015GRIE02', '2009ZEMD01')
     GROUP BY
         r.competitionId, r.personName, r.personId
     HAVING
@@ -57,7 +58,10 @@ SELECT
     Ao4R.R2,
     Ao4R.R3,
     Ao4R.Fi,
-    c.name
+    c.name,
+    c.year,
+    c.month,
+    c.day
 FROM
     Ao4R
 JOIN
@@ -66,3 +70,4 @@ WHERE
     Ao4R.Ao4R > 0
 ORDER BY
     Ao4R.Ao4R;
+
