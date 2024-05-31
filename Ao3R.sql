@@ -16,7 +16,7 @@ WITH temp AS (
     FROM
         results r
     WHERE
-        r.eventId = '333' AND r.personId = '2016KOLA02'
+        r.eventId = '333' AND r.personId IN ('2019WANY36', '2016KOLA02', '2017XURU04', '2012PARK03', '2017GARR05', '2016INAB01', '2023GENG02', '2023DUYU01', '2015BORR01', '2021ZHAN01', '2023CAOQ01', '2018DULL01', '2015MILL01', '2015GRIE02', '2009ZEMD01')
     GROUP BY
         r.competitionId, r.personName, r.personId
     HAVING
