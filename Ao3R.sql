@@ -1,7 +1,5 @@
 /* 
-
 ChatGPT提示词: 见Ao4R
-
 */
 
 WITH temp AS (
