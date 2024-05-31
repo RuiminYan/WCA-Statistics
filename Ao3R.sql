@@ -44,10 +44,16 @@ SELECT
     Ao3R.R1,
     Ao3R.R2,
     Ao3R.Fi,
-    c.name
+    c.name,
+    CASE
+        WHEN Ao3R.Ao3R = 'DNF' THEN 999999 -- 给 DNF 一个很大的数值
+        ELSE CAST(Ao3R.Ao3R AS SIGNED)
+    END AS Ao3R_value
 FROM
     Ao3R
 JOIN
     competitions c ON Ao3R.competitionId = c.id
+WHERE
+    Ao3R.Ao3R IS NOT NULL
 ORDER BY
-    Ao3R.Ao3R;
+    Ao3R_value;
