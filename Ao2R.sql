@@ -41,6 +41,9 @@ SELECT
     Ao2R.Ao2R,
     Ao2R.R1,
     Ao2R.Fi,
+    c.year,
+    c.month,
+    c.day,
     c.name
 FROM
     Ao2R
