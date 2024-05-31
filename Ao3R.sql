@@ -51,6 +51,6 @@ FROM
 JOIN
     competitions c ON Ao3R.competitionId = c.id
 WHERE
-    Ao3R.Ao3R IS NOT NULL
+    Ao3R.Ao3R  > 0
 ORDER BY
     Ao3R.Ao3R;
