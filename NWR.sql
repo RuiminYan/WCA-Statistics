@@ -59,7 +59,7 @@ WITH first_competition_dates AS (
     JOIN 
         competitions c ON r.competitionId = c.id
     WHERE 
-        r.eventId = 'skewb' AND r.average > 0
+        r.eventId = '333' AND r.average > 0
     GROUP BY 
         r.personId
 )
@@ -75,7 +75,7 @@ JOIN
 JOIN
     first_competition_dates fcd ON r.personId = fcd.personId AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
 WHERE
-    r.eventId = 'skewb' AND r.average > 0
+    r.eventId = '333' AND r.average > 0
 GROUP BY
     r.personName, r.personId
 ORDER BY
