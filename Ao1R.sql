@@ -5,15 +5,19 @@ ChatGPT提示词: 见Ao4R
 */
 
 WITH selected_persons AS (
-    SELECT r.personId
-    FROM Results r
-    JOIN (
-        SELECT personName, MIN(best) AS min_best
-        FROM Results
-        WHERE eventId = '333' AND best > 0
-        GROUP BY personName
-    ) sub ON r.personName = sub.personName AND r.best = sub.min_best
-    ORDER BY r.best
+    SELECT DISTINCT personName, personId, average
+    FROM (
+        SELECT r.personName, r.personId, r.average
+        FROM Results r
+        JOIN (
+            SELECT personName, MIN(average) AS min_average
+            FROM Results
+            WHERE eventId = '333' AND average > 0
+            GROUP BY personName
+        ) sub ON r.personName = sub.personName AND r.average = sub.min_average
+        ORDER BY r.average
+    ) AS sorted_results
+    ORDER BY average
     LIMIT 100
 ),
 temp AS (
@@ -59,6 +63,6 @@ FROM
 JOIN
     competitions c ON Ao1R.competitionId = c.id
 WHERE
-    Ao1R.Ao1R  > 0
+    Ao1R.Ao1R > 0
 ORDER BY
     Ao1R.Ao1R; -- 按日期排 c.year, c.month, c.day;
