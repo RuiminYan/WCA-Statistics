@@ -2,7 +2,19 @@
 ChatGPT提示词: 见Ao4R
 */
 
-WITH temp AS (
+WITH selected_persons AS (
+    SELECT r.personId
+    FROM Results r
+    JOIN (
+        SELECT personName, MIN(best) AS min_best
+        FROM Results
+        WHERE eventId = '333' AND best > 0
+        GROUP BY personName
+    ) sub ON r.personName = sub.personName AND r.best = sub.min_best
+    ORDER BY r.best
+    LIMIT 100
+),
+temp AS (
     SELECT
         r.competitionId,
         r.personName,
@@ -14,7 +26,8 @@ WITH temp AS (
     FROM
         results r
     WHERE
-        r.eventId = '333' AND r.personId IN ('2019WANY36', '2016KOLA02', '2017XURU04', '2012PARK03', '2017GARR05', '2016INAB01', '2023GENG02', '2023DUYU01', '2015BORR01', '2021ZHAN01', '2023CAOQ01', '2018DULL01', '2015MILL01', '2015GRIE02', '2009ZEMD01')
+        r.eventId = '333'
+        AND r.personId IN (SELECT personId FROM selected_persons)
     GROUP BY
         r.competitionId, r.personName, r.personId
     HAVING
@@ -51,6 +64,6 @@ FROM
 JOIN
     competitions c ON Ao3R.competitionId = c.id
 WHERE
-    Ao3R.Ao3R  > 0
+    Ao3R.Ao3R > 0
 ORDER BY
     Ao3R.Ao3R; -- 按日期排 c.year, c.month, c.day;
