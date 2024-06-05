@@ -30,7 +30,11 @@ WITH first_competition_dates AS (
 SELECT
     r.personName,
     r.personId,
-    MIN(r.best) AS firstCompSingle
+    MIN(r.best) AS firstCompSingle,
+    c.year,
+    c.month,
+    c.day,
+    c.name
 FROM
     results r
 JOIN
@@ -40,10 +44,10 @@ JOIN
 WHERE
     r.eventId = '333' AND r.best > 0
 GROUP BY
-    r.personName, r.personId
+    r.personName, r.personId, c.year, c.month, c.day, c.name
 ORDER BY
-    firstCompSingle
-LIMIT 10;
+    firstCompSingle; -- 按日期排 c.year, c.month, c.day;
+
 
 
 
@@ -67,7 +71,11 @@ WITH first_competition_dates AS (
 SELECT
     r.personName,
     r.personId,
-    MIN(r.average) AS firstCompAvg
+    MIN(r.average) AS firstCompAvg,
+    c.year,
+    c.month,
+    c.day,
+    c.name
 FROM
     results r
 JOIN
@@ -77,7 +85,7 @@ JOIN
 WHERE
     r.eventId = '333' AND r.average > 0
 GROUP BY
-    r.personName, r.personId
+    r.personName, r.personId, c.year, c.month, c.day, c.name
 ORDER BY
-    firstCompAvg
-LIMIT 10;
+    firstCompAvg; -- 按日期排 c.year, c.month, c.day;
+
