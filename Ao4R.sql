@@ -15,15 +15,19 @@ ChatGPT提示词
 */
 
 WITH selected_persons AS (
-    SELECT r.personId
-    FROM Results r
-    JOIN (
-        SELECT personName, MIN(best) AS min_best
-        FROM Results
-        WHERE eventId = '333' AND best > 0
-        GROUP BY personName
-    ) sub ON r.personName = sub.personName AND r.best = sub.min_best
-    ORDER BY r.best
+    SELECT DISTINCT personName, personId, average
+    FROM (
+        SELECT r.personName, r.personId, r.average
+        FROM Results r
+        JOIN (
+            SELECT personName, MIN(average) AS min_average
+            FROM Results
+            WHERE eventId = '333' AND average > 0
+            GROUP BY personName
+        ) sub ON r.personName = sub.personName AND r.average = sub.min_average
+        ORDER BY r.average
+    ) AS sorted_results
+    ORDER BY average
     LIMIT 100
 ),
 temp AS (
