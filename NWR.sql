@@ -22,7 +22,7 @@ WITH first_competition_dates AS (
     JOIN 
         competitions c ON r.competitionId = c.id
     WHERE 
-        r.eventId = '333' AND r.best > 0
+        r.eventId = '333'
     GROUP BY 
         r.personId
 )
@@ -63,7 +63,7 @@ WITH first_competition_dates AS (
     JOIN 
         competitions c ON r.competitionId = c.id
     WHERE 
-        r.eventId = '333' AND r.average > 0
+        r.eventId = '333'
     GROUP BY 
         r.personId
 )
