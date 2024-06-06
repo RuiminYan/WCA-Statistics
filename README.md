@@ -5,10 +5,14 @@ Some interesting WCA statistics 一些WCA趣味数据统计
 333 222 444 555 666 777 333bf 333fm 333oh clock minx pyram skewb sq1 444bf 555bf 333mbf 333ft magic mmagic 333mbo
 
 ## HTM*
+```excel
 =LEN(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(A2," ",""),"(",""),")",""),"'",""),"x",""),"y",""),"z",""),"2",""),"3",""))
+```
 
 ## QTM*
+```excel
 =LEN(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(A2," ",""),"(",""),")",""),"'",""),"x",""),"y",""),"z",""),"2",""),"3","")) + (LEN(A2) - LEN(SUBSTITUTE(A2, "2", "")))
+```
 
 ## result value to result
 当值小于等于999999时，
@@ -66,3 +70,4 @@ Some interesting WCA statistics 一些WCA趣味数据统计
       )
    )
 )
+```
