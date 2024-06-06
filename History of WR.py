@@ -2,8 +2,7 @@
 
 import pandas as pd
 
-# 读取CSV文件
-df = pd.read_csv(r'D:\Jupyter Notebook\cubing\Ao4R.csv', sep=',')
+df = pd.read_csv(r'D:\Jupyter Notebook\cubing\Ao4R.csv', encoding='utf-8-sig', sep=',')
 
 # 过滤数据
 filtered_df = [df.iloc[0]]  # 保留第一行数据
