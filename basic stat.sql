@@ -16,9 +16,9 @@ SELECT
   c.name,
   -- Calculate variance
   ROUND((POW(r.value1 - avg_val, 2) + POW(r.value2 - avg_val, 2) + POW(r.value3 - avg_val, 2) + POW(r.value4 - avg_val, 2) + POW(r.value5 - avg_val, 2)) / 5, 2) AS variance,
-  -- Calculate max, min
-  GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) AS max,
-  LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) AS min,
+  -- Calculate best, worst
+  GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) AS best,
+  LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) AS worst,
   -- Calculate median
   (SELECT ROUND(AVG(val), 2) 
    FROM (SELECT val 
@@ -53,5 +53,6 @@ JOIN
 WHERE
   r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0
 ORDER BY
-  max;
+  best;
+
  -- 按日期排 c.year, c.month, c.day;
