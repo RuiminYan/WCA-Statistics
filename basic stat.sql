@@ -1,7 +1,4 @@
 /*
-当5个value中至少有一个≤0时，variance取NULL;
-当value1~4至少有1个≤0时，wpa取NULL；
-当value1~4至少有2个≤0时，bpa取NULL.
 当计算出的median≤0时，median取NULL; worst同理.
 
 ORDER BY
@@ -26,7 +23,7 @@ SELECT
   c.day,
   c.name,
   -- Calculate variance
-  CASE 
+  CASE -- 当5个value中至少有一个≤0时，variance取NULL
     WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
     ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2) + POW(r.value4 - r.average, 2) + POW(r.value5 - r.average, 2)) / 5, 0)
   END AS variance,
@@ -39,12 +36,12 @@ SELECT
          ORDER BY val 
          LIMIT 3, 1) median) AS median,
   -- Calculate bpa and wpa
-  CASE 
-    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 THEN NULL
+  CASE -- 当value1~4至少有2个≤0时，bpa取NULL
+    WHEN (r.value1 <= 0 AND r.value2 <= 0) OR (r.value1 <= 0 AND r.value3 <= 0) OR (r.value1 <= 0 AND r.value4 <= 0) OR (r.value2 <= 0 AND r.value3 <= 0) OR (r.value2 <= 0 AND r.value4 <= 0) OR (r.value3 <= 0 AND r.value4 <= 0) THEN NULL
     ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 - GREATEST(r.value1, r.value2, r.value3, r.value4)) / 3, 0)
   END AS bpa,
-  CASE 
-    WHEN (r.value1 <= 0 AND r.value2 <= 0) OR (r.value1 <= 0 AND r.value3 <= 0) OR (r.value1 <= 0 AND r.value4 <= 0) OR (r.value2 <= 0 AND r.value3 <= 0) OR (r.value2 <= 0 AND r.value4 <= 0) OR (r.value3 <= 0 AND r.value4 <= 0) THEN NULL
+  CASE -- 当value1~4至少有1个≤0时，wpa取NULL
+    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 THEN NULL
     ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 - LEAST(r.value1, r.value2, r.value3, r.value4)) / 3, 0)
   END AS wpa
 FROM (
@@ -70,7 +67,7 @@ FROM (
 JOIN
   Competitions c ON r.competitionId = c.id
 ORDER BY
-  worst IS NULL, worst;
+  wpa IS NULL, wpa;
 
 /*
 WHERE best > 0
