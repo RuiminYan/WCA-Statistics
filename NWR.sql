@@ -34,7 +34,12 @@ SELECT
     c.year,
     c.month,
     c.day,
-    c.name
+    c.name,
+    r.value1,
+    r.value2,
+    r.value3,
+    r.value4,
+    r.value5
 FROM
     results r
 JOIN
@@ -44,10 +49,9 @@ JOIN
 WHERE
     r.eventId = '333' AND r.best > 0
 GROUP BY
-    r.personName, r.personId, c.year, c.month, c.day, c.name
+    r.personName, r.personId, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
 ORDER BY
     firstCompSingle; -- 按日期排 c.year, c.month, c.day;
-
 
 
 
@@ -75,7 +79,12 @@ SELECT
     c.year,
     c.month,
     c.day,
-    c.name
+    c.name,
+    r.value1,
+    r.value2,
+    r.value3,
+    r.value4,
+    r.value5
 FROM
     results r
 JOIN
@@ -85,7 +94,7 @@ JOIN
 WHERE
     r.eventId = '333' AND r.average > 0
 GROUP BY
-    r.personName, r.personId, c.year, c.month, c.day, c.name
+    r.personName, r.personId, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
 ORDER BY
     firstCompAvg; -- 按日期排 c.year, c.month, c.day;
 
