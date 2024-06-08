@@ -5,9 +5,9 @@ ChatGPT提示词: 见Ao4R
 */
 
 WITH selected_persons AS (
-    SELECT DISTINCT personName, personId, average
+    SELECT DISTINCT personName, personId, personCountryId, average
     FROM (
-        SELECT r.personName, r.personId, r.average
+        SELECT r.personName, r.personId, r.personCountryId, r.average
         FROM Results r
         JOIN (
             SELECT personName, MIN(average) AS min_average
@@ -25,6 +25,7 @@ temp AS (
         r.competitionId,
         r.personName,
         r.personId,
+        r.personCountryId,
         MAX(CASE WHEN r.roundTypeId = 'f' THEN r.average END) AS Fi,
         COUNT(r.average) AS num_averages
     FROM
@@ -32,7 +33,7 @@ temp AS (
     WHERE
         r.eventId = '333' AND r.personId IN (SELECT personId FROM selected_persons)
     GROUP BY
-        r.competitionId, r.personName, r.personId
+        r.competitionId, r.personName, r.personId, r.personCountryId
     HAVING
         num_averages = 1
 ),
@@ -41,6 +42,7 @@ Ao1R AS (
         competitionId,
         personName,
         personId,
+        personCountryId,
         CASE
             WHEN Fi <= 0 THEN -1
             ELSE Fi
@@ -52,6 +54,7 @@ Ao1R AS (
 SELECT
     Ao1R.personName,
     Ao1R.personId,
+    Ao1R.personCountryId,
     Ao1R.Ao1R,
     Ao1R.Fi,
     c.year,
