@@ -4,6 +4,11 @@ Some interesting WCA statistics 一些WCA趣味数据统计
 ## Events
 333 222 444 555 666 777 333bf 333fm 333oh clock minx pyram skewb sq1 444bf 555bf 333mbf 333ft magic mmagic 333mbo
 
+## Batch image link
+```
+=CONCATENATE("IMAGE(""", A2, """)")
+```
+
 ## HTM*
 ```excel
 =LEN(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(A2," ",""),"(",""),")",""),"'",""),"x",""),"y",""),"z",""),"2",""),"3",""))
