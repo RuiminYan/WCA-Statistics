@@ -3,9 +3,9 @@ ChatGPT提示词: 见Ao4R
 */
 
 WITH selected_persons AS (
-    SELECT DISTINCT personName, personId, average
+    SELECT DISTINCT personName, personId, personCountryId, average
     FROM (
-        SELECT r.personName, r.personId, r.average
+        SELECT r.personName, r.personId, r.personCountryId, r.average
         FROM Results r
         JOIN (
             SELECT personName, MIN(average) AS min_average
@@ -23,6 +23,7 @@ temp AS (
         r.competitionId,
         r.personName,
         r.personId,
+        r.personCountryId,
         MAX(CASE WHEN r.roundTypeId IN ('1', 'd') THEN r.average END) AS R1,
         MAX(CASE WHEN r.roundTypeId IN ('2', 'e') THEN r.average END) AS R2,
         MAX(CASE WHEN r.roundTypeId = 'f' THEN r.average END) AS Fi,
@@ -33,7 +34,7 @@ temp AS (
         r.eventId = '333'
         AND r.personId IN (SELECT personId FROM selected_persons)
     GROUP BY
-        r.competitionId, r.personName, r.personId
+        r.competitionId, r.personName, r.personId, r.personCountryId
     HAVING
         num_averages = 3
 ),
@@ -42,6 +43,7 @@ Ao3R AS (
         competitionId,
         personName,
         personId,
+        personCountryId,
         CASE
             WHEN Fi <= 0 THEN -1
             ELSE ROUND((R1 + R2 + Fi) / 3)
@@ -55,6 +57,7 @@ Ao3R AS (
 SELECT
     Ao3R.personName,
     Ao3R.personId,
+    Ao3R.personCountryId,
     Ao3R.Ao3R,
     Ao3R.R1,
     Ao3R.R2,
