@@ -30,16 +30,12 @@ WITH first_competition_dates AS (
 SELECT
     r.personName,
     r.personId,
+    r.personCountryId,
     MIN(r.best) AS firstCompSingle,
     c.year,
     c.month,
     c.day,
-    c.name,
-    r.value1,
-    r.value2,
-    r.value3,
-    r.value4,
-    r.value5
+    c.name
 FROM
     results r
 JOIN
@@ -49,9 +45,10 @@ JOIN
 WHERE
     r.eventId = '333' AND r.best > 0
 GROUP BY
-    r.personName, r.personId, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
+    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name
 ORDER BY
-    firstCompSingle; -- 按日期排 c.year, c.month, c.day;
+    firstCompSingle;
+ -- 按日期排 c.year, c.month, c.day;
 
 
 
@@ -75,6 +72,7 @@ WITH first_competition_dates AS (
 SELECT
     r.personName,
     r.personId,
+    r.personCountryId,
     MIN(r.average) AS firstCompAvg,
     c.year,
     c.month,
@@ -94,7 +92,7 @@ JOIN
 WHERE
     r.eventId = '333' AND r.average > 0
 GROUP BY
-    r.personName, r.personId, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
+    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
 ORDER BY
     firstCompAvg; -- 按日期排 c.year, c.month, c.day;
 
@@ -121,6 +119,7 @@ values_with_parts AS (
     SELECT
         r.personName,
         r.personId,
+        r.personCountryId,
         c.year,
         c.month,
         c.day,
@@ -144,6 +143,7 @@ average_values AS (
     SELECT
         personName,
         personId,
+        personCountryId,
         year,
         month,
         day,
@@ -160,7 +160,8 @@ average_values AS (
 SELECT
     personName,
     personId,
-	CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstCompAvg,
+    personCountryId,
+    CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstCompAvg,
     year,
     month,
     day,
@@ -172,3 +173,4 @@ FROM
     average_values
 ORDER BY
     year, month, day;
+
