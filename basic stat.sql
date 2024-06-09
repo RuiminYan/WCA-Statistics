@@ -1,11 +1,3 @@
-/*
-当计算出的median≤0时，median取NULL;
-当计算出的median≤0时，worst取NULL
-
-ORDER BY
-  worst; 的时候，剔除掉worst为NULL的
-*/
-
 SELECT
   r.personName,
   r.personId,
@@ -29,20 +21,20 @@ SELECT
     ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2) + POW(r.value4 - r.average, 2) + POW(r.value5 - r.average, 2)) / 5, 0)
   END AS variance,
   -- Calculate worst
-  CASE WHEN GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) <= 0 THEN NULL ELSE GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) END AS worst,
+  CASE WHEN GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) <= 0 THEN NULL ELSE GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) END AS worst,  
   -- Calculate median
-  CASE 
-    WHEN (SELECT ROUND(AVG(val), 2) 
-          FROM (SELECT val 
-                FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                ORDER BY val 
-                LIMIT 3, 1) median) <= 0 THEN NULL -- 当计算出的median≤0时，median取NULL
-
-    ELSE (SELECT ROUND(AVG(val), 2) 
-          FROM (SELECT val 
-                FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                ORDER BY val 
-                LIMIT 3, 1) median)
+  CASE WHEN 
+    (SELECT ROUND(AVG(val), 2) 
+     FROM (SELECT val 
+           FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
+           ORDER BY val 
+           LIMIT 3, 1) median) <= 0
+  THEN NULL ELSE -- 当计算出的median≤0时，median取NULL
+    (SELECT ROUND(AVG(val), 2) 
+     FROM (SELECT val 
+           FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
+           ORDER BY val 
+           LIMIT 3, 1) median)
   END AS median,
   -- Calculate bpa and wpa
   CASE -- 当value1~4至少有2个≤0时，bpa取NULL
@@ -80,8 +72,7 @@ FROM (
 JOIN
   Competitions c ON r.competitionId = c.id
 ORDER BY
-  bpa IS NULL, bpa;
-
+  wpa IS NULL, wpa;
 
 /*
 WHERE best > 0
