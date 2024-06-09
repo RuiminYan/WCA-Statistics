@@ -17,6 +17,7 @@ FirstRound AS (
         r.personId,
         r.personName,
         r.value1 AS first_single,
+        r.regionalSingleRecord,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date
     FROM 
         Results r
@@ -32,6 +33,7 @@ SELECT
     fr.personName,
     fr.personId,
     fr.first_single,
+    fr.regionalSingleRecord,
     fc.earliest_date
 FROM
     FirstComp fc
@@ -39,6 +41,7 @@ JOIN
     FirstRound fr ON fc.personId = fr.personId AND fc.earliest_date = fr.event_date
 ORDER BY
     fr.first_single;
+
 
 
 
@@ -66,6 +69,7 @@ FirstRound AS (
         r.personId,
         r.personName,
         r.average AS first_average,
+        r.regionalAverageRecord,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date
     FROM 
         Results r
@@ -81,6 +85,7 @@ SELECT
     fr.personName,
     fr.personId,
     fr.first_average,
+    fr.regionalAverageRecord,
     fc.earliest_date
 FROM
     FirstComp fc
@@ -88,6 +93,13 @@ JOIN
     FirstRound fr ON fc.personId = fr.personId AND fc.earliest_date = fr.event_date
 ORDER BY
     fr.first_average;
+
+
+
+
+
+
+
 
 
 
@@ -117,6 +129,7 @@ values_with_parts AS (
         r.value1,
         r.value2,
         r.value3,
+        r.regionalAverageRecord,
         SUBSTRING(r.value1, 1, 2) AS dd1, SUBSTRING(r.value1, 3, 5) AS ttttt1, SUBSTRING(r.value1, 8, 2) AS mm1,
         SUBSTRING(r.value2, 1, 2) AS dd2, SUBSTRING(r.value2, 3, 5) AS ttttt2, SUBSTRING(r.value2, 8, 2) AS mm2,
         SUBSTRING(r.value3, 1, 2) AS dd3, SUBSTRING(r.value3, 3, 5) AS ttttt3, SUBSTRING(r.value3, 8, 2) AS mm3
@@ -141,6 +154,7 @@ average_values AS (
         value1,
         value2,
         value3,
+        regionalAverageRecord,
         ROUND((CAST(dd1 AS UNSIGNED) + CAST(dd2 AS UNSIGNED) + CAST(dd3 AS UNSIGNED)) / 3) AS avg_dd,
         ROUND((CAST(ttttt1 AS UNSIGNED) + CAST(ttttt2 AS UNSIGNED) + CAST(ttttt3 AS UNSIGNED)) / 3) AS avg_ttttt,
         ROUND((CAST(mm1 AS UNSIGNED) + CAST(mm2 AS UNSIGNED) + CAST(mm3 AS UNSIGNED)) / 3) AS avg_mm
@@ -152,6 +166,7 @@ SELECT
     personId,
     personCountryId,
     CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstAvg,
+    regionalAverageRecord,
     year,
     month,
     day,
@@ -163,3 +178,4 @@ FROM
     average_values
 ORDER BY
     year, month, day;
+
