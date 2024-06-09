@@ -17,7 +17,7 @@ FirstRound AS (
         r.personId,
         r.personName,
         r.personCountryId,
-        r.value1 AS first_single,
+        r.value1 AS firstSingle,
         r.regionalSingleRecord,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date,
         c.name
@@ -35,7 +35,7 @@ SELECT
     fr.personName,
     fr.personId,
     fr.personCountryId,
-    fr.first_single,
+    fr.firstSingle,
     fr.regionalSingleRecord,
     fc.earliest_date AS date,
     fr.name
@@ -74,7 +74,7 @@ FirstRound AS (
         r.personId,
         r.personName,
         r.personCountryId,
-        r.average AS first_average,
+        r.average AS firstAvg,
         r.regionalAverageRecord,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date,
         c.name
@@ -92,7 +92,7 @@ SELECT
     fr.personName,
     fr.personId,
     fr.personCountryId,
-    fr.first_average,
+    fr.firstAvg,
     fr.regionalAverageRecord,
     fc.earliest_date AS date,
     fr.name
@@ -101,7 +101,7 @@ FROM
 JOIN
     FirstRound fr ON fc.personId = fr.personId AND fc.earliest_date = fr.event_date
 ORDER BY
-    fr.first_average;
+    fr.firstAvg;
 
 -- 按日期排 fc.earliest_date;
 
