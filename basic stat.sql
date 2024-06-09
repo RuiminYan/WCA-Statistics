@@ -1,6 +1,19 @@
--- best, average, variance, worst, median, bpa, wpa, mo5
+/* 
+best, average, variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting
 
-SELECT
+当恰好有n个value≤0时，将这n个值排除掉，然后在剩下的值中取best_counting为5个value中第二小的； 
+其他情况，取best_counting为5个value中第二小的
+
+当至少有2个value≤0时，取worst_counting为NULL； 
+当恰好有1个value≤0时，取worst_counting为5个value中最大的； 
+其他情况，取worst_counting为5个value中第二大的
+
+*/
+
+
+-- Step 1: Create a temporary table to hold intermediate results
+CREATE TEMPORARY TABLE TempResults AS
+SELECT 
   r.personName,
   r.personId,
   r.personCountryId,
@@ -13,73 +26,111 @@ SELECT
   r.average,
   r.regionalSingleRecord,
   r.regionalAverageRecord,
+  r.competitionId
+FROM 
+  Results r
+WHERE 
+  r.eventId = '333';
+
+-- Step 2: Join with Competitions table and perform calculations
+SELECT
+  tr.personName,
+  tr.personId,
+  tr.personCountryId,
+  tr.value1, 
+  tr.value2, 
+  tr.value3, 
+  tr.value4, 
+  tr.value5,
+  tr.best,
+  tr.average,
+  tr.regionalSingleRecord,
+  tr.regionalAverageRecord,
   c.year,
   c.month,
   c.day,
   c.name,
   -- Calculate mo5 as the average of the 5 values, set to NULL if any value is <= 0
   CASE 
-    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
-    ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 0)
+    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
+    ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 + tr.value5) / 5, 0)
   END AS mo5,
   -- Calculate variance
-  CASE -- 当5个value中至少有一个≤0时，variance取NULL
-    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
-    ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2) + POW(r.value4 - r.average, 2) + POW(r.value5 - r.average, 2)) / 5, 0)
+  CASE 
+    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
+    ELSE ROUND((POW(tr.value1 - tr.average, 2) + POW(tr.value2 - tr.average, 2) + POW(tr.value3 - tr.average, 2) + POW(tr.value4 - tr.average, 2) + POW(tr.value5 - tr.average, 2)) / 5, 0)
   END AS variance,
   -- Calculate worst
-  CASE WHEN LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) <= 0 THEN NULL ELSE GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) END AS worst,  
+  CASE WHEN LEAST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) END AS worst,  
   -- Calculate median
   CASE WHEN 
     (SELECT ROUND(AVG(val), 2) 
      FROM (SELECT val 
-           FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
+           FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub 
            ORDER BY val 
            LIMIT 3, 1) median) <= 0
-  THEN NULL ELSE -- 当计算出的median≤0时，median取NULL
+  THEN NULL ELSE 
     (SELECT ROUND(AVG(val), 2) 
      FROM (SELECT val 
-           FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
+           FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub 
            ORDER BY val 
            LIMIT 3, 1) median)
   END AS median,
   -- Calculate bpa and wpa
-  CASE -- 当value1~4至少有2个≤0时，bpa取NULL
-    WHEN (r.value1 <= 0 AND r.value2 <= 0) OR (r.value1 <= 0 AND r.value3 <= 0) OR (r.value1 <= 0 AND r.value4 <= 0) OR (r.value2 <= 0 AND r.value3 <= 0) OR (r.value2 <= 0 AND r.value4 <= 0) OR (r.value3 <= 0 AND r.value4 <= 0) THEN NULL
-    WHEN r.value1 <= 0 THEN ROUND((r.value2 + r.value3 + r.value4) / 3, 0) -- 当value1~4恰好有1个≤0时，bpa取value1~4排除掉这个≤0的值后剩下的3个数的平均值
-    WHEN r.value2 <= 0 THEN ROUND((r.value1 + r.value3 + r.value4) / 3, 0)
-    WHEN r.value3 <= 0 THEN ROUND((r.value1 + r.value2 + r.value4) / 3, 0)
-    WHEN r.value4 <= 0 THEN ROUND((r.value1 + r.value2 + r.value3) / 3, 0)
-    ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 - GREATEST(r.value1, r.value2, r.value3, r.value4)) / 3, 0)
+  CASE 
+    WHEN (tr.value1 <= 0 AND tr.value2 <= 0) OR (tr.value1 <= 0 AND tr.value3 <= 0) OR (tr.value1 <= 0 AND tr.value4 <= 0) OR (tr.value2 <= 0 AND tr.value3 <= 0) OR (tr.value2 <= 0 AND tr.value4 <= 0) OR (tr.value3 <= 0 AND tr.value4 <= 0) THEN NULL
+    WHEN tr.value1 <= 0 THEN ROUND((tr.value2 + tr.value3 + tr.value4) / 3, 0) 
+    WHEN tr.value2 <= 0 THEN ROUND((tr.value1 + tr.value3 + tr.value4) / 3, 0)
+    WHEN tr.value3 <= 0 THEN ROUND((tr.value1 + tr.value2 + tr.value4) / 3, 0)
+    WHEN tr.value4 <= 0 THEN ROUND((tr.value1 + tr.value2 + tr.value3) / 3, 0)
+    ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - GREATEST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
   END AS bpa,
-  CASE -- 当value1~4至少有1个≤0时，wpa取NULL
-    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 THEN NULL
-    ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 - LEAST(r.value1, r.value2, r.value3, r.value4)) / 3, 0)
-  END AS wpa
-FROM (
-  SELECT 
-    personName,
-    personId,
-    personCountryId,
-    value1,
-    value2,
-    value3,
-    value4,
-    value5,
-    best,
-    average,
-    regionalSingleRecord,
-    regionalAverageRecord,
-    competitionId
-  FROM 
-    Results
-  WHERE 
-    eventId = '333'
-) r
+  CASE 
+    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 THEN NULL
+    ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - LEAST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
+  END AS wpa,
+  -- Calculate best_counting
+  CASE
+    WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN 
+      (SELECT MIN(val) FROM (SELECT tr.value3 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
+    WHEN tr.value1 <= 0 AND tr.value3 <= 0 THEN 
+      (SELECT MIN(val) FROM (SELECT tr.value2 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
+    WHEN tr.value1 <= 0 AND tr.value4 <= 0 THEN 
+      (SELECT MIN(val) FROM (SELECT tr.value2 AS val UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value5) sub)
+    WHEN tr.value2 <= 0 AND tr.value3 <= 0 THEN 
+      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
+    WHEN tr.value2 <= 0 AND tr.value4 <= 0 THEN 
+      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value5) sub)
+    WHEN tr.value3 <= 0 AND tr.value4 <= 0 THEN 
+      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value5) sub)
+    ELSE 
+      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val LIMIT 1, 1) sub)
+  END AS best_counting,
+  -- Calculate worst_counting
+  CASE
+    WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN NULL
+    WHEN tr.value1 <= 0 AND tr.value3 <= 0 THEN NULL
+    WHEN tr.value1 <= 0 AND tr.value4 <= 0 THEN NULL
+    WHEN tr.value2 <= 0 AND tr.value3 <= 0 THEN NULL
+    WHEN tr.value2 <= 0 AND tr.value4 <= 0 THEN NULL
+    WHEN tr.value3 <= 0 AND tr.value4 <= 0 THEN NULL
+    WHEN tr.value1 <= 0 THEN GREATEST(tr.value2, tr.value3, tr.value4, tr.value5)
+    WHEN tr.value2 <= 0 THEN GREATEST(tr.value1, tr.value3, tr.value4, tr.value5)
+    WHEN tr.value3 <= 0 THEN GREATEST(tr.value1, tr.value2, tr.value4, tr.value5)
+    WHEN tr.value4 <= 0 THEN GREATEST(tr.value1, tr.value2, tr.value3, tr.value5)
+    ELSE 
+      (SELECT MAX(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val DESC LIMIT 1, 1) sub)
+  END AS worst_counting
+FROM 
+  TempResults tr
 JOIN
-  Competitions c ON r.competitionId = c.id
+  Competitions c ON tr.competitionId = c.id
 ORDER BY
   mo5 IS NULL, mo5;
+
+-- Drop the temporary table
+DROP TEMPORARY TABLE IF EXISTS TempResults;
+
 
 /*
 WHERE best > 0
