@@ -11,7 +11,7 @@ best, average, variance, worst, median, bpa, wpa, mo5, best_counting, worst_coun
 */
 
 
--- Step 1: Create a temporary table to hold intermediate results
+-- Step 1: Create a temporary table
 CREATE TEMPORARY TABLE TempResults AS
 SELECT 
   r.personName,
@@ -120,16 +120,23 @@ SELECT
     WHEN tr.value4 <= 0 THEN GREATEST(tr.value1, tr.value2, tr.value3, tr.value5)
     ELSE 
       (SELECT MAX(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val DESC LIMIT 1, 1) sub)
-  END AS worst_counting
+  END AS worst_counting,
+  -- Calculate best / average
+  CASE 
+    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL 
+    WHEN tr.average = 0 THEN NULL 
+    ELSE ROUND(tr.best / tr.average, 2) 
+  END AS best_average_ratio
 FROM 
   TempResults tr
 JOIN
   Competitions c ON tr.competitionId = c.id
 ORDER BY
-  mo5 IS NULL, mo5;
+  best_average_ratio IS NULL, best_average_ratio;
 
 -- Drop the temporary table
 DROP TEMPORARY TABLE IF EXISTS TempResults;
+
 
 
 /*
