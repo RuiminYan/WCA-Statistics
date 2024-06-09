@@ -23,15 +23,12 @@ FROM (
 
 
 -- 最多轮比赛
-SELECT competitionId, overallDistinctRoundTypes
+SELECT competitionId, SUM(distinctRoundTypes) AS overallDistinctRoundTypes
 FROM (
-    SELECT competitionId, SUM(distinctRoundTypes) AS overallDistinctRoundTypes
-    FROM (
-        SELECT competitionId, eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
-        FROM results
-        WHERE roundTypeId IN ('1', '2', '3', 'f')
-        GROUP BY competitionId, eventId
-    ) AS t
-    GROUP BY competitionId
-) AS s
-ORDER BY overallDistinctRoundTypes DESC
+    SELECT competitionId, eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+    FROM results
+    WHERE roundTypeId IN ('1', '2', '3', 'f')
+    GROUP BY competitionId, eventId
+) AS t
+GROUP BY competitionId
+ORDER BY overallDistinctRoundTypes DESC;
