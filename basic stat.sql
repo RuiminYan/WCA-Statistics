@@ -1,3 +1,5 @@
+-- best, average, variance, worst, median, bpa, wpa 
+
 SELECT
   r.personName,
   r.personId,
