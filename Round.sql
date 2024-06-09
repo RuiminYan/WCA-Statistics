@@ -1,6 +1,37 @@
--- 查询competitionId为WakefieldAutumn2022的这场比赛项目为333的有多少种不同的轮次类型，例如当333的roundTypeId有12,3,f时，取值为4，不考虑roundTypeId为0,b,c,d,e,g,h的
-SELECT COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
-FROM results
-WHERE competitionId = 'WC2023'
-  AND eventId = '333'
-  AND roundTypeId IN ('1', '2', '3', 'f');
+-- 比赛分项目轮次
+SELECT eventId, SUM(distinctRoundTypes) AS totalDistinctRoundTypes
+FROM (
+    SELECT eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+    FROM results
+    WHERE competitionId = 'WC2023'
+      AND roundTypeId IN ('1', '2', '3', 'f')
+    GROUP BY eventId
+) AS t
+GROUP BY eventId;
+
+
+
+-- 比赛轮次和
+SELECT SUM(distinctRoundTypes) AS overallDistinctRoundTypes
+FROM (
+    SELECT eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+    FROM results
+    WHERE competitionId = 'WC2023'
+      AND roundTypeId IN ('1', '2', '3', 'f')
+    GROUP BY eventId
+) AS t;
+
+
+-- 最多轮比赛
+SELECT competitionId, overallDistinctRoundTypes
+FROM (
+    SELECT competitionId, SUM(distinctRoundTypes) AS overallDistinctRoundTypes
+    FROM (
+        SELECT competitionId, eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+        FROM results
+        WHERE roundTypeId IN ('1', '2', '3', 'f')
+        GROUP BY competitionId, eventId
+    ) AS t
+    GROUP BY competitionId
+) AS s
+ORDER BY overallDistinctRoundTypes DESC
