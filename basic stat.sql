@@ -17,9 +17,9 @@ SELECT
   c.month,
   c.day,
   c.name,
-  -- Calculate mo5 as the average of the 5 values
+  -- Calculate mo5 as the average of the 5 values, set to NULL if any value is <= 0
   CASE 
-    WHEN ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 0) <= 0 THEN NULL
+    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
     ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 0)
   END AS mo5,
   -- Calculate variance
