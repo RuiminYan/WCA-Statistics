@@ -7,7 +7,7 @@ After importing wca_export.sql, please change Charset/Collation to utf8mb4_unico
 ## ChatGPT Prompt
 用MySQL Workbench. 数据库wca_export, 是世界魔方协会的官方数据库，有
 
-表格competitions的列名有：id, name, cityName, countryId, information, year, month, day, endMonth, endDay, cancelled, eventSpecs, wcaDelegate, organiser, venue, venueAddress, venueDetails, external_website, cellName, latitude, longitude. 其中year, month, day表示比赛的年月日.
+表格competitions的列名有：id, name, cityName, countryId, information, year, month, day, endMonth, endDay, cancelled, eventSpecs, wcaDelegate, organiser, venue, venueAddress, venueDetails, external_website, cellName, latitude, longitude. 其中year, month, day表示比赛开始的年, 月, 日, endMonth, endDay表示比赛结束的月, 日
 
 表格results的列名有：competitionId, eventId, roundTypeId, pos, best, average, personName, personId, personCountryId, formatId, value1, value2, value3, value4, value5, regionalSingleRecord, regionalAverageRecord.
 
