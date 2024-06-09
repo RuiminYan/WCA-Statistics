@@ -15,6 +15,9 @@ After importing wca_export.sql, please change Charset/Collation to utf8mb4_unico
 
 ## Events
 333 222 444 555 666 777 333bf 333fm 333oh clock minx pyram skewb sq1 444bf 555bf 333mbf 333ft magic mmagic 333mbo
+```
+IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1', '444bf', '555bf', '333mbf', '333ft', 'magic', 'mmagic', '333mbo')
+```
 
 ## Batch image link
 ```
