@@ -1,5 +1,4 @@
 -- 1stWR Single
--- 1stWR Single
 WITH FirstComp AS (
     SELECT 
         r.personId,
