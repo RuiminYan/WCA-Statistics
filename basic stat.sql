@@ -123,7 +123,7 @@ SELECT
   END AS worst_counting,
   -- Calculate best / average
   CASE 
-    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL 
+    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL -- 当5个value至少有一个小于等于0时，取best_average_ratio为NULL
     WHEN tr.average = 0 THEN NULL 
     ELSE ROUND(tr.best / tr.average, 2) 
   END AS best_average_ratio
