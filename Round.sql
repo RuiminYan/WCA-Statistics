@@ -3,8 +3,8 @@ SELECT eventId, SUM(distinctRoundTypes) AS totalDistinctRoundTypes
 FROM (
     SELECT eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
     FROM results
-    WHERE competitionId = 'WC2023'
-      AND roundTypeId IN ('1', '2', '3', 'f')
+    WHERE competitionId = 'NortheastChampionship2022'
+      AND roundTypeId IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
     GROUP BY eventId
 ) AS t
 GROUP BY eventId;
@@ -16,8 +16,8 @@ SELECT SUM(distinctRoundTypes) AS overallDistinctRoundTypes
 FROM (
     SELECT eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
     FROM results
-    WHERE competitionId = 'WC2023'
-      AND roundTypeId IN ('1', '2', '3', 'f')
+    WHERE competitionId = 'NortheastChampionship2022'
+      AND roundTypeId IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
     GROUP BY eventId
 ) AS t;
 
@@ -27,7 +27,7 @@ SELECT competitionId, SUM(distinctRoundTypes) AS overallDistinctRoundTypes
 FROM (
     SELECT competitionId, eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
     FROM results
-    WHERE roundTypeId IN ('1', '2', '3', 'f')
+    WHERE roundTypeId IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
     GROUP BY competitionId, eventId
 ) AS t
 GROUP BY competitionId
