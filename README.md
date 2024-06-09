@@ -4,6 +4,16 @@ Some interesting WCA statistics 一些WCA趣味数据统计
 ## Notice
 After importing wca_export.sql, please change Charset/Collation to utf8mb4_unicode.
 
+## ChatGPT Prompt
+用MySQL Workbench. 数据库wca_export, 是世界魔方协会的官方数据库，有
+
+表格competitions的列名有：id, name, cityName, countryId, information, year, month, day, endMonth, endDay, cancelled, eventSpecs, wcaDelegate, organiser, venue, venueAddress, venueDetails, external_website, cellName, latitude, longitude. 其中year, month, day表示比赛的年月日.
+
+表格results的列名有：competitionId, eventId, roundTypeId, pos, best, average, personName, personId, personCountryId, formatId, value1, value2, value3, value4, value5, regionalSingleRecord, regionalAverageRecord.
+
+轮次roundTypeId取值为1,2,3,f, 分别表示初赛，复赛，半决赛，决赛. 还有0,b,c,d,e,g,h, 但这些是很多年前的比赛采用的，目前比赛已弃用.
+
+项目eventId取值为333 222 444 555 666 777 333bf 333fm 333oh clock minx pyram skewb sq1 444bf 555bf 333mbf 333ft magic mmagic 333mbo.
 
 ## Events
 333 222 444 555 666 777 333bf 333fm 333oh clock minx pyram skewb sq1 444bf 555bf 333mbf 333ft magic mmagic 333mbo
