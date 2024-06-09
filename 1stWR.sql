@@ -19,7 +19,8 @@ FirstRound AS (
         r.personCountryId,
         r.value1 AS first_single,
         r.regionalSingleRecord,
-        STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date
+        STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date,
+        c.name
     FROM 
         Results r
     JOIN 
@@ -36,7 +37,8 @@ SELECT
     fr.personCountryId,
     fr.first_single,
     fr.regionalSingleRecord,
-    fc.earliest_date
+    fc.earliest_date AS date,
+    fr.name
 FROM
     FirstComp fc
 JOIN
@@ -45,7 +47,7 @@ ORDER BY
     fr.first_single;
 
 
--- 按日期排 fc.earliest_date;;
+-- 按日期排 fc.earliest_date;
 
 
 
@@ -53,7 +55,7 @@ ORDER BY
 
 
 
--- 1st WR Avg
+-- 1stWR Average
 WITH FirstComp AS (
     SELECT 
         r.personId,
@@ -74,7 +76,8 @@ FirstRound AS (
         r.personCountryId,
         r.average AS first_average,
         r.regionalAverageRecord,
-        STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date
+        STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date,
+        c.name
     FROM 
         Results r
     JOIN 
@@ -91,7 +94,8 @@ SELECT
     fr.personCountryId,
     fr.first_average,
     fr.regionalAverageRecord,
-    fc.earliest_date
+    fc.earliest_date AS date,
+    fr.name
 FROM
     FirstComp fc
 JOIN
@@ -99,8 +103,7 @@ JOIN
 ORDER BY
     fr.first_average;
 
-
--- 按日期排 fc.earliest_date;;
+-- 按日期排 fc.earliest_date;
 
 
 
@@ -153,9 +156,7 @@ average_values AS (
         personName,
         personId,
         personCountryId,
-        year,
-        month,
-        day,
+        CONCAT(year, '-', LPAD(month, 2, '0'), '-', LPAD(day, 2, '0')) AS date,
         name,
         value1,
         value2,
@@ -173,9 +174,7 @@ SELECT
     personCountryId,
     CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstAvg,
     regionalAverageRecord,
-    year,
-    month,
-    day,
+    date,
     name,
     value1,
     value2,
@@ -183,4 +182,4 @@ SELECT
 FROM
     average_values
 ORDER BY
-    year, month, day;
+    date;
