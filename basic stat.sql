@@ -1,4 +1,4 @@
--- best, average, variance, worst, median, bpa, wpa 
+-- best, average, variance, worst, median, bpa, wpa, mo5
 
 SELECT
   r.personName,
@@ -17,6 +17,11 @@ SELECT
   c.month,
   c.day,
   c.name,
+  -- Calculate mo5 as the average of the 5 values
+  CASE 
+    WHEN ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 0) <= 0 THEN NULL
+    ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 0)
+  END AS mo5,
   -- Calculate variance
   CASE -- 当5个value中至少有一个≤0时，variance取NULL
     WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
@@ -74,7 +79,7 @@ FROM (
 JOIN
   Competitions c ON r.competitionId = c.id
 ORDER BY
-  wpa IS NULL, wpa;
+  mo5 IS NULL, mo5;
 
 /*
 WHERE best > 0
