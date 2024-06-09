@@ -4,7 +4,7 @@ Some interesting WCA statistics 一些WCA趣味数据统计
 ## Notice
 After importing wca_export.sql, please change Charset/Collation to utf8mb4_unicode.
 
-## ChatGPT Prompt
+## Prompt
 用MySQL Workbench. 数据库wca_export, 是世界魔方协会的官方数据库，有
 
 表格competitions的列名有：id, name, cityName, countryId, information, year, month, day, endMonth, endDay, cancelled, eventSpecs, wcaDelegate, organiser, venue, venueAddress, venueDetails, external_website, cellName, latitude, longitude. 其中year, month, day表示比赛开始的年, 月, 日, endMonth, endDay表示比赛结束的月, 日
