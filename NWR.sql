@@ -23,6 +23,7 @@ SELECT
     r.personId,
     r.personCountryId,
     MIN(r.best) AS firstCompSingle,
+    r.regionalSingleRecord,
     c.year,
     c.month,
     c.day,
@@ -36,10 +37,19 @@ JOIN
 WHERE
     r.eventId = '333' AND r.best > 0
 GROUP BY
-    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name
+    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name, r.regionalSingleRecord
 ORDER BY
     firstCompSingle;
- -- 按日期排 c.year, c.month, c.day;
+
+-- 按日期排 c.year, c.month, c.day;
+
+
+
+
+
+
+
+
 
 
 
@@ -65,6 +75,7 @@ SELECT
     r.personId,
     r.personCountryId,
     MIN(r.average) AS firstCompAvg,
+    r.regionalAverageRecord,
     c.year,
     c.month,
     c.day,
@@ -83,9 +94,11 @@ JOIN
 WHERE
     r.eventId = '333' AND r.average > 0
 GROUP BY
-    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
+    r.personName, r.personId, r.personCountryId, r.regionalAverageRecord, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
 ORDER BY
-    firstCompAvg; -- 按日期排 c.year, c.month, c.day;
+    firstCompAvg;
+
+-- 按日期排 c.year, c.month, c.day;
 
 
 
