@@ -57,9 +57,7 @@ SELECT
     Ao1R.personCountryId,
     Ao1R.Ao1R,
     Ao1R.Fi,
-    c.year,
-    c.month,
-    c.day,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name
 FROM
     Ao1R
