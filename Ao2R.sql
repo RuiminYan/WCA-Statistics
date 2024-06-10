@@ -61,9 +61,7 @@ SELECT
     Ao2R.Ao2R,
     Ao2R.R1,
     Ao2R.Fi,
-    c.year,
-    c.month,
-    c.day,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name
 FROM
     Ao2R
