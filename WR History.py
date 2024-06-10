@@ -13,3 +13,5 @@ for i in range(1, len(df)):
 # 将结果保存为CSV文件
 filtered_df = pd.DataFrame(filtered_df)
 filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
+
+# 同一天比赛同时WR仅保留最快的WR, 需手动剔除
