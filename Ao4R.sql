@@ -86,4 +86,4 @@ JOIN
 WHERE
     Ao4R.Ao4R > 0
 ORDER BY
-    Ao4R.Ao4R; -- 按日期排 c.year, c.month, c.day;
+    Ao4R.Ao4R; -- 按日期排 date;
