@@ -2,16 +2,23 @@
 
 import pandas as pd
 
-df = pd.read_csv(r'D:\Jupyter Notebook\cubing\Ao4R.csv', encoding='utf-8-sig', sep=',')
+# 读取CSV文件
+df = pd.read_csv(r'D:\Jupyter Notebook\cubing\firstCompAvg.csv', encoding='utf-8-sig', sep=',')
 
-# 过滤数据
+# 初步筛选数据
 filtered_df = [df.iloc[0]]  # 保留第一行数据
 for i in range(1, len(df)):
-    if df.loc[i, 'Ao4R'] <= filtered_df[-1]['Ao4R']:
+    if df.loc[i, 'firstCompAvg'] <= filtered_df[-1]['firstCompAvg']:
         filtered_df.append(df.iloc[i])
 
-# 将结果保存为CSV文件
+# 将初步筛选结果转换为DataFrame
 filtered_df = pd.DataFrame(filtered_df)
-filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\Ao4R WR.csv', sep=',', encoding='utf-8-sig', index=False)
 
-# 同一天比赛同时WR仅保留最快的WR, 需手动剔除
+# 进一步筛选：当name列的值相同时，只保留firstCompAvg最小的行
+filtered_df = filtered_df.loc[filtered_df.groupby('name')['firstCompAvg'].idxmin()]
+
+# 按firstCompAvg排序
+filtered_df = filtered_df.sort_values(by='firstCompAvg')
+
+# 将最终结果保存为CSV文件
+filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\firstCompAvg WR.csv', sep=',', encoding='utf-8-sig', index=False)
