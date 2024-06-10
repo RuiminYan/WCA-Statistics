@@ -41,7 +41,7 @@ GROUP BY
 ORDER BY
     firstCompSingle;
 
--- 按日期排 c.year, c.month, c.day;
+-- 按日期排 date;
 
 
 
@@ -96,7 +96,7 @@ GROUP BY
 ORDER BY
     firstCompAvg;
 
--- 按日期排 c.year, c.month, c.day;
+-- 按日期排 date;
 
 
 
