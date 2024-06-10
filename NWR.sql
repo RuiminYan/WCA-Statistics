@@ -18,22 +18,22 @@ WITH first_competition_dates AS (
         r.personId
 )
 
+-- 获取首次参加比赛的第一轮成绩
 SELECT
     r.personName,
     r.personId,
     r.personCountryId,
     MIN(r.best) AS firstCompSingle,
     r.regionalSingleRecord,
-    c.year,
-    c.month,
-    c.day,
+    CONCAT(c.year, '-', LPAD(c.month, 2, '0'), '-', LPAD(c.day, 2, '0')) AS competition_date,
     c.name
 FROM
     results r
 JOIN
     competitions c ON r.competitionId = c.id
 JOIN
-    first_competition_dates fcd ON r.personId = fcd.personId AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
+    first_competition_dates fcd ON r.personId = fcd.personId 
+    AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
 WHERE
     r.eventId = '333' AND r.best > 0
 GROUP BY
@@ -76,9 +76,7 @@ SELECT
     r.personCountryId,
     MIN(r.average) AS firstCompAvg,
     r.regionalAverageRecord,
-    c.year,
-    c.month,
-    c.day,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
     r.value1,
     r.value2,
@@ -94,7 +92,7 @@ JOIN
 WHERE
     r.eventId = '333' AND r.average > 0
 GROUP BY
-    r.personName, r.personId, r.personCountryId, r.regionalAverageRecord, c.year, c.month, c.day, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
+    r.personName, r.personId, r.personCountryId, r.regionalAverageRecord, date, c.name, r.value1, r.value2, r.value3, r.value4, r.value5
 ORDER BY
     firstCompAvg;
 
