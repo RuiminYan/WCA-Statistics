@@ -15,6 +15,29 @@ eventId取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, 
 
 轮次roundTypeId取值为1或d,2或e,3或g,f或b或c, 分别表示初赛，复赛，半决赛，决赛. 还有0表示资格轮次, 但这个很多年前的比赛才采用的，目前比赛已弃用.
 
+The format "multi" is for old and new multi-blind, encoding the time as well as the number of cubes attempted and solved. This is a decimal value, which can be interpreted ("decoded") as follows:
+
+      333mbo: 1SSAATTTTT
+             solved        = 99 - SS
+             attempted     = AA
+             timeInSeconds = TTTTT (99999 means unknown)
+        333mbf: DDTTTTTMM
+             difference    = 99 - DD
+             timeInSeconds = TTTTT (99999 means unknown)
+             missed        = MM
+             solved        = difference + missed
+             attempted     = solved + missed
+
+    In order to encode data, use the following procedure:
+
+             solved        = # cubes solved
+             attempted     = # cubes attempted
+             missed        = # cubes missed = attempted - solved
+             DD            = 99 - (solved - missed)
+             TTTTT         = solve time in seconds
+             MM            = missed
+
+
 ## Events
 ```
 IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1', '444bf', '555bf', '333mbf', '333ft', 'magic', 'mmagic', '333mbo')
