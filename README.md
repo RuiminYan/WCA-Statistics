@@ -84,19 +84,19 @@ IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock'
 当TTTTT不等于99999时, TTTTT表示秒数, time为将其转化小时:分钟:秒的时间, 注意当小时为0时，简化为分钟:秒
 
 ```excel
-=IF(C4=-1, "DNF",
-   IF(C4=-2, "DNS",
-      IF(C4=0, "",
-         IF(C4 <= 999999, 
-            IF(C4 < 6000, 
-               TEXT(C4 / 100, "0.00"), 
-               TEXT(INT(C4 / 6000), "0") & ":" & TEXT(MOD(INT(C4 / 100), 60), "00") & "." & TEXT(MOD(C4, 100), "00")
+=IF(D4=-1, "DNF",
+   IF(D4=-2, "DNS",
+      IF(D4=0, "",
+         IF(D4 <= 999999, 
+            IF(D4 < 6000, 
+               TEXT(D4 / 100, "0.00"), 
+               TEXT(INT(D4 / 6000), "0") & ":" & TEXT(MOD(INT(D4 / 100), 60), "00") & "." & TEXT(MOD(D4, 100), "00")
             ),
-            IF(C4 < 1000000000, 
+            IF(D4 < 1000000000, 
                LET(
-                  DD, LEFT(C4, 2),
-                  TTTTT, MID(C4, 3, 5),
-                  MM, RIGHT(C4, 2),
+                  DD, LEFT(D4, 2),
+                  TTTTT, MID(D4, 3, 5),
+                  MM, RIGHT(D4, 2),
                   solved, 99 - DD + MM,
                   missed, MM,
                   attempted, solved + missed,
@@ -104,7 +104,7 @@ IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock'
                   solved & "/" & attempted & " " & time
                ),
                LET(
-                  truncated, RIGHT(C4, 9),
+                  truncated, RIGHT(D4, 9),
                   SS, MID(truncated, 1, 2),
                   AA, MID(truncated, 3, 2),
                   TTTTT, RIGHT(truncated, 5),
