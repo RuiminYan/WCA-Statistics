@@ -56,9 +56,10 @@ SELECT
     Ao1R.personId,
     Ao1R.personCountryId,
     Ao1R.Ao1R,
-    Ao1R.Fi,
+    NULL as nothing,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name
+    Ao1R.Fi AS value1
 FROM
     Ao1R
 JOIN
