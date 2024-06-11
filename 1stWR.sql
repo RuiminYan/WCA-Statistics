@@ -184,7 +184,7 @@ WITH first_competition_dates AS (
     JOIN 
         competitions c ON r.competitionId = c.id
     WHERE 
-        r.eventId = '333mbo'
+        r.eventId = '333mbf'
     GROUP BY 
         r.personId
 ),
@@ -211,7 +211,7 @@ values_with_parts1 AS (
     JOIN
         first_competition_dates fcd ON r.personId = fcd.personId AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
     WHERE
-        r.eventId = '333mbo' AND r.roundTypeId IN ('1', '0', 'd') AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0
+        r.eventId = '333mbf' AND r.roundTypeId IN ('1', '0', 'd') AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0
 ),
 values_with_parts2 AS (
     SELECT
@@ -236,7 +236,7 @@ values_with_parts2 AS (
     JOIN
         first_competition_dates fcd ON r.personId = fcd.personId AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
     WHERE
-        r.eventId = '333mbo' AND r.roundTypeId IN ('f', 'b', 'c') AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0
+        r.eventId = '333mbf' AND r.roundTypeId IN ('f', 'b', 'c') AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0
 ),
 average_values AS (
     SELECT
