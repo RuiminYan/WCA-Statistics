@@ -25,7 +25,7 @@ SELECT
     r.personCountryId,
     MIN(r.best) AS firstCompSingle,
     r.regionalSingleRecord,
-    CONCAT(c.year, '-', LPAD(c.month, 2, '0'), '-', LPAD(c.day, 2, '0')) AS competition_date,
+    CONCAT(c.year, '-', LPAD(c.month, 2, '0'), '-', LPAD(c.day, 2, '0')) AS date,
     c.name
 FROM
     results r
