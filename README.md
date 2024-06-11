@@ -100,7 +100,7 @@ IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock'
                   solved, 99 - DD + MM,
                   missed, MM,
                   attempted, solved + missed,
-                  time, IF(TTTTT = 99999, "?:??:??", IF(INT(TTTTT / 3600) = 0, TEXT(MOD(INT(TTTTT / 60), 60), "0") & ":" & TEXT(MOD(TTTTT, 60), "00"), TEXT(INT(TTTTT / 3600), "0") & ":" & TEXT(MOD(INT(TTTTT / 60), 60), "00") & ":" & TEXT(MOD(TTTTT, 60), "00"))),
+                  time, IF(TTTTT = "99999", "?:??:??", IF(INT(TTTTT / 3600) = 0, TEXT(MOD(INT(TTTTT / 60), 60), "0") & ":" & TEXT(MOD(TTTTT, 60), "00"), TEXT(INT(TTTTT / 3600), "0") & ":" & TEXT(MOD(INT(TTTTT / 60), 60), "00") & ":" & TEXT(MOD(TTTTT, 60), "00"))),
                   solved & "/" & attempted & " " & time
                ),
                LET(
@@ -110,7 +110,7 @@ IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock'
                   TTTTT, RIGHT(truncated, 5),
                   solved, 99 - SS,
                   attempted, VALUE(AA),
-                  time, IF(TTTTT = 99999, "?:??:??", IF(INT(TTTTT / 3600) = 0, TEXT(MOD(INT(TTTTT / 60), 60), "0") & ":" & TEXT(MOD(TTTTT, 60), "00"), TEXT(INT(TTTTT / 3600), "0") & ":" & TEXT(MOD(INT(TTTTT / 60), 60), "00") & ":" & TEXT(MOD(TTTTT, 60), "00"))),
+                  time, IF(TTTTT = "99999", "?:??:??", IF(INT(TTTTT / 3600) = 0, TEXT(MOD(INT(TTTTT / 60), 60), "0") & ":" & TEXT(MOD(TTTTT, 60), "00"), TEXT(INT(TTTTT / 3600), "0") & ":" & TEXT(MOD(INT(TTTTT / 60), 60), "00") & ":" & TEXT(MOD(TTTTT, 60), "00"))),
                   solved & "/" & attempted & " " & time
                )
             )
