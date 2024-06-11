@@ -37,6 +37,8 @@ The format "multi" is for old and new multi-blind, encoding the time as well as 
              TTTTT         = solve time in seconds
              MM            = missed
 
+333mbf转换为333mbo时需要用的公式：SS = DD -MM, AA = 99 - DD + MM *2
+
 
 ## Events
 ```
