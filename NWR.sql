@@ -103,88 +103,6 @@ ORDER BY
 
 
 
--- 新人新旧多盲平均
-WITH first_competition_dates AS (
-    SELECT 
-        r.personId, 
-        MIN(STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d')) AS earliest_date
-    FROM 
-        results r
-    JOIN 
-        competitions c ON r.competitionId = c.id
-    WHERE 
-        r.eventId = '333mbo'
-    GROUP BY 
-        r.personId
-),
-values_with_parts AS (
-    SELECT
-        r.personName,
-        r.personId,
-        r.personCountryId,
-        c.year,
-        c.month,
-        c.day,
-        c.name,
-        r.value1,
-        r.value2,
-        r.value3,
-        SUBSTRING(r.value1, 1, 2) AS dd1, SUBSTRING(r.value1, 3, 5) AS ttttt1, SUBSTRING(r.value1, 8, 2) AS mm1,
-        SUBSTRING(r.value2, 1, 2) AS dd2, SUBSTRING(r.value2, 3, 5) AS ttttt2, SUBSTRING(r.value2, 8, 2) AS mm2,
-        SUBSTRING(r.value3, 1, 2) AS dd3, SUBSTRING(r.value3, 3, 5) AS ttttt3, SUBSTRING(r.value3, 8, 2) AS mm3
-    FROM
-        results r
-    JOIN
-        competitions c ON r.competitionId = c.id
-    JOIN
-        first_competition_dates fcd ON r.personId = fcd.personId AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
-    WHERE
-        r.eventId = '333mbo' AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0
-),
-average_values AS (
-    SELECT
-        personName,
-        personId,
-        personCountryId,
-        year,
-        month,
-        day,
-        name,
-        value1,
-        value2,
-        value3,
-        ROUND((CAST(dd1 AS UNSIGNED) + CAST(dd2 AS UNSIGNED) + CAST(dd3 AS UNSIGNED)) / 3) AS avg_dd,
-        ROUND((CAST(ttttt1 AS UNSIGNED) + CAST(ttttt2 AS UNSIGNED) + CAST(ttttt3 AS UNSIGNED)) / 3) AS avg_ttttt,
-        ROUND((CAST(mm1 AS UNSIGNED) + CAST(mm2 AS UNSIGNED) + CAST(mm3 AS UNSIGNED)) / 3) AS avg_mm
-    FROM
-        values_with_parts
-)
-SELECT
-    personName,
-    personId,
-    personCountryId,
-    CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstCompAvg,
-    NULL AS nothing,
-    STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date,
-    name,
-    value1,
-    value2,
-    value3
-FROM
-    average_values
-ORDER BY
-    date;
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -206,7 +124,7 @@ WITH first_competition_dates AS (
     GROUP BY 
         r.personId
 ),
-values_with_parts AS (
+converted_values AS (
     SELECT
         r.personName,
         r.personId,
@@ -215,63 +133,18 @@ values_with_parts AS (
         c.month,
         c.day,
         c.name,
-        CASE
-            WHEN LENGTH(r.value1) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value1, 1, 2) + SUBSTRING(r.value1, 8, 2)), 2, '0'), SUBSTRING(r.value1, 3, 5), SUBSTRING(r.value1, 8, 2))
+        CASE 
+            WHEN LENGTH(r.value1) = 9 THEN CONCAT('1', LPAD(CAST(SUBSTRING(r.value1, 1, 2) AS UNSIGNED) - CAST(SUBSTRING(r.value1, 8, 2) AS UNSIGNED), 2, '0'), LPAD(99 - CAST(SUBSTRING(r.value1, 1, 2) AS UNSIGNED) + 2 * CAST(SUBSTRING(r.value1, 8, 2) AS UNSIGNED), 2, '0'), SUBSTRING(r.value1, 3, 5))
             ELSE r.value1
-        END AS value1,
-        CASE
-            WHEN LENGTH(r.value2) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value2, 1, 2) + SUBSTRING(r.value2, 8, 2)), 2, '0'), SUBSTRING(r.value2, 3, 5), SUBSTRING(r.value2, 8, 2))
+        END AS converted_value1,
+        CASE 
+            WHEN LENGTH(r.value2) = 9 THEN CONCAT('1', LPAD(CAST(SUBSTRING(r.value2, 1, 2) AS UNSIGNED) - CAST(SUBSTRING(r.value2, 8, 2) AS UNSIGNED), 2, '0'), LPAD(99 - CAST(SUBSTRING(r.value2, 1, 2) AS UNSIGNED) + 2 * CAST(SUBSTRING(r.value2, 8, 2) AS UNSIGNED), 2, '0'), SUBSTRING(r.value2, 3, 5))
             ELSE r.value2
-        END AS value2,
-        CASE
-            WHEN LENGTH(r.value3) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value3, 1, 2) + SUBSTRING(r.value3, 8, 2)), 2, '0'), SUBSTRING(r.value3, 3, 5), SUBSTRING(r.value3, 8, 2))
+        END AS converted_value2,
+        CASE 
+            WHEN LENGTH(r.value3) = 9 THEN CONCAT('1', LPAD(CAST(SUBSTRING(r.value3, 1, 2) AS UNSIGNED) - CAST(SUBSTRING(r.value3, 8, 2) AS UNSIGNED), 2, '0'), LPAD(99 - CAST(SUBSTRING(r.value3, 1, 2) AS UNSIGNED) + 2 * CAST(SUBSTRING(r.value3, 8, 2) AS UNSIGNED), 2, '0'), SUBSTRING(r.value3, 3, 5))
             ELSE r.value3
-        END AS value3,
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value1) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value1, 1, 2) + SUBSTRING(r.value1, 8, 2)), 2, '0'), SUBSTRING(r.value1, 3, 5), SUBSTRING(r.value1, 8, 2))
-                ELSE r.value1
-            END, 1, 2) AS dd1, 
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value1) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value1, 1, 2) + SUBSTRING(r.value1, 8, 2)), 2, '0'), SUBSTRING(r.value1, 3, 5), SUBSTRING(r.value1, 8, 2))
-                ELSE r.value1
-            END, 3, 5) AS ttttt1, 
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value1) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value1, 1, 2) + SUBSTRING(r.value1, 8, 2)), 2, '0'), SUBSTRING(r.value1, 3, 5), SUBSTRING(r.value1, 8, 2))
-                ELSE r.value1
-            END, 8, 2) AS mm1,
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value2) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value2, 1, 2) + SUBSTRING(r.value2, 8, 2)), 2, '0'), SUBSTRING(r.value2, 3, 5), SUBSTRING(r.value2, 8, 2))
-                ELSE r.value2
-            END, 1, 2) AS dd2, 
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value2) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value2, 1, 2) + SUBSTRING(r.value2, 8, 2)), 2, '0'), SUBSTRING(r.value2, 3, 5), SUBSTRING(r.value2, 8, 2))
-                ELSE r.value2
-            END, 3, 5) AS ttttt2, 
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value2) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value2, 1, 2) + SUBSTRING(r.value2, 8, 2)), 2, '0'), SUBSTRING(r.value2, 3, 5), SUBSTRING(r.value2, 8, 2))
-                ELSE r.value2
-            END, 8, 2) AS mm2,
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value3) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value3, 1, 2) + SUBSTRING(r.value3, 8, 2)), 2, '0'), SUBSTRING(r.value3, 3, 5), SUBSTRING(r.value3, 8, 2))
-                ELSE r.value3
-            END, 1, 2) AS dd3, 
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value3) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value3, 1, 2) + SUBSTRING(r.value3, 8, 2)), 2, '0'), SUBSTRING(r.value3, 3, 5), SUBSTRING(r.value3, 8, 2))
-                ELSE r.value3
-            END, 3, 5) AS ttttt3, 
-        SUBSTRING(
-            CASE
-                WHEN LENGTH(r.value3) = 9 THEN CONCAT(LPAD(99 - (99 - SUBSTRING(r.value3, 1, 2) + SUBSTRING(r.value3, 8, 2)), 2, '0'), SUBSTRING(r.value3, 3, 5), SUBSTRING(r.value3, 8, 2))
-                ELSE r.value3
-            END, 8, 2) AS mm3
+        END AS converted_value3
     FROM
         results r
     JOIN
@@ -280,6 +153,24 @@ values_with_parts AS (
         first_competition_dates fcd ON r.personId = fcd.personId AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') = fcd.earliest_date
     WHERE
         r.eventId = '333mbo' AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0
+),
+values_with_parts AS (
+    SELECT
+        personName,
+        personId,
+        personCountryId,
+        year,
+        month,
+        day,
+        name,
+        converted_value1 AS value1,
+        converted_value2 AS value2,
+        converted_value3 AS value3,
+        SUBSTRING(converted_value1, 2, 2) AS ss1, SUBSTRING(converted_value1, 4, 2) AS aa1, SUBSTRING(converted_value1, 6, 5) AS ttttt1,
+        SUBSTRING(converted_value2, 2, 2) AS ss2, SUBSTRING(converted_value2, 4, 2) AS aa2, SUBSTRING(converted_value2, 6, 5) AS ttttt2,
+        SUBSTRING(converted_value3, 2, 2) AS ss3, SUBSTRING(converted_value3, 4, 2) AS aa3, SUBSTRING(converted_value3, 6, 5) AS ttttt3
+    FROM
+        converted_values
 ),
 average_values AS (
     SELECT
@@ -293,9 +184,9 @@ average_values AS (
         value1,
         value2,
         value3,
-        ROUND((CAST(dd1 AS UNSIGNED) + CAST(dd2 AS UNSIGNED) + CAST(dd3 AS UNSIGNED)) / 3) AS avg_dd,
-        ROUND((CAST(ttttt1 AS UNSIGNED) + CAST(ttttt2 AS UNSIGNED) + CAST(ttttt3 AS UNSIGNED)) / 3) AS avg_ttttt,
-        ROUND((CAST(mm1 AS UNSIGNED) + CAST(mm2 AS UNSIGNED) + CAST(mm3 AS UNSIGNED)) / 3) AS avg_mm
+        ROUND((CAST(ss1 AS UNSIGNED) + CAST(ss2 AS UNSIGNED) + CAST(ss3 AS UNSIGNED)) / 3) AS avg_ss,
+        ROUND((CAST(aa1 AS UNSIGNED) + CAST(aa2 AS UNSIGNED) + CAST(aa3 AS UNSIGNED)) / 3) AS avg_aa,
+        ROUND((CAST(ttttt1 AS UNSIGNED) + CAST(ttttt2 AS UNSIGNED) + CAST(ttttt3 AS UNSIGNED)) / 3) AS avg_ttttt
     FROM
         values_with_parts
 )
@@ -303,9 +194,9 @@ SELECT
     personName,
     personId,
     personCountryId,
-    CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstCompAvg,
+    CONCAT('1', LPAD(avg_ss, 2, '0'), LPAD(avg_aa, 2, '0'), LPAD(avg_ttttt, 5, '0')) AS firstCompAvg,
     NULL AS nothing,
-    STR_TO_DATE(CONCAT(year, '-', LPAD(month, 2, '0'), '-', LPAD(day, 2, '0')), '%Y-%m-%d') AS date,
+    STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date,
     name,
     value1,
     value2,
@@ -314,16 +205,3 @@ FROM
     average_values
 ORDER BY
     date;
-
-
-
-
-
-
-
-
-
-
-
-
-
