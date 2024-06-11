@@ -1,9 +1,3 @@
-/* 
-
-ChatGPT提示词: 见Ao4R
-
-*/
-
 WITH selected_persons AS (
     SELECT DISTINCT personName, personId, personCountryId, average
     FROM (
