@@ -102,6 +102,11 @@ FirstRound1 AS (
         r.personCountryId,
         r.average AS firstAvg,
         r.regionalAverageRecord,
+        r.value1,
+        r.value2,
+        r.value3,
+        r.value4,
+        r.value5,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date,
         c.name
     FROM 
@@ -120,6 +125,11 @@ FirstRound2 AS (
         r.personCountryId,
         r.average AS firstAvg,
         r.regionalAverageRecord,
+        r.value1,
+        r.value2,
+        r.value3,
+        r.value4,
+        r.value5,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS event_date,
         c.name
     FROM 
@@ -139,7 +149,12 @@ SELECT
     fr.firstAvg,
     fr.regionalAverageRecord,
     fc.earliest_date AS date,
-    fr.name
+    fr.name,
+    fr.value1,
+    fr.value2,
+    fr.value3,
+    fr.value4,
+    fr.value5
 FROM
     FirstComp fc
 JOIN
