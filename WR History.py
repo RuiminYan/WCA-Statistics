@@ -100,12 +100,16 @@ filtered_df = pd.DataFrame(filtered_df)
 filtered_df = filtered_df.loc[filtered_df.groupby('name')['firstCompAvg'].idxmin()]
 
 # 按firstCompAvg排序
-filtered_df = filtered_df.sort_values(by='firstCompAvg')
+filtered_df = filtered_df.sort_values(by='firstCompAvg', ascending=True)
 
-# 应用转换函数到firstCompAvg和value1到value5列
+# 应用转换函数到firstCompAvg
 filtered_df['firstCompAvg'] = filtered_df['firstCompAvg'].apply(value2result)
+
+# 检查并应用转换函数到value1到value5列 (如果存在)
 for i in range(1, 6):
-    filtered_df[f'value{i}'] = filtered_df[f'value{i}'].apply(value2result)
+    col_name = f'value{i}'
+    if col_name in filtered_df.columns:
+        filtered_df[col_name] = filtered_df[col_name].apply(value2result)
 
 # 将最终结果保存为CSV文件，分隔符为tab，不包含表头
 filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\firstCompAvg WR.csv', sep='\t', encoding='utf-8-sig', index=False, header=False)
