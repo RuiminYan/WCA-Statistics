@@ -20,7 +20,7 @@ WITH selected_persons AS (
         ORDER BY r.average
     ) AS sorted_results
     ORDER BY average
-    LIMIT 100
+    -- 可选 LIMIT 100
 ),
 temp AS (
     SELECT
