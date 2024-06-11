@@ -164,6 +164,7 @@ SELECT
     personId,
     personCountryId,
     CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstCompAvg,
+    NULL AS empty,
     STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date,
     name,
     value1,
