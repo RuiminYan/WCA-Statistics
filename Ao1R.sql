@@ -52,7 +52,7 @@ SELECT
     Ao1R.Ao1R,
     NULL as nothing,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-    c.name
+    c.name,
     Ao1R.Fi AS value1
 FROM
     Ao1R
@@ -61,4 +61,5 @@ JOIN
 WHERE
     Ao1R.Ao1R > 0
 ORDER BY
-    Ao1R.Ao1R; -- 按日期排 date;
+    Ao1R.Ao1R; 
+    -- 按日期排 date;
