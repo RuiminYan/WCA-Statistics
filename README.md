@@ -17,6 +17,8 @@ eventId取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, 
 
 The format "multi" is for old and new multi-blind, encoding the time as well as the number of cubes attempted and solved. This is a decimal value, which can be interpreted ("decoded") as follows:
 
+333mbf转换为333mbo时需要用的公式：SS = DD - MM, AA = 99 - DD + 2 * MM
+
       333mbo: 1SSAATTTTT
              solved        = 99 - SS
              attempted     = AA
@@ -37,7 +39,7 @@ The format "multi" is for old and new multi-blind, encoding the time as well as 
              TTTTT         = solve time in seconds
              MM            = missed
 
-333mbf转换为333mbo时需要用的公式：SS = DD - MM, AA = 99 - DD + 2 * MM
+
 
 
 ## Events
