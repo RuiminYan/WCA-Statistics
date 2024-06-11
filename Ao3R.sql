@@ -61,7 +61,7 @@ SELECT
     Ao3R.Ao3R,
     NULL as nothing,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-    c.name
+    c.name,
     Ao3R.R1 AS value1,
     Ao3R.R2 AS value2,
     Ao3R.Fi AS value3
