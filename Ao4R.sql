@@ -68,10 +68,10 @@ SELECT
     NULL as nothing,
 	STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
-    Ao4R.R1,
-    Ao4R.R2,
-    Ao4R.R3,
-    Ao4R.Fi
+    Ao4R.R1 AS value1,
+    Ao4R.R2 AS value2,
+    Ao4R.R3 AS value3,
+    Ao4R.Fi AS value4
 FROM
     Ao4R
 JOIN
@@ -80,5 +80,3 @@ WHERE
     Ao4R.Ao4R > 0
 ORDER BY
     date;
-
--- 按日期排 date;
