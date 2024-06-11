@@ -32,7 +32,7 @@ filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\firstCompAvg WR.csv', sep='\t', 
 import pandas as pd
 
 # 定义转换函数：将值转换为成绩
-def convert_firstCompAvg(value):
+def value2result(value):
     if value == -1:
         return "DNF"
     elif value == -2:
@@ -102,9 +102,12 @@ filtered_df = filtered_df.loc[filtered_df.groupby('name')['firstCompAvg'].idxmin
 # 按firstCompAvg排序
 filtered_df = filtered_df.sort_values(by='firstCompAvg')
 
-# 应用转换函数
-filtered_df['firstCompAvg'] = filtered_df['firstCompAvg'].apply(convert_firstCompAvg)
+# 应用转换函数到firstCompAvg和value1到value5列
+filtered_df['firstCompAvg'] = filtered_df['firstCompAvg'].apply(value2result)
+for i in range(1, 6):
+    filtered_df[f'value{i}'] = filtered_df[f'value{i}'].apply(value2result)
 
 # 将最终结果保存为CSV文件，分隔符为tab，不包含表头
 filtered_df.to_csv(r'D:\Jupyter Notebook\cubing\firstCompAvg WR.csv', sep='\t', encoding='utf-8-sig', index=False, header=False)
+
 
