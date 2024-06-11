@@ -1,9 +1,3 @@
-/* 
-
-ChatGPT提示词: 见Ao4R
-
-*/
-
 WITH selected_persons AS (
     SELECT DISTINCT personName, personId, personCountryId, average
     FROM (
@@ -71,5 +65,6 @@ JOIN
 WHERE
     Ao2R.Ao2R > 0
 ORDER BY
-    Ao2R.Ao2R; -- 按日期排 date;
+    Ao2R.Ao2R; 
+-- 按日期排 date;
 
