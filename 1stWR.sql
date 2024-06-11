@@ -174,7 +174,7 @@ ORDER BY
 
 
 
--- New MBLD 1st WR Avg
+-- 333mbf 1st WR Avg
 WITH first_competition_dates AS (
     SELECT 
         r.personId, 
@@ -283,7 +283,7 @@ ORDER BY
 
 
 
--- Old MBLD 1st WR Avg
+-- 333mbo 1st WR Avg
 WITH first_competition_dates AS (
     SELECT 
         r.personId, 
