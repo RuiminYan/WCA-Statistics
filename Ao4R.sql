@@ -65,12 +65,13 @@ SELECT
     Ao4R.personId,
     Ao4R.personCountryId,
     Ao4R.Ao4R,
+    NULL as nothing,
+	STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+    c.name,
     Ao4R.R1,
     Ao4R.R2,
     Ao4R.R3,
-    Ao4R.Fi,
-    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-    c.name
+    Ao4R.Fi
 FROM
     Ao4R
 JOIN
@@ -78,4 +79,6 @@ JOIN
 WHERE
     Ao4R.Ao4R > 0
 ORDER BY
-    Ao4R.Ao4R; -- 按日期排 date;
+    date;
+
+-- 按日期排 date;
