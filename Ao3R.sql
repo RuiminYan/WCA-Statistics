@@ -41,7 +41,7 @@ Ao3R AS (
         personId,
         personCountryId,
         CASE
-            WHEN Fi <= 0 THEN -1
+            WHEN R1 <= 0 OR R2 <= 0 OR Fi <= 0 THEN -1
             ELSE ROUND((R1 + R2 + Fi) / 3)
         END AS Ao3R,
         R1,
