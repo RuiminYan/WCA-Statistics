@@ -32,7 +32,7 @@ temp AS (
     GROUP BY
         r.competitionId, r.personName, r.personId, r.personCountryId
     HAVING
-        num_averages = 3
+        num_averages = 3 AND R1 > 0  -- 排除 R1 为 0 的行
 ),
 Ao3R AS (
     SELECT
@@ -66,7 +66,7 @@ FROM
 JOIN
     competitions c ON Ao3R.competitionId = c.id
 WHERE
-    Ao3R.Ao3R > 0 AND Ao3R.R1 IS NOT NULL
+    Ao3R.Ao3R > 0
 ORDER BY
     Ao3R.Ao3R;
 
