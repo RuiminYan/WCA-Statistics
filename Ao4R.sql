@@ -47,7 +47,7 @@ Ao4R AS (
         personId,
         personCountryId,
         CASE
-            WHEN Fi <= 0 THEN -1
+            WHEN R1 <= 0 OR R2 <= 0 OR R3 <= 0 OR Fi <= 0 THEN -1
             ELSE ROUND((R1 + R2 + R3 + Fi) / 4)
         END AS Ao4R,
         R1,
