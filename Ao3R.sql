@@ -66,6 +66,8 @@ FROM
 JOIN
     competitions c ON Ao3R.competitionId = c.id
 WHERE
-    Ao3R.Ao3R > 0
+    Ao3R.Ao3R > 0 AND Ao3R.R1 IS NOT NULL
 ORDER BY
-    Ao3R.Ao3R; -- 按日期排 date;
+    Ao3R.Ao3R;
+
+    -- 按日期排 date;
