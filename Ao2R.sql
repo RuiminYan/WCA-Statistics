@@ -40,7 +40,7 @@ Ao2R AS (
         personId,
         personCountryId,
         CASE
-            WHEN Fi <= 0 THEN -1
+            WHEN R1 <= 0 OR Fi <= 0 THEN -1
             ELSE ROUND((R1 + Fi) / 2)
         END AS Ao2R,
         R1,
