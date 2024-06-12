@@ -22,7 +22,7 @@ temp AS (
         r.personCountryId,
         MAX(CASE WHEN r.roundTypeId IN ('1', 'd') THEN r.average END) AS R1,
         MAX(CASE WHEN r.roundTypeId = 'f' THEN r.average END) AS Fi,
-        COUNT(r.average) AS num_averages
+        COUNT(r.average) AS num_averages AND R1 > 0  -- 排除 R1 为 0 的行
     FROM
         results r
     WHERE
