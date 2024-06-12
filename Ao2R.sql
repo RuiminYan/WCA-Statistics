@@ -22,7 +22,7 @@ temp AS (
         r.personCountryId,
         MAX(CASE WHEN r.roundTypeId IN ('1', 'd') THEN r.average END) AS R1,
         MAX(CASE WHEN r.roundTypeId = 'f' THEN r.average END) AS Fi,
-        COUNT(r.average) AS num_averages AND R1 > 0  -- 排除 R1 为 0 的行
+        COUNT(r.average) AS num_averages
     FROM
         results r
     WHERE
@@ -31,7 +31,7 @@ temp AS (
     GROUP BY
         r.competitionId, r.personName, r.personId, r.personCountryId
     HAVING
-        num_averages = 2
+        num_averages = 2 AND R1 > 0  -- 排除 R1 为 0 的行
 ),
 Ao2R AS (
     SELECT
@@ -63,7 +63,7 @@ FROM
 JOIN
     competitions c ON Ao2R.competitionId = c.id
 WHERE
-    Ao2R.Ao2R > 0 Ao2R.R1 IS NOT NULL
+    Ao2R.Ao2R > 0
 ORDER BY
     Ao2R.Ao2R; 
 
