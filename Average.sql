@@ -141,7 +141,12 @@ ORDER BY
     date;
 
 
--- 333mbo avg. 查询后，自己算平均
+
+
+
+
+
+-- 333mbo mo3. 查询后，自己算平均
 SELECT
     r.personName,
     r.personId,
