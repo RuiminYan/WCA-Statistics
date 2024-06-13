@@ -96,3 +96,47 @@ WHERE
     AND r.value5 = 0
 ORDER BY
     date;
+
+
+
+
+
+
+--- 333mbf mo3
+SELECT
+    r.personName,
+    r.personId,
+    r.personCountryId,
+    -- 计算 DD, TTTTT, MM 的平均值，并将其合并成新的 DDTTTTTMM 格式的 average
+    CONCAT(
+        LPAD(ROUND((CAST(SUBSTRING(r.value1, 1, 2) AS UNSIGNED) + 
+                    CAST(SUBSTRING(r.value2, 1, 2) AS UNSIGNED) + 
+                    CAST(SUBSTRING(r.value3, 1, 2) AS UNSIGNED)) / 3), 2, '0'),
+        LPAD(ROUND((CAST(SUBSTRING(r.value1, 3, 5) AS UNSIGNED) + 
+                    CAST(SUBSTRING(r.value2, 3, 5) AS UNSIGNED) + 
+                    CAST(SUBSTRING(r.value3, 3, 5) AS UNSIGNED)) / 3), 5, '0'),
+        LPAD(ROUND((CAST(SUBSTRING(r.value1, -2) AS UNSIGNED) + 
+                    CAST(SUBSTRING(r.value2, -2) AS UNSIGNED) + 
+                    CAST(SUBSTRING(r.value3, -2) AS UNSIGNED)) / 3), 2, '0')
+    ) AS average,
+    NULL AS nothing,
+    -- 将比赛日期转换为日期格式
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+    c.name,
+    r.value1,
+    r.value2,
+    r.value3
+FROM
+    results r
+JOIN
+    competitions c ON r.competitionId = c.id
+WHERE
+    r.eventId = '333mbf' 
+    AND r.value1 > 0 
+    AND r.value2 > 0 
+    AND r.value3 > 0
+GROUP BY
+    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name,
+    r.value1, r.value2, r.value3
+ORDER BY
+    date;
