@@ -20,9 +20,9 @@ The format "multi" is for old and new multi-blind, encoding the time as well as 
 eventId="333mbf", 均使用333mbf格式
 
 由于历史遗留问题，在eventId="333mbo"中，每一行中value1~3可能既有333mbf还有333mbo的格式，在计算平均的时候，需要先将333mbf转化为333mbo格式，然后再算. 给出完整代码.
-注意：eventId只使用"333mbo"
-333mbf转换为333mbo时需要用的公式：SS = DD - MM, AA = 99 - DD + MM * 2
-333mbo格式为1SSAATTTTT，也就是说共10位，而且最高位一定是1
+注意：eventId只使用"333mbo";
+333mbf转换为333mbo时需要用的公式：SS = DD - MM, AA = 99 - DD + MM * 2;
+333mbo格式为1SSAATTTTT，也就是说共10位，而且最高位一定是1;
 333mbf格式为DDTTTTTMM，也就是说共9位
 
       333mbo: 1SSAATTTTT
