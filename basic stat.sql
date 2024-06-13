@@ -7,7 +7,6 @@ variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting, best_aver
 当至少有2个value≤0时，取worst_counting为NULL； 
 当恰好有1个value≤0时，取worst_counting为5个value中最大的； 
 其他情况，取worst_counting为5个value中第二大的
-
 */
 
 
