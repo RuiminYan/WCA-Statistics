@@ -5,18 +5,52 @@ WITH RankedResults AS (
     SELECT
         r.personName,
         -- 计算 median
-        CASE WHEN 
-            (SELECT ROUND(AVG(val), 2) 
-             FROM (SELECT val 
-                   FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                   ORDER BY val 
-                   LIMIT 3, 1) median) <= 0
-        THEN NULL ELSE 
-            (SELECT ROUND(AVG(val), 2) 
-             FROM (SELECT val 
-                   FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                   ORDER BY val 
-                   LIMIT 3, 1) median)
+        CASE
+            -- 如果5个值都大于0，返回排序后的第3个值
+            WHEN r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0 THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3 UNION ALL 
+                              SELECT r.value4 UNION ALL 
+                              SELECT r.value5) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 2)
+            -- 如果恰好1个值小于等于0，返回排序后的第4个值
+            WHEN (r.value1 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value4 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                 (r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0) THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3 UNION ALL 
+                              SELECT r.value4 UNION ALL 
+                              SELECT r.value5) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 3)
+            -- 如果恰好2个值小于等于0，返回排序后的第5个值
+            WHEN (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value1 <= 0 AND r.value3 <= 0 AND r.value2 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value1 <= 0 AND r.value4 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                 (r.value1 <= 0 AND r.value5 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0) OR
+                 (r.value2 <= 0 AND r.value3 <= 0 AND r.value1 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value2 <= 0 AND r.value4 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                 (r.value2 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value4 > 0) OR
+                 (r.value3 <= 0 AND r.value4 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value5 > 0) OR
+                 (r.value3 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value4 > 0) OR
+                 (r.value4 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0) THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3 UNION ALL 
+                              SELECT r.value4 UNION ALL 
+                              SELECT r.value5) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 4)
+            -- 其他情况，返回 NULL
+            ELSE NULL
         END AS median,
         r.value1,
         r.value2,
@@ -29,18 +63,52 @@ WITH RankedResults AS (
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         r.regionalAverageRecord,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
-            CASE WHEN 
-                (SELECT ROUND(AVG(val), 2) 
-                 FROM (SELECT val 
-                       FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                       ORDER BY val 
-                       LIMIT 3, 1) median) <= 0
-            THEN NULL ELSE 
-                (SELECT ROUND(AVG(val), 2) 
-                 FROM (SELECT val 
-                       FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                       ORDER BY val 
-                       LIMIT 3, 1) median)
+            CASE
+                -- 如果5个值都大于0，返回排序后的第3个值
+                WHEN r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0 THEN
+                    (SELECT val 
+                     FROM (SELECT r.value1 AS val UNION ALL 
+                                  SELECT r.value2 UNION ALL 
+                                  SELECT r.value3 UNION ALL 
+                                  SELECT r.value4 UNION ALL 
+                                  SELECT r.value5) AS sub
+                     ORDER BY val
+                     LIMIT 1 OFFSET 2)
+                -- 如果恰好1个值小于等于0，返回排序后的第4个值
+                WHEN (r.value1 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                     (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                     (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                     (r.value4 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                     (r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0) THEN
+                    (SELECT val 
+                     FROM (SELECT r.value1 AS val UNION ALL 
+                                  SELECT r.value2 UNION ALL 
+                                  SELECT r.value3 UNION ALL 
+                                  SELECT r.value4 UNION ALL 
+                                  SELECT r.value5) AS sub
+                     ORDER BY val
+                     LIMIT 1 OFFSET 3)
+                -- 如果恰好2个值小于等于0，返回排序后的第5个值
+                WHEN (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                     (r.value1 <= 0 AND r.value3 <= 0 AND r.value2 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                     (r.value1 <= 0 AND r.value4 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                     (r.value1 <= 0 AND r.value5 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0) OR
+                     (r.value2 <= 0 AND r.value3 <= 0 AND r.value1 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                     (r.value2 <= 0 AND r.value4 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                     (r.value2 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value4 > 0) OR
+                     (r.value3 <= 0 AND r.value4 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value5 > 0) OR
+                     (r.value3 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value4 > 0) OR
+                     (r.value4 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0) THEN
+                    (SELECT val 
+                     FROM (SELECT r.value1 AS val UNION ALL 
+                                  SELECT r.value2 UNION ALL 
+                                  SELECT r.value3 UNION ALL 
+                                  SELECT r.value4 UNION ALL 
+                                  SELECT r.value5) AS sub
+                     ORDER BY val
+                     LIMIT 1 OFFSET 4)
+                -- 其他情况，返回 NULL
+                ELSE NULL
             END
         ) AS rn
     FROM
@@ -49,18 +117,52 @@ WITH RankedResults AS (
         competitions c ON r.competitionId = c.id
     WHERE
         r.eventId = '333' AND
-        CASE WHEN 
-            (SELECT ROUND(AVG(val), 2) 
-             FROM (SELECT val 
-                   FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                   ORDER BY val 
-                   LIMIT 3, 1) median) <= 0
-        THEN NULL ELSE 
-            (SELECT ROUND(AVG(val), 2) 
-             FROM (SELECT val 
-                   FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5) sub 
-                   ORDER BY val 
-                   LIMIT 3, 1) median)
+        CASE
+            -- 如果5个值都大于0，返回排序后的第3个值
+            WHEN r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0 THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3 UNION ALL 
+                              SELECT r.value4 UNION ALL 
+                              SELECT r.value5) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 2)
+            -- 如果恰好1个值小于等于0，返回排序后的第4个值
+            WHEN (r.value1 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value4 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                 (r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0) THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3 UNION ALL 
+                              SELECT r.value4 UNION ALL 
+                              SELECT r.value5) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 3)
+            -- 如果恰好2个值小于等于0，返回排序后的第5个值
+            WHEN (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value1 <= 0 AND r.value3 <= 0 AND r.value2 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value1 <= 0 AND r.value4 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                 (r.value1 <= 0 AND r.value5 <= 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0) OR
+                 (r.value2 <= 0 AND r.value3 <= 0 AND r.value1 > 0 AND r.value4 > 0 AND r.value5 > 0) OR
+                 (r.value2 <= 0 AND r.value4 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value5 > 0) OR
+                 (r.value2 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value3 > 0 AND r.value4 > 0) OR
+                 (r.value3 <= 0 AND r.value4 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value5 > 0) OR
+                 (r.value3 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value4 > 0) OR
+                 (r.value4 <= 0 AND r.value5 <= 0 AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0) THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3 UNION ALL 
+                              SELECT r.value4 UNION ALL 
+                              SELECT r.value5) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 4)
+            -- 其他情况，返回 NULL
+            ELSE NULL
         END > 0
 )
 SELECT
