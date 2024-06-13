@@ -1,3 +1,24 @@
+-- 333, etc.
+SELECT
+    r.personName,
+    r.personId,
+    r.personCountryId,
+    r.best AS single,
+    r.regionalSingleRecord,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+    c.name
+FROM
+    results r
+JOIN
+    competitions c ON r.competitionId = c.id
+WHERE
+    r.eventId = '333' AND r.regionalSingleRecord = "WR"
+ORDER BY
+    date;
+
+
+
+
 -- 333ft
 SELECT
     r.personName,
