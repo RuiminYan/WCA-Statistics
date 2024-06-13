@@ -26,3 +26,26 @@ HAVING
     single != 9999999999  -- 确保 single 不为极大值，排除无效记录
 ORDER BY
     date;
+
+
+
+
+
+-- 333mbo
+SELECT
+    r.personName,
+    r.personId,
+    r.personCountryId,
+    r.best AS single,
+    r.regionalSingleRecord,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+    c.name
+FROM
+    results r
+JOIN
+    competitions c ON r.competitionId = c.id
+WHERE
+    r.eventId = '333mbo'
+    AND r.regionalSingleRecord = 'WR'
+ORDER BY
+    date DESC;
