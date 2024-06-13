@@ -143,9 +143,8 @@ FirstRound2 AS (
 )
 
 SELECT
+    NULL AS flag,
     fr.personName,
-    fr.personId,
-    fr.personCountryId,
     fr.firstAvg,
     fr.regionalAverageRecord,
     fc.earliest_date AS date,
@@ -155,6 +154,8 @@ SELECT
     fr.value3,
     fr.value4,
     fr.value5
+    fr.personId,
+    fr.personCountryId
 FROM
     FirstComp fc
 JOIN
@@ -260,9 +261,8 @@ average_values AS (
         ) AS combined_values
 )
 SELECT
+    NULL AS flag,
     personName,
-    personId,
-    personCountryId,
     CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstAvg,
     regionalAverageRecord,
     date,
@@ -270,6 +270,8 @@ SELECT
     value1,
     value2,
     value3
+    personId,
+    personCountryId
 FROM
     average_values
 ORDER BY
@@ -400,9 +402,8 @@ average_values AS (
         values_with_parts
 )
 SELECT
+    NULL AS flag,
     personName,
-    personId,
-    personCountryId,
     CONCAT('1', LPAD(avg_ss, 2, '0'), LPAD(avg_aa, 2, '0'), LPAD(avg_ttttt, 5, '0')) AS firstAvg,
     regionalAverageRecord,
     date,
@@ -410,6 +411,8 @@ SELECT
     value1,
     value2,
     value3
+    personId,
+    personCountryId
 FROM
     average_values
 ORDER BY
