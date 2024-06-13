@@ -21,7 +21,7 @@ JOIN
     competitions c ON r.competitionId = c.id
 WHERE
     r.eventId = '333ft'
-    AND (r.value1 > 0 OR r.value2 > 0 OR r.value3 > 0)  -- 确保至少一个 value 大于0
+    AND (r.value1 > 0 OR r.value2 > 0 OR r.value3 > 0 OR r.value4 > 0 OR r.value5 > 0)  -- 确保至少一个 value 大于0
 HAVING
     single != 9999999999  -- 确保 single 不为极大值，排除无效记录
 ORDER BY
