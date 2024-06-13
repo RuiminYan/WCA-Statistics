@@ -24,7 +24,7 @@ WITH RankedResults AS (
     JOIN
         competitions c ON r.competitionId = c.id
     WHERE
-        r.eventId = '777' AND r.best > 0
+        r.eventId = '333' AND r.best > 0
 )
 SELECT
     personName,
