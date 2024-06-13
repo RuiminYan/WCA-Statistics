@@ -48,4 +48,4 @@ WHERE
     r.eventId = '333mbo'
     AND r.regionalSingleRecord = 'WR'
 ORDER BY
-    date DESC;
+    date;
