@@ -4,7 +4,7 @@ SELECT
     r.personId,
     r.personCountryId,
     r.average AS average,
-    r.regionalSingleRecord,
+    r.regionalAverageRecord,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
 	r.value1,
