@@ -58,9 +58,8 @@ Ao4R AS (
         temp
 )
 SELECT
-    Ao4R.personName,
-    Ao4R.personId,
-    Ao4R.personCountryId,
+    NULL AS flag,
+	Ao4R.personName,
     Ao4R.Ao4R,
     NULL as nothing,
 	STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
@@ -68,7 +67,10 @@ SELECT
     Ao4R.R1 AS value1,
     Ao4R.R2 AS value2,
     Ao4R.R3 AS value3,
-    Ao4R.Fi AS value4
+    Ao4R.Fi AS value4,
+	NULL AS nothing,
+    Ao4R.personId,
+    Ao4R.personCountryId
 FROM
     Ao4R
 JOIN
@@ -76,5 +78,5 @@ JOIN
 WHERE
     Ao4R.Ao4R > 0
 ORDER BY
-	Ao3R.Ao3R;
+	Ao4R.Ao4R;
 	--- 按日期 date;
