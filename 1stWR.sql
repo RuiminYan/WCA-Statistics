@@ -50,13 +50,14 @@ FirstRound2 AS (
 )
 
 SELECT
+    NULL AS flag,
     fr.personName,
-    fr.personId,
-    fr.personCountryId,
     fr.firstSingle,
     fr.regionalSingleRecord,
     fc.earliest_date AS date,
-    fr.name
+    fr.name,
+    fr.personId,
+    fr.personCountryId,
 FROM
     FirstComp fc
 JOIN
@@ -153,7 +154,7 @@ SELECT
     fr.value2,
     fr.value3,
     fr.value4,
-    fr.value5
+    fr.value5,
     fr.personId,
     fr.personCountryId
 FROM
@@ -269,7 +270,7 @@ SELECT
     name,
     value1,
     value2,
-    value3
+    value3,
     personId,
     personCountryId
 FROM
