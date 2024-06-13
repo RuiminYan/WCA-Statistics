@@ -16,8 +16,6 @@ variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting, best_aver
 CREATE TEMPORARY TABLE TempResults AS
 SELECT 
   r.personName,
-  r.personId,
-  r.personCountryId,
   r.value1, 
   r.value2, 
   r.value3, 
@@ -27,7 +25,9 @@ SELECT
   r.average,
   r.regionalSingleRecord,
   r.regionalAverageRecord,
-  r.competitionId
+  r.competitionId,
+  r.personId,
+  r.personCountryId
 FROM 
   Results r
 WHERE 
