@@ -17,6 +17,7 @@ eventId取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, 
 
 The format "multi" is for old and new multi-blind, encoding the time as well as the number of cubes attempted and solved. This is a decimal value, which can be interpreted ("decoded") as follows:
 
+eventId="333mbf", 均使用333mbf格式
 
 由于历史遗留问题，在eventId="333mbo"中，每一行中value1~3可能既有333mbf还有333mbo的格式，在计算平均的时候，需要先将333mbf转化为333mbo格式，然后再算. 给出完整代码.
 注意：eventId只使用"333mbo"
