@@ -1,6 +1,6 @@
 /*
 替换best为[目标函数]，确保所有涉及 best 的地方都使用新的[目标函数]计算逻辑;
-将NULL AS record换成regionalSingleRecord或regionalAverageRecord.
+将regionalAverageRecord换成regionalSingleRecord.
 */
 
 -- 第一步：删除并创建 FilteredResults 表
