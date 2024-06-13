@@ -1,5 +1,6 @@
 /* 
-best, average, variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting
+best, average, 
+variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting
 
 当恰好有n个value≤0时，将这n个值排除掉，然后在剩下的值中取best_counting为5个value中第二小的； 
 其他情况，取best_counting为5个value中第二小的
