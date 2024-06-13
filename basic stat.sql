@@ -116,23 +116,27 @@ END AS median,
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 THEN NULL
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - LEAST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
   END AS wpa,
+
+  
   -- best_counting
+  -- 如果value中有非正数，则先将这些非正数取为9999999999. 然后计算5个value中第二大的数作为best_counting
   CASE
-    WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN 
-      (SELECT MIN(val) FROM (SELECT tr.value3 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
-    WHEN tr.value1 <= 0 AND tr.value3 <= 0 THEN 
-      (SELECT MIN(val) FROM (SELECT tr.value2 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
-    WHEN tr.value1 <= 0 AND tr.value4 <= 0 THEN 
-      (SELECT MIN(val) FROM (SELECT tr.value2 AS val UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value5) sub)
-    WHEN tr.value2 <= 0 AND tr.value3 <= 0 THEN 
-      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
-    WHEN tr.value2 <= 0 AND tr.value4 <= 0 THEN 
-      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value5) sub)
-    WHEN tr.value3 <= 0 AND tr.value4 <= 0 THEN 
-      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value5) sub)
-    ELSE 
-      (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val LIMIT 1, 1) sub)
+      WHEN tr.value1 <= 0 THEN tr.value1 := 9999999999
+      WHEN tr.value2 <= 0 THEN tr.value2 := 9999999999
+      WHEN tr.value3 <= 0 THEN tr.value3 := 9999999999
+      WHEN tr.value4 <= 0 THEN tr.value4 := 9999999999
+      WHEN tr.value5 <= 0 THEN tr.value5 := 9999999999
+      ELSE GREATEST(
+        LEAST(tr.value1, tr.value2, tr.value3, tr.value4),
+        LEAST(tr.value1, tr.value2, tr.value3, tr.value5),
+        LEAST(tr.value1, tr.value2, tr.value4, tr.value5),
+        LEAST(tr.value1, tr.value3, tr.value4, tr.value5),
+        LEAST(tr.value2, tr.value3, tr.value4, tr.value5)
+        )
   END AS best_counting,
+    
+
+  
   -- worst_counting
   CASE
     WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN NULL
@@ -148,7 +152,9 @@ END AS median,
     ELSE 
       (SELECT MAX(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val DESC LIMIT 1, 1) sub)
   END AS worst_counting,
-  -- best / average
+
+  
+  -- best_average_ratio
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL -- 当5个value至少有一个小于等于0时，取best_average_ratio为NULL
     WHEN tr.average = 0 THEN NULL 
