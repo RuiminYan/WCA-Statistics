@@ -119,41 +119,45 @@ END AS median,
 
   
   -- best_counting
-  -- 如果value中有非正数，则先将这些非正数取为9999999999. 然后计算5个value中第二大的数作为best_counting
-CASE
-    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN
-        GREATEST(
-            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4)),
-            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value5 <= 0, 9999999999, r.value5)),
-            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
-            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
-            LEAST(IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5))
-        )
-    ELSE GREATEST(
-        LEAST(r.value1, r.value2, r.value3, r.value4),
-        LEAST(r.value1, r.value2, r.value3, r.value5),
-        LEAST(r.value1, r.value2, r.value4, r.value5),
-        LEAST(r.value1, r.value3, r.value4, r.value5),
-        LEAST(r.value2, r.value3, r.value4, r.value5)
-    )
-END AS best_counting,
+  -- 如果value中有非正数，则先将这些非正数取为9999999999. 然后计算5个value中第二小的数作为best_counting
+  CASE
+      WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN
+          GREATEST(
+              LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4)),
+              LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value5 <= 0, 9999999999, r.value5)),
+              LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
+              LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
+              LEAST(IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5))
+          )
+      ELSE GREATEST(
+          LEAST(r.value1, r.value2, r.value3, r.value4),
+          LEAST(r.value1, r.value2, r.value3, r.value5),
+          LEAST(r.value1, r.value2, r.value4, r.value5),
+          LEAST(r.value1, r.value3, r.value4, r.value5),
+          LEAST(r.value2, r.value3, r.value4, r.value5)
+      )
+  END AS best_counting,
     
 
   
   -- worst_counting
+  -- 如果value中有非正数，则先将这些非正数取为9999999999. 然后计算5个value中第二大的数作为worst_counting
   CASE
-    WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN NULL
-    WHEN tr.value1 <= 0 AND tr.value3 <= 0 THEN NULL
-    WHEN tr.value1 <= 0 AND tr.value4 <= 0 THEN NULL
-    WHEN tr.value2 <= 0 AND tr.value3 <= 0 THEN NULL
-    WHEN tr.value2 <= 0 AND tr.value4 <= 0 THEN NULL
-    WHEN tr.value3 <= 0 AND tr.value4 <= 0 THEN NULL
-    WHEN tr.value1 <= 0 THEN GREATEST(tr.value2, tr.value3, tr.value4, tr.value5)
-    WHEN tr.value2 <= 0 THEN GREATEST(tr.value1, tr.value3, tr.value4, tr.value5)
-    WHEN tr.value3 <= 0 THEN GREATEST(tr.value1, tr.value2, tr.value4, tr.value5)
-    WHEN tr.value4 <= 0 THEN GREATEST(tr.value1, tr.value2, tr.value3, tr.value5)
-    ELSE 
-      (SELECT MAX(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val DESC LIMIT 1, 1) sub)
+      WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN
+          LEAST(
+              GREATEST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4)),
+              GREATEST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value5 <= 0, 9999999999, r.value5)),
+              GREATEST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
+              GREATEST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
+              GREATEST(IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5))
+          )
+      ELSE LEAST(
+          GREATEST(r.value1, r.value2, r.value3, r.value4),
+          GREATEST(r.value1, r.value2, r.value3, r.value5),
+          GREATEST(r.value1, r.value2, r.value4, r.value5),
+          GREATEST(r.value1, r.value3, r.value4, r.value5),
+          GREATEST(r.value2, r.value3, r.value4, r.value5)
+      )
   END AS worst_counting,
 
   
