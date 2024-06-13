@@ -41,14 +41,14 @@ SELECT
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 + tr.value5) / 5, 0)
   END AS mo5,
-  -- Calculate variance
+  -- variance
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
     ELSE ROUND((POW(tr.value1 - tr.average, 2) + POW(tr.value2 - tr.average, 2) + POW(tr.value3 - tr.average, 2) + POW(tr.value4 - tr.average, 2) + POW(tr.value5 - tr.average, 2)) / 5, 0)
   END AS variance,
-  -- Calculate worst
+  -- worst
   CASE WHEN LEAST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) END AS worst,  
-  -- Calculate median
+  -- median
   CASE WHEN 
     (SELECT ROUND(AVG(val), 2) 
      FROM (SELECT val 
@@ -62,7 +62,7 @@ SELECT
            ORDER BY val 
            LIMIT 3, 1) median)
   END AS median,
-  -- Calculate bpa and wpa
+  -- bpa
   CASE 
     WHEN (tr.value1 <= 0 AND tr.value2 <= 0) OR (tr.value1 <= 0 AND tr.value3 <= 0) OR (tr.value1 <= 0 AND tr.value4 <= 0) OR (tr.value2 <= 0 AND tr.value3 <= 0) OR (tr.value2 <= 0 AND tr.value4 <= 0) OR (tr.value3 <= 0 AND tr.value4 <= 0) THEN NULL
     WHEN tr.value1 <= 0 THEN ROUND((tr.value2 + tr.value3 + tr.value4) / 3, 0) 
@@ -71,11 +71,12 @@ SELECT
     WHEN tr.value4 <= 0 THEN ROUND((tr.value1 + tr.value2 + tr.value3) / 3, 0)
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - GREATEST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
   END AS bpa,
+  -- wpa
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 THEN NULL
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - LEAST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
   END AS wpa,
-  -- Calculate best_counting
+  -- best_counting
   CASE
     WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN 
       (SELECT MIN(val) FROM (SELECT tr.value3 AS val UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub)
@@ -92,7 +93,7 @@ SELECT
     ELSE 
       (SELECT MIN(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val LIMIT 1, 1) sub)
   END AS best_counting,
-  -- Calculate worst_counting
+  -- worst_counting
   CASE
     WHEN tr.value1 <= 0 AND tr.value2 <= 0 THEN NULL
     WHEN tr.value1 <= 0 AND tr.value3 <= 0 THEN NULL
@@ -107,7 +108,7 @@ SELECT
     ELSE 
       (SELECT MAX(val) FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5 ORDER BY val DESC LIMIT 1, 1) sub)
   END AS worst_counting,
-  -- Calculate best / average
+  -- best / average
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL -- 当5个value至少有一个小于等于0时，取best_average_ratio为NULL
     WHEN tr.average = 0 THEN NULL 
