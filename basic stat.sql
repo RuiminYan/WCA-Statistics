@@ -120,20 +120,23 @@ END AS median,
   
   -- best_counting
   -- 如果value中有非正数，则先将这些非正数取为9999999999. 然后计算5个value中第二大的数作为best_counting
-  CASE
-      WHEN tr.value1 <= 0 THEN tr.value1 := 9999999999
-      WHEN tr.value2 <= 0 THEN tr.value2 := 9999999999
-      WHEN tr.value3 <= 0 THEN tr.value3 := 9999999999
-      WHEN tr.value4 <= 0 THEN tr.value4 := 9999999999
-      WHEN tr.value5 <= 0 THEN tr.value5 := 9999999999
-      ELSE GREATEST(
-        LEAST(tr.value1, tr.value2, tr.value3, tr.value4),
-        LEAST(tr.value1, tr.value2, tr.value3, tr.value5),
-        LEAST(tr.value1, tr.value2, tr.value4, tr.value5),
-        LEAST(tr.value1, tr.value3, tr.value4, tr.value5),
-        LEAST(tr.value2, tr.value3, tr.value4, tr.value5)
+CASE
+    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN
+        GREATEST(
+            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4)),
+            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value5 <= 0, 9999999999, r.value5)),
+            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
+            LEAST(IF(r.value1 <= 0, 9999999999, r.value1), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5)),
+            LEAST(IF(r.value2 <= 0, 9999999999, r.value2), IF(r.value3 <= 0, 9999999999, r.value3), IF(r.value4 <= 0, 9999999999, r.value4), IF(r.value5 <= 0, 9999999999, r.value5))
         )
-  END AS best_counting,
+    ELSE GREATEST(
+        LEAST(r.value1, r.value2, r.value3, r.value4),
+        LEAST(r.value1, r.value2, r.value3, r.value5),
+        LEAST(r.value1, r.value2, r.value4, r.value5),
+        LEAST(r.value1, r.value3, r.value4, r.value5),
+        LEAST(r.value2, r.value3, r.value4, r.value5)
+    )
+END AS best_counting,
     
 
   
