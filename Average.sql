@@ -139,3 +139,25 @@ GROUP BY
     r.value1, r.value2, r.value3
 ORDER BY
     date;
+
+
+-- 333mbo avg. 查询后，自己算平均
+SELECT
+    r.personName,
+    r.personId,
+    r.personCountryId,
+    r.best AS single,
+    r.regionalSingleRecord,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+    c.name,
+    r.value1,
+    r.value2,
+    r.value3
+FROM
+    results r
+JOIN
+    competitions c ON r.competitionId = c.id
+WHERE
+    r.eventId = '333mbo' AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 
+ORDER BY
+    date;
