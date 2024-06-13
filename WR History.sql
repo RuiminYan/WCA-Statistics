@@ -78,4 +78,4 @@ FROM (
 WHERE
     best <= current_min_best
 ORDER BY
-    date DESC;
+    date;
