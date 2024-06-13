@@ -16,16 +16,16 @@ variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting, best_aver
 CREATE TEMPORARY TABLE TempResults AS
 SELECT 
   r.personName,
-  r.value1, 
-  r.value2, 
-  r.value3, 
-  r.value4, 
-  r.value5,
   r.best,
   r.average,
   r.regionalSingleRecord,
   r.regionalAverageRecord,
   r.competitionId,
+  r.value1, 
+  r.value2, 
+  r.value3, 
+  r.value4, 
+  r.value5,
   r.personId,
   r.personCountryId
 FROM 
@@ -37,19 +37,17 @@ WHERE
 SELECT
   NULL AS flag,
   tr.personName,
+  tr.best,
+  tr.average,
+  tr.regionalSingleRecord,
+  tr.regionalAverageRecord,
+  STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+  c.name,
   tr.value1, 
   tr.value2, 
   tr.value3, 
   tr.value4, 
   tr.value5,
-  tr.best,
-  tr.average,
-  tr.regionalSingleRecord,
-  tr.regionalAverageRecord,
-  c.year,
-  c.month,
-  c.day,
-  c.name,
   tr.personId,
   tr.personCountryId,
   -- Calculate mo5 as the average of the 5 values, set to NULL if any value is <= 0
@@ -138,6 +136,7 @@ ORDER BY
 
 -- Drop the temporary table
 DROP TEMPORARY TABLE IF EXISTS TempResults;
+
 
 
 
