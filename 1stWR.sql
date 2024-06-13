@@ -56,8 +56,13 @@ SELECT
     fr.regionalSingleRecord,
     fc.earliest_date AS date,
     fr.name,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
     fr.personId,
-    fr.personCountryId,
+    fr.personCountryId
 FROM
     FirstComp fc
 JOIN
@@ -271,6 +276,8 @@ SELECT
     value1,
     value2,
     value3,
+    NULL AS nothing,
+    NULL AS nothing,
     personId,
     personCountryId
 FROM
@@ -411,7 +418,9 @@ SELECT
     name,
     value1,
     value2,
-    value3
+    value3,
+    NULL AS nothing,
+    NULL AS nothing,
     personId,
     personCountryId
 FROM
