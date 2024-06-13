@@ -132,7 +132,7 @@ FROM
 JOIN
   Competitions c ON tr.competitionId = c.id
 ORDER BY
-  best_average_ratio IS NULL, best_average_ratio;
+  date;
 
 -- Drop the temporary table
 DROP TEMPORARY TABLE IF EXISTS TempResults;
@@ -141,6 +141,10 @@ DROP TEMPORARY TABLE IF EXISTS TempResults;
 
 
 /*
+ORDER BY
+  best_average_ratio IS NULL, best_average_ratio;
+
+ORDER BY
 WHERE best > 0
 ORDER BY
   best;
