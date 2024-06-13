@@ -47,20 +47,61 @@ SELECT
   END AS variance,
   -- worst
   CASE WHEN LEAST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) END AS worst,  
+  
+  
   -- median
-  CASE WHEN 
-    (SELECT ROUND(AVG(val), 2) 
-     FROM (SELECT val 
-           FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub 
-           ORDER BY val 
-           LIMIT 3, 1) median) <= 0
-  THEN NULL ELSE 
-    (SELECT ROUND(AVG(val), 2) 
-     FROM (SELECT val 
-           FROM (SELECT tr.value1 AS val UNION ALL SELECT tr.value2 UNION ALL SELECT tr.value3 UNION ALL SELECT tr.value4 UNION ALL SELECT tr.value5) sub 
-           ORDER BY val 
-           LIMIT 3, 1) median)
-  END AS median,
+  CASE
+  -- 如果5个值都大于0，返回排序后的第3个值
+  WHEN tr.value1 > 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value4 > 0 AND tr.value5 > 0 THEN
+    (SELECT val 
+     FROM (SELECT tr.value1 AS val UNION ALL 
+                  SELECT tr.value2 UNION ALL 
+                  SELECT tr.value3 UNION ALL 
+                  SELECT tr.value4 UNION ALL 
+                  SELECT tr.value5) AS sub
+     ORDER BY val
+     LIMIT 1 OFFSET 2)
+
+  -- 如果恰好1个值小于等于0，返回排序后的第4个值
+  WHEN (tr.value1 <= 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value4 > 0 AND tr.value5 > 0) OR
+       (tr.value2 <= 0 AND tr.value1 > 0 AND tr.value3 > 0 AND tr.value4 > 0 AND tr.value5 > 0) OR
+       (tr.value3 <= 0 AND tr.value1 > 0 AND tr.value2 > 0 AND tr.value4 > 0 AND tr.value5 > 0) OR
+       (tr.value4 <= 0 AND tr.value1 > 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value5 > 0) OR
+       (tr.value5 <= 0 AND tr.value1 > 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value4 > 0) THEN
+    (SELECT val 
+     FROM (SELECT tr.value1 AS val UNION ALL 
+                  SELECT tr.value2 UNION ALL 
+                  SELECT tr.value3 UNION ALL 
+                  SELECT tr.value4 UNION ALL 
+                  SELECT tr.value5) AS sub
+     ORDER BY val
+     LIMIT 1 OFFSET 3)
+
+  -- 如果恰好2个值小于等于0，返回排序后的第5个值
+  WHEN (tr.value1 <= 0 AND tr.value2 <= 0 AND tr.value3 > 0 AND tr.value4 > 0 AND tr.value5 > 0) OR
+       (tr.value1 <= 0 AND tr.value3 <= 0 AND tr.value2 > 0 AND tr.value4 > 0 AND tr.value5 > 0) OR
+       (tr.value1 <= 0 AND tr.value4 <= 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value5 > 0) OR
+       (tr.value1 <= 0 AND tr.value5 <= 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value4 > 0) OR
+       (tr.value2 <= 0 AND tr.value3 <= 0 AND tr.value1 > 0 AND tr.value4 > 0 AND tr.value5 > 0) OR
+       (tr.value2 <= 0 AND tr.value4 <= 0 AND tr.value1 > 0 AND tr.value3 > 0 AND tr.value5 > 0) OR
+       (tr.value2 <= 0 AND tr.value5 <= 0 AND tr.value1 > 0 AND tr.value3 > 0 AND tr.value4 > 0) OR
+       (tr.value3 <= 0 AND tr.value4 <= 0 AND tr.value1 > 0 AND tr.value2 > 0 AND tr.value5 > 0) OR
+       (tr.value3 <= 0 AND tr.value5 <= 0 AND tr.value1 > 0 AND tr.value2 > 0 AND tr.value4 > 0) OR
+       (tr.value4 <= 0 AND tr.value5 <= 0 AND tr.value1 > 0 AND tr.value2 > 0 AND tr.value3 > 0) THEN
+    (SELECT val 
+     FROM (SELECT tr.value1 AS val UNION ALL 
+                  SELECT tr.value2 UNION ALL 
+                  SELECT tr.value3 UNION ALL 
+                  SELECT tr.value4 UNION ALL 
+                  SELECT tr.value5) AS sub
+     ORDER BY val
+     LIMIT 1 OFFSET 4)
+
+  -- 其他情况，返回NULL
+  ELSE NULL
+END AS median,
+
+  
   -- bpa
   CASE 
     WHEN (tr.value1 <= 0 AND tr.value2 <= 0) OR (tr.value1 <= 0 AND tr.value3 <= 0) OR (tr.value1 <= 0 AND tr.value4 <= 0) OR (tr.value2 <= 0 AND tr.value3 <= 0) OR (tr.value2 <= 0 AND tr.value4 <= 0) OR (tr.value3 <= 0 AND tr.value4 <= 0) THEN NULL
