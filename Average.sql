@@ -1,3 +1,27 @@
+-- WR
+SELECT
+    r.personName,
+    r.personId,
+    r.personCountryId,
+    r.average AS average,
+    r.regionalSingleRecord,
+    STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+    c.name,
+	r.value1,
+	r.value2,
+	r.value3,
+	r.value4,
+	r.value5
+FROM
+    results r
+JOIN
+    competitions c ON r.competitionId = c.id
+WHERE
+    r.eventId = '333ft' AND r.regionalAverageRecord = "WR"
+ORDER BY
+    date;
+
+
 -- magic, mmagic, 333ft ao5
 SELECT
     r.personName,
