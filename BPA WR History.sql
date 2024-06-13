@@ -22,7 +22,7 @@ WITH RankedResults AS (
             WHEN r.value4 <= 0 THEN ROUND((r.value1 + r.value2 + r.value3) / 3, 0)
             ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 - GREATEST(r.value1, r.value2, r.value3, r.value4)) / 3, 0)
         END AS bpa,
-        r.regionalAverageRecord,  -- 获取 regionalAverageRecord
+        r.regionalAverageRecord,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
             CASE 
                 WHEN (r.value1 <= 0 AND r.value2 <= 0) OR (r.value1 <= 0 AND r.value3 <= 0) OR (r.value1 <= 0 AND r.value4 <= 0) OR (r.value2 <= 0 AND r.value3 <= 0) OR (r.value2 <= 0 AND r.value4 <= 0) OR (r.value3 <= 0 AND r.value4 <= 0) THEN NULL
@@ -60,7 +60,7 @@ SELECT
     value5,
     personId,
     personCountryId,
-    regionalAverageRecord  -- 在最终选择中包括 regionalAverageRecord
+    regionalAverageRecord
 FROM
     RankedResults
 WHERE
@@ -73,7 +73,7 @@ SELECT
     NULL AS flag,
     personName,
     bpa,
-    regionalAverageRecord,  -- 包括 regionalAverageRecord
+    regionalAverageRecord,
     date,
     name,
     value1,
@@ -96,7 +96,7 @@ FROM (
         value5,
         personId,
         personCountryId,
-        regionalAverageRecord,  -- 包括 regionalAverageRecord
+        regionalAverageRecord,
         @min_bpa := LEAST(@min_bpa, bpa) AS current_min_bpa
     FROM
         FilteredResults
