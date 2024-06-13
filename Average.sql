@@ -1,8 +1,7 @@
 -- WR
 SELECT
-    r.personName,
-    r.personId,
-    r.personCountryId,
+    NULL AS flag,
+	r.personName,
     r.average AS average,
     r.regionalAverageRecord,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
@@ -11,7 +10,9 @@ SELECT
 	r.value2,
 	r.value3,
 	r.value4,
-	r.value5
+	r.value5,
+	    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
@@ -24,9 +25,8 @@ ORDER BY
 
 -- magic, mmagic, 333ft ao5   有错误，不再使用
 SELECT
-    r.personName,
-    r.personId,
-    r.personCountryId,
+    NULL AS flag,
+	r.personName,
     -- 计算去掉最大值和最小值后的平均值
     CASE -- 如果value中至少有2个≤0，则average= -1
         WHEN (
@@ -54,7 +54,9 @@ SELECT
     r.value2,
     r.value3,
     r.value4,
-    r.value5
+    r.value5,
+	    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
@@ -96,16 +98,19 @@ ORDER BY
 
 -- 333ft mo3     有错误，不再使用
 SELECT
-    r.personName,
-    r.personId,
-    r.personCountryId,
+    NULL AS flag,
+	r.personName,
     ROUND((r.value1 + r.value2 + r.value3) / 3, 0) AS average,
     NULL AS nothing,
 	STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
     r.value1,
     r.value2,
-    r.value3
+    r.value3,
+	NULL AS nothing,
+	NULL AS nothing,
+	    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
