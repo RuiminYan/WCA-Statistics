@@ -46,7 +46,7 @@ SELECT
     NULL AS flag,
     personName,
     best,
-    NULL AS nothing,
+    NULL AS record,
     date,
     name,
     value1,
