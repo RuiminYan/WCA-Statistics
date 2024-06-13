@@ -1,12 +1,18 @@
 -- WR
 SELECT
+    NULL AS flag,
     r.personName,
-    r.personId,
-    r.personCountryId,
     r.best AS single,
     r.regionalSingleRecord,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-    c.name
+    c.name,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
@@ -21,9 +27,8 @@ ORDER BY
 
 -- 333ft
 SELECT
+    NULL AS flag,
     r.personName,
-    r.personId,
-    r.personCountryId,
     -- 计算 value1, value2, value3 中最小的正数作为 single
     LEAST(
         CASE WHEN r.value1 > 0 THEN r.value1 ELSE 9999999999 END,
@@ -35,7 +40,9 @@ SELECT
     NULL AS nothing,
     -- 将比赛日期转换为日期格式
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-    c.name
+    c.name,
+    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
@@ -54,13 +61,14 @@ ORDER BY
 
 -- 333mbo
 SELECT
+    NULL AS flag,
     r.personName,
-    r.personId,
-    r.personCountryId,
     r.best AS single,
     r.regionalSingleRecord,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-    c.name
+    c.name,
+    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
