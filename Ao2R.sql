@@ -49,15 +49,19 @@ Ao2R AS (
         temp
 )
 SELECT
+    NULL AS flag,
     Ao2R.personName,
-    Ao2R.personId,
-    Ao2R.personCountryId,
     Ao2R.Ao2R,
     NULL as nothing,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
     Ao2R.R1 AS value1,
-    Ao2R.Fi AS value2
+    Ao2R.Fi AS value2,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    Ao2R.personId,
+    Ao2R.personCountryId
 FROM
     Ao2R
 JOIN
