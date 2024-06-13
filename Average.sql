@@ -22,7 +22,7 @@ ORDER BY
     date;
 
 
--- magic, mmagic, 333ft ao5
+-- magic, mmagic, 333ft ao5   有错误，不再使用
 SELECT
     r.personName,
     r.personId,
@@ -94,7 +94,7 @@ ORDER BY
 
 
 
--- 333ft mo3
+-- 333ft mo3     有错误，不再使用
 SELECT
     r.personName,
     r.personId,
