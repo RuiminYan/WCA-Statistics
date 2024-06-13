@@ -22,13 +22,19 @@ WITH first_competition_dates AS (
 
 -- 获取首次参加比赛的第一轮成绩
 SELECT
+    NULL AS flag,
     r.personName,
-    r.personId,
-    r.personCountryId,
     MIN(r.best) AS firstCompSingle,
     r.regionalSingleRecord,
     CONCAT(c.year, '-', LPAD(c.month, 2, '0'), '-', LPAD(c.day, 2, '0')) AS date,
-    c.name
+    c.name,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+    NULL AS nothing,
+        r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
@@ -73,9 +79,8 @@ WITH first_competition_dates AS (
 )
 
 SELECT
+    NULL AS flag,
     r.personName,
-    r.personId,
-    r.personCountryId,
     MIN(r.average) AS firstCompAvg,
     r.regionalAverageRecord,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
@@ -84,7 +89,9 @@ SELECT
     r.value2,
     r.value3,
     r.value4,
-    r.value5
+    r.value5,
+    r.personId,
+    r.personCountryId
 FROM
     results r
 JOIN
@@ -165,16 +172,19 @@ average_values AS (
         values_with_parts
 )
 SELECT
+    NULL AS flag,
     personName,
-    personId,
-    personCountryId,
     CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstCompAvg,
     NULL AS nothing,
     STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date,
     name,
     value1,
     value2,
-    value3
+    value3,
+    NULL AS nothing,
+    NULL AS nothing,
+        personId,
+    personCountryId
 FROM
     average_values
 ORDER BY
@@ -268,16 +278,19 @@ average_values AS (
         values_with_parts
 )
 SELECT
+    NULL AS flag,
     personName,
-    personId,
-    personCountryId,
     CONCAT('1', LPAD(avg_ss, 2, '0'), LPAD(avg_aa, 2, '0'), LPAD(avg_ttttt, 5, '0')) AS firstCompAvg,
     NULL AS nothing,
     STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date,
     name,
     value1,
     value2,
-    value3
+    value3,
+    NULL AS nothing,
+    personId,
+    personCountryId,
+    NULL AS nothing
 FROM
     average_values
 ORDER BY
