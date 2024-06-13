@@ -1,5 +1,4 @@
 -- magic, mmagic, 333ft ao5
--- 计算并过滤 magic event 中的平均成绩
 SELECT
     r.personName,
     r.personId,
