@@ -36,7 +36,7 @@ WHERE
 SELECT
   NULL AS flag,
   tr.personName,
-  -- Calculate mo5 as the average of the 5 values, set to NULL if any value is <= 0
+  -- mo5, set to NULL if any value is <= 0
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 + tr.value5) / 5, 0)
