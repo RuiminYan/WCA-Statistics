@@ -1,4 +1,4 @@
--- magic, mmagic
+-- magic, mmagic, 333ft ao5
 -- 计算并过滤 magic event 中的平均成绩
 SELECT
     r.personName,
@@ -71,7 +71,7 @@ ORDER BY
 
 
 
--- 333mbf avg
+-- 333ft mo3
 SELECT
     r.personName,
     r.personId,
@@ -88,9 +88,11 @@ FROM
 JOIN
     competitions c ON r.competitionId = c.id
 WHERE
-    r.eventId = 'magic' 
+    r.eventId = '333ft' 
     AND r.value1 > 0 
     AND r.value2 > 0 
     AND r.value3 > 0
+    AND r.value4 = 0
+    AND r.value5 = 0
 ORDER BY
     date;
