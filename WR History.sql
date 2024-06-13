@@ -19,6 +19,7 @@ WITH RankedResults AS (
         r.personCountryId,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+        r.regionalAverageRecord,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY r.best) AS rn
     FROM
         results r
@@ -30,6 +31,7 @@ WITH RankedResults AS (
 SELECT
     personName,
     best,
+    regionalAverageRecord,
     date,
     name,
     value1,
@@ -51,7 +53,7 @@ SELECT
     NULL AS flag,
     personName,
     best,
-    NULL AS record,
+    regionalAverageRecord,
     date,
     name,
     value1,
@@ -65,6 +67,7 @@ FROM (
     SELECT
         personName,
         best,
+        regionalAverageRecord,
         date,
         name,
         value1,
