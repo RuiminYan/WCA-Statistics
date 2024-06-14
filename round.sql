@@ -20,7 +20,7 @@ JOIN
     competitions c ON rc.competitionId = c.id
 ORDER BY
     rc.roundCount DESC
-
+LIMIT 100
 
 
     
