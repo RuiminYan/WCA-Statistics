@@ -16,7 +16,6 @@ SELECT
   r.personName,
   r.best,
   r.average,
-  r.regionalSingleRecord,
   r.regionalAverageRecord,
   r.competitionId,
   r.value1, 
@@ -40,11 +39,15 @@ SELECT
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 + tr.value5) / 5, 0)
   END AS mo5,
+
+  
   -- variance
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
     ELSE ROUND((POW(tr.value1 - tr.average, 2) + POW(tr.value2 - tr.average, 2) + POW(tr.value3 - tr.average, 2) + POW(tr.value4 - tr.average, 2) + POW(tr.value5 - tr.average, 2)) / 5, 0)
   END AS variance,
+
+  
   -- worst
   CASE WHEN LEAST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) END AS worst,  
   
@@ -161,13 +164,15 @@ END AS median,
   END AS worst_counting,
 
   
-  -- best_average_ratio
+  -- best_average_ratio 暂时不用
+  -- 当5个value至少有一个≤0时，取best_average_ratio为NULL
   CASE 
-    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL -- 当5个value至少有一个小于等于0时，取best_average_ratio为NULL
+    WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
     WHEN tr.average = 0 THEN NULL 
     ELSE ROUND(tr.best / tr.average, 2) 
   END AS best_average_ratio,
-  tr.regionalSingleRecord,
+
+  
   tr.regionalAverageRecord,
   STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
   c.name,
