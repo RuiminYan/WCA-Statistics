@@ -6,7 +6,7 @@ WITH selected_persons AS (
         JOIN (
             SELECT personName, MIN(average) AS min_average
             FROM Results
-            WHERE eventId = '333bf' AND average > 0
+            WHERE eventId = '333' AND average > 0
             GROUP BY personName
         ) sub ON r.personName = sub.personName AND r.average = sub.min_average
         ORDER BY r.average
@@ -25,7 +25,7 @@ temp AS (
     FROM
         results r
     WHERE
-        r.eventId = '333bf' AND r.personId IN (SELECT personId FROM selected_persons)
+        r.eventId = '333' AND r.personId IN (SELECT personId FROM selected_persons)
     GROUP BY
         r.competitionId, r.personName, r.personId, r.personCountryId
     HAVING
