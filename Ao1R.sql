@@ -69,3 +69,8 @@ ORDER BY
     Ao1R.Ao1R; 
 
     -- 按日期排 date;
+
+
+
+
+-- 333mbf的Ao1R同333mbf avg
