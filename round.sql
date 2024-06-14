@@ -1,3 +1,30 @@
+-- 查询拥有最多333mbf 轮次的比赛
+WITH RoundCounts AS (
+    SELECT
+        competitionId,
+        COUNT(DISTINCT roundTypeId) AS roundCount
+    FROM
+        results
+    WHERE
+        eventId = '333mbf'
+    GROUP BY
+        competitionId
+)
+SELECT
+    rc.roundCount AS totalRounds,
+	STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
+	c.name AS competitionName
+FROM
+    RoundCounts rc
+JOIN
+    competitions c ON rc.competitionId = c.id
+ORDER BY
+    rc.roundCount DESC
+
+
+
+    
+
 -- 比赛分项目轮次
 SELECT eventId, SUM(distinctRoundTypes) AS totalDistinctRoundTypes
 FROM (
