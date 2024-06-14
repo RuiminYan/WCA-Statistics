@@ -164,7 +164,7 @@ END AS median,
   END AS worst_counting,
 
   
-  -- best_average_ratio 暂时不用
+  -- best_average_ratio
   -- 当5个value至少有一个≤0时，取best_average_ratio为NULL
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
