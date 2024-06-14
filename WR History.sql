@@ -7,7 +7,7 @@ CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
         r.personName,
-        r.best,
+        r.best, -- 替换为目标函数
         r.value1,
         r.value2,
         r.value3,
@@ -18,17 +18,17 @@ WITH RankedResults AS (
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         r.regionalAverageRecord,
-        ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY r.best) AS rn
+        ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY r.best) AS rn -- 替换为目标函数
     FROM
         results r
     JOIN
         competitions c ON r.competitionId = c.id
     WHERE
-        r.eventId = '333' AND r.best > 0
+        r.eventId = '333' AND r.best > 0 -- 替换为目标函数
 )
 SELECT
     personName,
-    best,
+    best, -- 替换为目标函数名称
     regionalAverageRecord,
     date,
     name,
@@ -45,12 +45,12 @@ WHERE
     rn = 1; -- 9i2) 如果同一个纪录在一天内多次被打破，只有最好的那个成绩被认为打破了该纪录; 这里有bug, 如果同一天有2把相同的WR, 则只会选择一个
 
 -- 第二步：使用变量逐步跟踪最小值
-SET @min_best = 9999999999; -- 假设一个初始的最大值
+SET @min_best = 9999999999; -- 假设一个初始的最大值 -- 替换为目标函数名称
 
 SELECT
     NULL AS flag,
     personName,
-    best,
+    best, -- 替换为目标函数名称
     regionalAverageRecord,
     date,
     name,
@@ -64,7 +64,7 @@ SELECT
 FROM (
     SELECT
         personName,
-        best,
+        best, -- 替换为目标函数名称
         regionalAverageRecord,
         date,
         name,
@@ -75,7 +75,7 @@ FROM (
         value5,
         personId,
         personCountryId,
-        @min_best := LEAST(@min_best, best) AS current_min_best
+        @min_best := LEAST(@min_best, best) AS current_min_best -- 替换为目标函数名称
     FROM
         FilteredResults
     ORDER BY
