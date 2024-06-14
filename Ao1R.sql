@@ -72,7 +72,7 @@ JOIN
 WHERE
     Ao1R.Ao1R > 0
 ORDER BY
-    date;
+    Ao1R.Ao1R;
 
     -- 按日期排 date;
 
