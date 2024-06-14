@@ -130,6 +130,6 @@ FROM (
         date
 ) AS subquery
 WHERE
-    worst_counting <= current_min_worst_counting
+    worst_counting <= current_min_worst_counting AND worst_counting != 9999999999
 ORDER BY
     date;
