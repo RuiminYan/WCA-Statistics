@@ -1,7 +1,7 @@
 /* 
 NWR = WR of firstComp
 新人单次 Newcomer World Record
-希望eventId固定为333, best都只取正数，对于每一个personId, 在competition日期最早的competition (注意日期如何比较大小) 下，取所有 best的最小值，记为firstCompSingle。
+eventId固定为333, best都只取正数，对于每一个personId, 在competition日期最早的competition (注意日期如何比较大小) 下，取所有 best的最小值，记为firstCompSingle。
 输出的列有personName，personId，firstCompSingle, 按照firstCompSingle从小到大排序
 */
 
