@@ -2,7 +2,7 @@
 Some interesting WCA statistics 一些WCA趣味数据统计
 
 ## Notice
-After importing wca_export.sql, please change Charset/Collation to utf8mb4_unicode.
+After importing wca_export.sql, please change Charset/Collation to utf8mb4_unicode_ci.
 
 ## Prompt
 使用Windows11, 用户名CubeRoot. 用MySQL Workbench 8.0. 数据库wca_export, 是世界魔方协会的官方数据库，有
