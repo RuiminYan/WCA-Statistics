@@ -159,7 +159,7 @@ SET @min_BAo5 = 9999999999; -- 假设一个初始的最大值 -- 替换为目标
 SELECT
     personName,
     BAo5, -- 替换为目标函数名称
-    NULL,
+    regionalAverageRecord,
     date,
     name,
     value1,
@@ -168,8 +168,7 @@ SELECT
     value4,
     value5,
     personId,
-    personCountryId,
-    regionalAverageRecord
+    personCountryId
 FROM (
     SELECT
         personName,
