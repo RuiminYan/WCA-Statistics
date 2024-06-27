@@ -32,7 +32,6 @@ WHERE
 
 -- Step 2: Join with Competitions table and perform calculations
 SELECT
-  NULL AS flag,
   tr.personName,
   -- mo5, set to NULL if any value is <= 0
   CASE 
@@ -114,12 +113,69 @@ END AS median,
     WHEN tr.value4 <= 0 THEN ROUND((tr.value1 + tr.value2 + tr.value3) / 3, 0)
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - GREATEST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
   END AS bpa,
+  
+  
   -- wpa
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 THEN NULL
     ELSE ROUND((tr.value1 + tr.value2 + tr.value3 + tr.value4 - LEAST(tr.value1, tr.value2, tr.value3, tr.value4)) / 3, 0)
   END AS wpa,
 
+
+  -- BAo5
+  /*
+如果5个value有超过2个≤0，则BAo5取为NULL
+如果5个value有2个≤0，则BAo5取为剩下3个value的平均
+如果5个value有1个≤0，则BAo5取为剩下4个value的和减去最大value,再除以3
+如果5个value没有≤0，则BAo5取为5个value的和减去最大value, 再减去第二大value, 再除以3
+*/
+  CASE
+            WHEN (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 <= 0) OR 
+                 (r.value1 <= 0 AND r.value2 <= 0 AND r.value4 <= 0) OR 
+                 (r.value1 <= 0 AND r.value2 <= 0 AND r.value5 <= 0) OR 
+                 (r.value1 <= 0 AND r.value3 <= 0 AND r.value4 <= 0) OR 
+                 (r.value1 <= 0 AND r.value3 <= 0 AND r.value5 <= 0) OR 
+                 (r.value1 <= 0 AND r.value4 <= 0 AND r.value5 <= 0) OR 
+                 (r.value2 <= 0 AND r.value3 <= 0 AND r.value4 <= 0) OR 
+                 (r.value2 <= 0 AND r.value3 <= 0 AND r.value5 <= 0) OR 
+                 (r.value2 <= 0 AND r.value4 <= 0 AND r.value5 <= 0) OR 
+                 (r.value3 <= 0 AND r.value4 <= 0 AND r.value5 <= 0) THEN NULL
+            WHEN (r.value1 <= 0 AND r.value2 <= 0) OR 
+                 (r.value1 <= 0 AND r.value3 <= 0) OR 
+                 (r.value1 <= 0 AND r.value4 <= 0) OR 
+                 (r.value1 <= 0 AND r.value5 <= 0) OR 
+                 (r.value2 <= 0 AND r.value3 <= 0) OR 
+                 (r.value2 <= 0 AND r.value4 <= 0) OR 
+                 (r.value2 <= 0 AND r.value5 <= 0) OR 
+                 (r.value3 <= 0 AND r.value4 <= 0) OR 
+                 (r.value3 <= 0 AND r.value5 <= 0) OR 
+                 (r.value4 <= 0 AND r.value5 <= 0) THEN 
+                 ROUND((CASE WHEN r.value1 > 0 THEN r.value1 ELSE 0 END + 
+                       CASE WHEN r.value2 > 0 THEN r.value2 ELSE 0 END + 
+                       CASE WHEN r.value3 > 0 THEN r.value3 ELSE 0 END + 
+                       CASE WHEN r.value4 > 0 THEN r.value4 ELSE 0 END + 
+                       CASE WHEN r.value5 > 0 THEN r.value5 ELSE 0 END) / 3, 0)
+            WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN 
+                 ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5 - 
+                        GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) - 
+                        CASE WHEN r.value1 <= 0 THEN r.value1 
+                             WHEN r.value2 <= 0 THEN r.value2 
+                             WHEN r.value3 <= 0 THEN r.value3 
+                             WHEN r.value4 <= 0 THEN r.value4 
+                             ELSE r.value5 END) / 3, 0)
+            ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5 - 
+                       GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5) - 
+                       (SELECT val FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5 ORDER BY val DESC LIMIT 1, 1) AS subquery)) / 3, 0)
+        END AS BAo5,
+
+
+
+
+
+
+
+
+  
   
   -- best_counting
   -- 如果value中有非正数，则先将这些非正数取为9999999999. 然后计算5个value中第二小的数作为best_counting
