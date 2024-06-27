@@ -7,7 +7,7 @@ CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
         r.personName,
-        r.best, -- 替换为目标函数
+        r.best, -- r.best替换为目标函数, 例如CASE ... END AS test
         r.value1,
         r.value2,
         r.value3,
@@ -18,17 +18,17 @@ WITH RankedResults AS (
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         r.regionalAverageRecord,
-        ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY r.best) AS rn -- 替换为目标函数
+        ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY r.best) AS rn -- r.best替换为目标函数, 例如CASE ... END
     FROM
         results r
     JOIN
         competitions c ON r.competitionId = c.id
     WHERE
-        r.eventId = '333' AND r.best > 0 -- 替换为目标函数
+        r.eventId = '333' AND r.best > 0 -- r.best替换为目标函数, 例如CASE ... END
 )
 SELECT
     personName,
-    best, -- 替换为目标函数名称
+    best, -- 替换为目标函数名称, 例如test
     regionalAverageRecord,
     date,
     name,
@@ -50,7 +50,7 @@ SET @min_best = 9999999999; -- 假设一个初始的最大值 -- 替换为目标
 SELECT
     NULL AS flag,
     personName,
-    best, -- 替换为目标函数名称
+    best, -- 替换为目标函数名称, 例如test
     regionalAverageRecord,
     date,
     name,
@@ -64,7 +64,7 @@ SELECT
 FROM (
     SELECT
         personName,
-        best, -- 替换为目标函数名称
+        best, -- 替换为目标函数名称, 例如test
         regionalAverageRecord,
         date,
         name,
@@ -75,7 +75,7 @@ FROM (
         value5,
         personId,
         personCountryId,
-        @min_best := LEAST(@min_best, best) AS current_min_best -- 替换为目标函数名称
+        @min_best := LEAST(@min_best, best) AS current_min_best -- 替换为目标函数名称, 例如test
     FROM
         FilteredResults
     ORDER BY
