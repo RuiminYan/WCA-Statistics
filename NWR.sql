@@ -79,7 +79,6 @@ WITH first_competition_dates AS (
 )
 
 SELECT
-    NULL AS flag,
     r.personName,
     MIN(r.average) AS firstCompAvg,
     r.regionalAverageRecord,
@@ -278,10 +277,9 @@ average_values AS (
         values_with_parts
 )
 SELECT
-    NULL AS flag,
     personName,
     CONCAT('1', LPAD(avg_ss, 2, '0'), LPAD(avg_aa, 2, '0'), LPAD(avg_ttttt, 5, '0')) AS firstCompAvg,
-    NULL AS nothing,
+    NULL,
     STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date,
     name,
     value1,
