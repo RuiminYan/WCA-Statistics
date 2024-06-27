@@ -1,6 +1,5 @@
 -- WR
 SELECT
-    NULL AS flag,
     r.personName,
     r.best AS single,
     r.regionalSingleRecord,
