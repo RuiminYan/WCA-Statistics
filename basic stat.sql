@@ -169,9 +169,17 @@ END AS median,
         END AS BAo5,
 
 
-
-
-
+  -- WAo5
+  /*
+如果5个value至少有1个≤0，则WAo5取为NULL
+如果5个value没有≤0，则WAo5取为5个value的和减去最小value, 再减去第二小value, 再除以3
+*/
+CASE
+    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
+    ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 + r.value5 - 
+                LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) - 
+                (SELECT val FROM (SELECT r.value1 AS val UNION ALL SELECT r.value2 UNION ALL SELECT r.value3 UNION ALL SELECT r.value4 UNION ALL SELECT r.value5 ORDER BY val LIMIT 1, 1) AS subquery)) / 3, 0)
+END AS WAo5
 
 
 
