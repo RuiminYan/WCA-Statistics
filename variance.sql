@@ -60,7 +60,6 @@ WHERE
 SET @min_variance = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    NULL AS flag,
     personName,
     variance,
     regionalAverageRecord,
