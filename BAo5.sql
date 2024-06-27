@@ -165,10 +165,9 @@ WHERE
 SET @min_BAo5 = 9999999999; -- 假设一个初始的最大值 -- 替换为目标函数名称
 
 SELECT
-    NULL AS flag,
     personName,
     BAo5, -- 替换为目标函数名称
-    regionalAverageRecord,
+    NULL,
     date,
     name,
     value1,
@@ -177,7 +176,8 @@ SELECT
     value4,
     value5,
     personId,
-    personCountryId
+    personCountryId,
+    regionalAverageRecord
 FROM (
     SELECT
         personName,
@@ -202,3 +202,4 @@ WHERE
     BAo5 <= current_min_BAo5
 ORDER BY
     date;
+
