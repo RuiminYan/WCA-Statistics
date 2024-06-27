@@ -1,6 +1,5 @@
 -- WR
 SELECT
-    NULL AS flag,
 	r.personName,
     r.average AS average,
     r.regionalAverageRecord,
@@ -25,7 +24,6 @@ ORDER BY
 
 -- magic, mmagic, 333ft ao5   有错误，不再使用
 SELECT
-    NULL AS flag,
 	r.personName,
     -- 计算去掉最大值和最小值后的平均值
     CASE -- 如果value中至少有2个≤0，则average= -1
@@ -98,7 +96,6 @@ ORDER BY
 
 -- 333ft mo3     有错误，不再使用
 SELECT
-    NULL AS flag,
 	r.personName,
     ROUND((r.value1 + r.value2 + r.value3) / 3, 0) AS average,
     NULL AS nothing,
