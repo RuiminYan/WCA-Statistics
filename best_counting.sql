@@ -96,7 +96,6 @@ WHERE
 SET @min_best_counting = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    NULL AS flag,
     personName,
     best_counting,
     regionalAverageRecord,
