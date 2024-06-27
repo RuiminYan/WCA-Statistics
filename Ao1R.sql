@@ -46,10 +46,9 @@ Ao1R AS (
         temp
 )
 SELECT
-    NULL AS flag,
     Ao1R.personName,
     Ao1R.Ao1R,
-    NULL as nothing,
+    NULL,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
     Ao1R.Fi AS value1,
