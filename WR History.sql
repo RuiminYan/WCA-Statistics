@@ -50,7 +50,7 @@ SET @min_best = 9999999999; -- 假设一个初始的最大值 -- 替换为目标
 SELECT
     personName,
     best, -- 替换为目标函数名称, 例如test
-    NULL,
+    regionalAverageRecord,
     date,
     name,
     value1,
@@ -59,8 +59,7 @@ SELECT
     value4,
     value5,
     personId,
-    personCountryId,
-    regionalAverageRecord
+    personCountryId
 FROM (
     SELECT
         personName,
