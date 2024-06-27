@@ -82,6 +82,6 @@ FROM (
         date
 ) AS subquery
 WHERE
-    best <= current_min_best
+    best <= current_min_best -- 替换为目标函数名称
 ORDER BY
     date;
