@@ -50,7 +50,6 @@ FirstRound2 AS (
 )
 
 SELECT
-    NULL AS flag,
     fr.personName,
     fr.firstSingle,
     fr.regionalSingleRecord,
@@ -149,7 +148,6 @@ FirstRound2 AS (
 )
 
 SELECT
-    NULL AS flag,
     fr.personName,
     fr.firstAvg,
     fr.regionalAverageRecord,
@@ -267,7 +265,6 @@ average_values AS (
         ) AS combined_values
 )
 SELECT
-    NULL AS flag,
     personName,
     CONCAT(LPAD(avg_dd, 2, '0'), LPAD(avg_ttttt, 5, '0'), LPAD(avg_mm, 2, '0')) AS firstAvg,
     regionalAverageRecord,
@@ -410,7 +407,6 @@ average_values AS (
         values_with_parts
 )
 SELECT
-    NULL AS flag,
     personName,
     CONCAT('1', LPAD(avg_ss, 2, '0'), LPAD(avg_aa, 2, '0'), LPAD(avg_ttttt, 5, '0')) AS firstAvg,
     regionalAverageRecord,
