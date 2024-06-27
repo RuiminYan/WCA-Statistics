@@ -48,10 +48,9 @@ WHERE
 SET @min_best = 9999999999; -- 假设一个初始的最大值 -- 替换为目标函数名称
 
 SELECT
-    NULL AS flag,
     personName,
     best, -- 替换为目标函数名称, 例如test
-    regionalAverageRecord,
+    NULL,
     date,
     name,
     value1,
@@ -60,7 +59,8 @@ SELECT
     value4,
     value5,
     personId,
-    personCountryId
+    personCountryId,
+    regionalAverageRecord
 FROM (
     SELECT
         personName,
