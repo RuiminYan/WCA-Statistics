@@ -52,10 +52,10 @@ SELECT
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
     Ao1R.Fi AS value1,
-    NULL AS nothing,
-    NULL AS nothing,
-    NULL AS nothing,
-    NULL AS nothing,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     Ao1R.personId,
     Ao1R.personCountryId
 FROM
