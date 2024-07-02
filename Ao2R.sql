@@ -56,9 +56,9 @@ SELECT
     c.name,
     Ao2R.R1 AS value1,
     Ao2R.Fi AS value2,
-    NULL AS nothing,
-    NULL AS nothing,
-    NULL AS nothing,
+    NULL,
+    NULL,
+    NULL,
     Ao2R.personId,
     Ao2R.personCountryId
 FROM
