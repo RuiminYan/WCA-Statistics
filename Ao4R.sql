@@ -67,7 +67,7 @@ SELECT
     Ao4R.R2 AS value2,
     Ao4R.R3 AS value3,
     Ao4R.Fi AS value4,
-	NULL AS nothing,
+	NULL,
     Ao4R.personId,
     Ao4R.personCountryId
 FROM
