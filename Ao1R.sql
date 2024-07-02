@@ -20,7 +20,7 @@ temp AS (
         r.personName,
         r.personId,
         r.personCountryId,
-        MAX(CASE WHEN r.roundTypeId = 'f' THEN r.average END) AS Fi,
+        MAX(CASE WHEN r.roundTypeId IN ('c', 'f') THEN r.average END) AS Fi,
         COUNT(r.average) AS num_averages
     FROM
         results r
