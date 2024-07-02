@@ -19,7 +19,7 @@ WITH RankedResults AS (
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
             WHEN r.average = 0 THEN NULL 
             ELSE ROUND(r.best / r.average, 2) 
-        END AS best_average_ratio,
+        END AS single_average_ratio,
         ROW_NUMBER() OVER (
             PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') 
             ORDER BY 
@@ -43,7 +43,7 @@ WITH RankedResults AS (
 )
 SELECT
     personName,
-    best_average_ratio,
+    single_average_ratio,
     regionalAverageRecord,
     date,
     name,
@@ -60,11 +60,11 @@ WHERE
     rn = 1;
 
 -- 第二步：使用变量逐步跟踪最小值
-SET @min_best_average_ratio = 9999999999; -- 假设一个初始的最大值
+SET @min_single_average_ratio = 9999999999; -- 假设一个初始的最大值
 
 SELECT
     personName,
-    best_average_ratio,
+    single_average_ratio,
     regionalAverageRecord,
     date,
     name,
@@ -78,7 +78,7 @@ SELECT
 FROM (
     SELECT
         personName,
-        best_average_ratio,
+        single_average_ratio,
         regionalAverageRecord,
         date,
         name,
@@ -89,14 +89,14 @@ FROM (
         value5,
         personId,
         personCountryId,
-        @min_best_average_ratio := LEAST(@min_best_average_ratio, best_average_ratio) AS current_min_best_average_ratio
+        @min_single_average_ratio := LEAST(@min_single_average_ratio, single_average_ratio) AS current_min_single_average_ratio
     FROM
         FilteredResults
     ORDER BY
         date
 ) AS subquery
 WHERE
-    best_average_ratio IS NOT NULL AND best_average_ratio <= current_min_best_average_ratio
+    single_average_ratio IS NOT NULL AND single_average_ratio <= current_min_single_average_ratio
 ORDER BY
     date;
 
