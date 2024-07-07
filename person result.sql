@@ -13,5 +13,7 @@ FROM
 JOIN 
     Competitions c ON r.competitionId = c.id
 WHERE 
-    r.personId = "2019WANY36" 
-    AND r.eventId = "333";
+    r.personId = '2019WANY36'
+    AND r.eventId = '333'
+ORDER BY 
+    r.id;
