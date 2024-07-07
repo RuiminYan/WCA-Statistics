@@ -14,7 +14,7 @@ ALTER TABLE Results ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
 
 表格competitions的列名有：id, name, cityName, countryId, information, year, month, day, endMonth, endDay, cancelled, eventSpecs, wcaDelegate, organiser, venue, venueAddress, venueDetails, external_website, cellName, latitude, longitude. 其中year, month, day表示比赛开始的年, 月, 日, endMonth, endDay表示比赛结束的月, 日
 
-表格results的列名有：competitionId, eventId, roundTypeId, pos, best, average, personName, personId, personCountryId, formatId, value1, value2, value3, value4, value5, regionalSingleRecord, regionalAverageRecord.
+表格results的列名有：competitionId, eventId, roundTypeId, pos, best, average, personName, personId, personCountryId, formatId, value1, value2, value3, value4, value5, regionalSingleRecord, regionalAverageRecord, id.
 
 eventId取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, pyram, skewb, sq1, 444bf, 555bf, 333mbf, 333ft, magic, mmagic, 333mbo，分别表示三阶魔方，二阶魔方，四阶魔方，五阶魔方，六阶魔方，七阶魔方，三盲，FMC，单手，魔表，五魔，斜转，SQ1，四盲，五盲，多盲，脚拧，八板，十二板，旧多盲
 
