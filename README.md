@@ -77,7 +77,7 @@ IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock'
 =LEN(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(A2," ",""),"(",""),")",""),"'",""),"x",""),"y",""),"z",""),"2",""),"3","")) + (LEN(A2) - LEN(SUBSTITUTE(A2, "2", "")))
 ```
 
-## result value to result
+## value to result
 当值小于等于999999时，
 =IF(A2=-1, "DNF",
    IF(A2=-2, "DNS",
