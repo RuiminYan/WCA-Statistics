@@ -19,7 +19,7 @@ WITH ConsecutiveSubX AS (
         r.personId = '2019WANY36'
         AND r.eventId = '333'
 ),
-GroupedBelow500 AS (
+GroupedSubX AS (
     SELECT 
         average,
         date,
@@ -29,14 +29,14 @@ GroupedBelow500 AS (
     FROM 
         ConsecutiveSubX
 ),
-CountBelow500Groups AS (
+CountSubXGroups AS (
     SELECT 
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
         COUNT(*) AS consecutive_count
     FROM 
-        GroupedBelow500
+        GroupedSubX
     WHERE 
         is_sub_X = 1
     GROUP BY 
@@ -49,4 +49,5 @@ SELECT
     start_date,
     end_date
 FROM 
-    CountBelow500Groups;
+    CountSubXGroups;
+
