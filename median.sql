@@ -266,15 +266,6 @@ WITH RankedResults AS (
                  (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0) OR
                  (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0) THEN
                 GREATEST(r.value1, r.value2, r.value3)
-            -- 如果恰好2个值小于等于0，返回唯一大于0的值
-            WHEN (r.value1 > 0 AND r.value2 <= 0 AND r.value3 <= 0) OR
-                 (r.value1 <= 0 AND r.value2 > 0 AND r.value3 <= 0) OR
-                 (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 > 0) THEN
-                CASE
-                    WHEN r.value1 > 0 THEN r.value1
-                    WHEN r.value2 > 0 THEN r.value2
-                    ELSE r.value3
-                END
             -- 其他情况，返回 NULL
             ELSE NULL
         END AS median,
@@ -301,15 +292,6 @@ WITH RankedResults AS (
                      (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0) OR
                      (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0) THEN
                     GREATEST(r.value1, r.value2, r.value3)
-                -- 如果恰好2个值小于等于0，返回唯一大于0的值
-                WHEN (r.value1 > 0 AND r.value2 <= 0 AND r.value3 <= 0) OR
-                     (r.value1 <= 0 AND r.value2 > 0 AND r.value3 <= 0) OR
-                     (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 > 0) THEN
-                    CASE
-                        WHEN r.value1 > 0 THEN r.value1
-                        WHEN r.value2 > 0 THEN r.value2
-                        ELSE r.value3
-                    END
                 -- 其他情况，返回 NULL
                 ELSE NULL
             END
@@ -334,15 +316,6 @@ WITH RankedResults AS (
                  (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0) OR
                  (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0) THEN
                 GREATEST(r.value1, r.value2, r.value3)
-            -- 如果恰好2个值小于等于0，返回唯一大于0的值
-            WHEN (r.value1 > 0 AND r.value2 <= 0 AND r.value3 <= 0) OR
-                 (r.value1 <= 0 AND r.value2 > 0 AND r.value3 <= 0) OR
-                 (r.value1 <= 0 AND r.value2 <= 0 AND r.value3 > 0) THEN
-                CASE
-                    WHEN r.value1 > 0 THEN r.value1
-                    WHEN r.value2 > 0 THEN r.value2
-                    ELSE r.value3
-                END
             -- 其他情况，返回 NULL
             ELSE NULL
         END > 0
@@ -402,5 +375,6 @@ WHERE
     median <= current_min_median
 ORDER BY
     date;
+
 
 
