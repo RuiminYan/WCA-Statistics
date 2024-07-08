@@ -275,17 +275,18 @@ END AS WAo5
   END AS worst_counting,
 
   
-  -- best_average_ratio
+  -- best_average_ratio of Ao5 (all values should be positive)
   CASE 
-    WHEN tr.average <= 0 THEN NULL 
-    ELSE ROUND(tr.best / tr.average, 2) 
-  END AS best_average_ratio,
+    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NUL
+    ELSE ROUND(r.best / r.average, 2) 
+  END AS single_average_ratio,
 
 
-
-
-
-
+  -- best_average_ratio of Mo3
+  CASE 
+    WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NUL
+    ELSE ROUND(r.best / r.average, 2) 
+  END AS single_average_ratio,
 
 
   
