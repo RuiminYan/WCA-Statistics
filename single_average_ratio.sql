@@ -116,6 +116,7 @@ ORDER BY
 
 
 -- single_average_ratio of Mo3
+-- 333fm: ROUND(r.best / r.average, 2) -> ROUND(r.best / r.average, 8)
 -- 第一步：删除并创建 FilteredResults 表
 DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
