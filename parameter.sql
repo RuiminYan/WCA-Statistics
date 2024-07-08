@@ -51,7 +51,7 @@ SELECT
   CASE WHEN LEAST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) END AS worst,  
   
   
-  -- median
+  -- median of Ao5
   CASE
   -- 如果5个值都大于0，返回排序后的第3个值
   WHEN tr.value1 > 0 AND tr.value2 > 0 AND tr.value3 > 0 AND tr.value4 > 0 AND tr.value5 > 0 THEN
@@ -103,6 +103,40 @@ SELECT
   ELSE NULL
 END AS median,
 
+
+
+
+
+
+
+
+  -- median of Mo3
+        CASE
+            -- 如果3个值都大于0，返回排序后的第2个值
+            WHEN r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 THEN
+                (SELECT val 
+                 FROM (SELECT r.value1 AS val UNION ALL 
+                              SELECT r.value2 UNION ALL 
+                              SELECT r.value3) AS sub
+                 ORDER BY val
+                 LIMIT 1 OFFSET 1)
+            -- 如果恰好1个值小于等于0，返回排序后的最大值
+            WHEN (r.value1 <= 0 AND r.value2 > 0 AND r.value3 > 0) OR
+                 (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0) OR
+                 (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0) THEN
+                GREATEST(r.value1, r.value2, r.value3)
+            -- 其他情况，返回 NULL
+            ELSE NULL
+        END AS median,
+
+  
+
+  
+
+  
+
+
+  
   
   -- bpa
   CASE 
