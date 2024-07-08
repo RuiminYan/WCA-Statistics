@@ -120,10 +120,10 @@ END AS median,
                               SELECT r.value3) AS sub
                  ORDER BY val
                  LIMIT 1 OFFSET 1)
-            -- 如果恰好1个值小于等于0，返回排序后的最大值
-            WHEN (r.value1 <= 0 AND r.value2 > 0 AND r.value3 > 0) OR
-                 (r.value2 <= 0 AND r.value1 > 0 AND r.value3 > 0) OR
-                 (r.value3 <= 0 AND r.value1 > 0 AND r.value2 > 0) THEN
+            -- 如果恰好1个值小于0，返回排序后的最大值
+            WHEN (r.value1 < 0 AND r.value2 > 0 AND r.value3 > 0) OR
+                 (r.value2 < 0 AND r.value1 > 0 AND r.value3 > 0) OR
+                 (r.value3 < 0 AND r.value1 > 0 AND r.value2 > 0) THEN
                 GREATEST(r.value1, r.value2, r.value3)
             -- 其他情况，返回 NULL
             ELSE NULL
