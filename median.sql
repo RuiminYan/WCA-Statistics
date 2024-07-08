@@ -190,7 +190,7 @@ SET @min_median = 9999999999; -- 假设一个初始的最大值
 SELECT
     personName,
     median,
-    regionalAverageRecord,
+    NULL,
     date,
     name,
     value1,
@@ -199,7 +199,8 @@ SELECT
     value4,
     value5,
     personId,
-    personCountryId
+    personCountryId,
+    regionalAverageRecord
 FROM (
     SELECT
         personName,
@@ -368,7 +369,7 @@ SET @min_median = 9999999999; -- 假设一个初始的最大值
 SELECT
     personName,
     median,
-    regionalAverageRecord,
+    NULL,
     date,
     name,
     value1,
@@ -377,7 +378,8 @@ SELECT
     NULL,
     NULL,
     personId,
-    personCountryId
+    personCountryId,
+    regionalAverageRecord
 FROM (
     SELECT
         personName,
@@ -400,4 +402,5 @@ WHERE
     median <= current_min_median
 ORDER BY
     date;
+
 
