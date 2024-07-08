@@ -374,6 +374,8 @@ SELECT
     value1,
     value2,
     value3,
+    NULL,
+    NULL,
     personId,
     personCountryId
 FROM (
