@@ -47,10 +47,16 @@ SELECT
   END AS variance,
 
   
-  -- worst
+  -- worst of Ao5
   CASE WHEN LEAST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3, tr.value4, tr.value5) END AS worst,  
-  
-  
+
+
+
+  -- worst of mo5
+  CASE WHEN LEAST(tr.value1, tr.value2, tr.value3) <= 0 THEN NULL ELSE GREATEST(tr.value1, tr.value2, tr.value3) END AS worst,  
+
+
+
   -- median of Ao5
   CASE
   -- 如果5个值都大于0，返回排序后的第3个值
