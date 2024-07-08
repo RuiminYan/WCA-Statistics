@@ -62,7 +62,7 @@ SET @min_variance = 9999999999; -- 假设一个初始的最大值
 SELECT
     personName,
     variance,
-    regionalAverageRecord,
+    NULL,
     date,
     name,
     value1,
@@ -71,7 +71,8 @@ SELECT
     value4,
     value5,
     personId,
-    personCountryId
+    personCountryId,
+    regionalAverageRecord
 FROM (
     SELECT
         personName,
@@ -174,7 +175,7 @@ SET @min_variance = 9999999999; -- 假设一个初始的最大值
 SELECT
     personName,
     variance,
-	NULL,
+    NULL,
     date,
     name,
     value1,
@@ -184,7 +185,7 @@ SELECT
     NULL,
     personId,
     personCountryId,
-	regionalAverageRecord
+    regionalAverageRecord
 FROM (
     SELECT
         personName,
