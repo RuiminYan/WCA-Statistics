@@ -48,7 +48,7 @@ WITH AllValues AS (
     WHERE 
         r.personId = '2019WANY36'
         AND r.eventId = '333'
-        AND r.value1 IS NOT NULL
+        AND r.value1 != 0
 
     UNION ALL
 
@@ -67,7 +67,7 @@ WITH AllValues AS (
     WHERE 
         r.personId = '2019WANY36'
         AND r.eventId = '333'
-        AND r.value2 IS NOT NULL
+        AND r.value2 != 0
 
     UNION ALL
 
@@ -86,7 +86,7 @@ WITH AllValues AS (
     WHERE 
         r.personId = '2019WANY36'
         AND r.eventId = '333'
-        AND r.value3 IS NOT NULL
+        AND r.value3 != 0
 
     UNION ALL
 
@@ -105,7 +105,7 @@ WITH AllValues AS (
     WHERE 
         r.personId = '2019WANY36'
         AND r.eventId = '333'
-        AND r.value4 IS NOT NULL
+        AND r.value4 != 0
 
     UNION ALL
 
@@ -124,7 +124,7 @@ WITH AllValues AS (
     WHERE 
         r.personId = '2019WANY36'
         AND r.eventId = '333'
-        AND r.value5 IS NOT NULL
+        AND r.value5 != 0
 )
 
 SELECT *
