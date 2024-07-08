@@ -132,14 +132,14 @@ WITH RankedResults AS (
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         r.regionalAverageRecord,
         CASE 
-            WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NULL
+            WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.average = 0 THEN NULL
             ELSE ROUND(r.best / r.average, 2) 
         END AS single_average_ratio,
         ROW_NUMBER() OVER (
             PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') 
             ORDER BY 
             CASE 
-                WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NULL
+                WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.average = 0 THEN NULL
                 ELSE ROUND(r.best / r.average, 2) 
             END
         ) AS rn
@@ -150,7 +150,7 @@ WITH RankedResults AS (
     WHERE
         r.eventId = '666' AND 
         CASE 
-            WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NULL
+            WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.average = 0 THEN NULL
             ELSE ROUND(r.best / r.average, 2) 
         END IS NOT NULL
 )
