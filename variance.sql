@@ -17,14 +17,14 @@ WITH RankedResults AS (
         r.regionalAverageRecord,
         CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
-            ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2) + POW(r.value4 - r.average, 2) + POW(r.value5 - r.average, 2)) / 4, 0)
+            ELSE ROUND((POW(r.value1 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value2 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value3 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value4 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value5 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2)) / 4, 0)
         END AS variance,
         ROW_NUMBER() OVER (
             PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') 
             ORDER BY 
             CASE 
                 WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
-                ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2) + POW(r.value4 - r.average, 2) + POW(r.value5 - r.average, 2)) / 4, 0)
+                ELSE ROUND((POW(r.value1 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value2 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value3 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value4 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value5 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2)) / 4, 0)
             END
         ) AS rn
     FROM
@@ -35,7 +35,7 @@ WITH RankedResults AS (
         r.eventId = '333' AND 
 		CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
-            ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2) + POW(r.value4 - r.average, 2) + POW(r.value5 - r.average, 2)) / 4, 0)
+            ELSE ROUND((POW(r.value1 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value2 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value3 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value4 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2) + POW(r.value5 - (r.value1 + r.value2 + r.value3 + r.value4 + r.value5) / 5, 2)) / 4, 0)
         END > 0
 )
 SELECT
@@ -114,7 +114,7 @@ ORDER BY
 
 
 
-  -- variance of Mo3
+-- variance of Mo3
 -- 第一步：删除并创建 FilteredResults 表
 DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
@@ -131,14 +131,14 @@ WITH RankedResults AS (
         r.regionalAverageRecord,
         CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NULL
-            ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2)) / 2, 0)
+            ELSE ROUND((POW(r.value1 - (r.value1 + r.value2 + r.value3) / 3, 2) + POW(r.value2 - (r.value1 + r.value2 + r.value3) / 3, 2) + POW(r.value3 - (r.value1 + r.value2 + r.value3) / 3, 2)) / 2, 0)
         END AS variance,
         ROW_NUMBER() OVER (
             PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') 
             ORDER BY 
             CASE 
                 WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NULL
-                ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2)) / 2, 0)
+                ELSE ROUND((POW(r.value1 - (r.value1 + r.value2 + r.value3) / 3, 2) + POW(r.value2 - (r.value1 + r.value2 + r.value3) / 3, 2) + POW(r.value3 - (r.value1 + r.value2 + r.value3) / 3, 2)) / 2, 0)
             END
         ) AS rn
     FROM
@@ -149,7 +149,7 @@ WITH RankedResults AS (
         r.eventId = '666' AND 
 		CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 THEN NULL
-            ELSE ROUND((POW(r.value1 - r.average, 2) + POW(r.value2 - r.average, 2) + POW(r.value3 - r.average, 2)) / 2, 0)
+            ELSE ROUND((POW(r.value1 - (r.value1 + r.value2 + r.value3) / 3, 2) + POW(r.value2 - (r.value1 + r.value2 + r.value3) / 3, 2) + POW(r.value3 - (r.value1 + r.value2 + r.value3) / 3, 2)) / 2, 0)
         END > 0
 )
 SELECT
