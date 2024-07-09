@@ -1,3 +1,4 @@
+-- 平均连续数
 /*
 计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
 */
@@ -74,9 +75,10 @@ JOIN
 
 
 
--- 历史纪录 (bug)
+-- 平均连续数PR
+
 /*
-计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，需给出每一个分组的开始日期和结束日期. 给出连续数的世界纪录历史, 使用变量逐步跟踪最大值
+计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
 */
 WITH ConsecutiveSubX AS (
     SELECT 
@@ -122,33 +124,41 @@ CountSubXGroups AS (
     HAVING 
         COUNT(*) > 1
 ),
-MaxSubXGroups AS (
-    SELECT 
-        *,
-        @max_count := GREATEST(@max_count, consecutive_count) AS max_consecutive_count
+DistinctCountSubXGroups AS (
+    SELECT DISTINCT
+        cg.consecutive_count,
+        cg.start_date,
+        csx1.name AS start_competition,
+        cg.end_date,
+        csx2.name AS end_competition
     FROM 
-        (SELECT @max_count := 0) AS init
+        CountSubXGroups cg
     JOIN 
-        CountSubXGroups
-    ORDER BY 
-        start_date
+        GroupedSubX csx1 ON cg.start_date = csx1.date AND cg.group_num = csx1.group_num
+    JOIN 
+        GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num
+),
+RankedRecords AS (
+    SELECT
+        *,
+        @max_count := GREATEST(@max_count, consecutive_count) AS max_count
+    FROM
+        (SELECT DISTINCT * FROM DistinctCountSubXGroups) subquery,
+        (SELECT @max_count := 0) AS vars
 )
-SELECT DISTINCT
-    cg.consecutive_count,
-    cg.start_date,
-    csx1.name AS start_competition,
-    cg.end_date,
-    csx2.name AS end_competition
-FROM 
-    MaxSubXGroups cg
-JOIN 
-    GroupedSubX csx1 ON cg.start_date = csx1.date AND cg.group_num = csx1.group_num
-JOIN 
-    GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num
-WHERE 
-    cg.consecutive_count = cg.max_consecutive_count
-ORDER BY 
-    cg.start_date;
+SELECT
+    consecutive_count,
+    start_date,
+    start_competition,
+    end_date,
+    end_competition
+FROM
+    RankedRecords
+WHERE
+    consecutive_count >= max_count
+ORDER BY
+    start_date;
+
 
 
 
