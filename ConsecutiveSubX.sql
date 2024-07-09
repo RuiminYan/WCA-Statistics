@@ -81,14 +81,14 @@ JOIN
 
 
 /*
-计算 value 列中有多少个连续低于 500 的值，并舍去 consecutive_count = 1 的行
+计算 value 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行
 */
 WITH AllValues AS (
     SELECT 
         r.personName,
         r.value1 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        c.name,
+        c.name AS competition_name,
         r.roundTypeId,
         '1' AS value_order,
         r.personId
@@ -107,7 +107,7 @@ WITH AllValues AS (
         r.personName,
         r.value2 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        c.name,
+        c.name AS competition_name,
         r.roundTypeId,
         '2' AS value_order,
         r.personId
@@ -126,7 +126,7 @@ WITH AllValues AS (
         r.personName,
         r.value3 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        c.name,
+        c.name AS competition_name,
         r.roundTypeId,
         '3' AS value_order,
         r.personId
@@ -145,7 +145,7 @@ WITH AllValues AS (
         r.personName,
         r.value4 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        c.name,
+        c.name AS competition_name,
         r.roundTypeId,
         '4' AS value_order,
         r.personId
@@ -164,7 +164,7 @@ WITH AllValues AS (
         r.personName,
         r.value5 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        c.name,
+        c.name AS competition_name,
         r.roundTypeId,
         '5' AS value_order,
         r.personId
@@ -181,8 +181,9 @@ ConsecutiveSubX AS (
     SELECT 
         value,
         date,
+        competition_name,
         CASE 
-            WHEN value < 500 THEN 1
+            WHEN value < 600 THEN 1
             ELSE 0
         END AS is_sub_X,
         ROW_NUMBER() OVER (ORDER BY date, FIELD(roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
@@ -193,6 +194,7 @@ GroupedSubX AS (
     SELECT 
         value,
         date,
+        competition_name,
         is_sub_X,
         row_num,
         row_num - ROW_NUMBER() OVER (PARTITION BY is_sub_X ORDER BY row_num) AS group_num
@@ -204,6 +206,8 @@ CountSubXGroups AS (
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
+        MIN(competition_name) AS start_competition,
+        MAX(competition_name) AS end_competition,
         COUNT(*) AS consecutive_count
     FROM 
         GroupedSubX
@@ -214,10 +218,14 @@ CountSubXGroups AS (
     HAVING 
         COUNT(*) > 1
 )
-SELECT 
+SELECT
     consecutive_count,
     start_date,
-    end_date
+    start_competition,
+    end_date,
+    end_competition
 FROM 
-    CountSubXGroups;
+    CountSubXGroups
+ORDER BY
+    start_date;
 
