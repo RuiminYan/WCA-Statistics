@@ -76,9 +76,11 @@ JOIN
 
 
 -- 平均连续数PR
-
 /*
 计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行。给出连续数的纪录历史。当前连续数大于等于以前的所有连续数，则说明这是一条纪录。使用变量逐步跟踪。
+*/
+/*
+计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
 */
 WITH ConsecutiveSubX AS (
     SELECT 
@@ -124,40 +126,31 @@ CountSubXGroups AS (
     HAVING 
         COUNT(*) > 1
 ),
-DistinctCountSubXGroups AS (
-    SELECT DISTINCT
-        cg.consecutive_count,
-        cg.start_date,
-        csx1.name AS start_competition,
-        cg.end_date,
-        csx2.name AS end_competition
-    FROM 
-        CountSubXGroups cg
-    JOIN 
-        GroupedSubX csx1 ON cg.start_date = csx1.date AND cg.group_num = csx1.group_num
-    JOIN 
-        GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num
-),
-RankedRecords AS (
-    SELECT
+RankedCounts AS (
+    SELECT 
         *,
-        @max_count := GREATEST(@max_count, consecutive_count) AS max_count
-    FROM
-        (SELECT DISTINCT * FROM DistinctCountSubXGroups) subquery,
-        (SELECT @max_count := 0) AS vars
+        ROW_NUMBER() OVER (ORDER BY start_date) AS rn
+    FROM 
+        CountSubXGroups
 )
-SELECT
-    consecutive_count,
-    start_date,
-    start_competition,
-    end_date,
-    end_competition
-FROM
-    RankedRecords
-WHERE
-    consecutive_count >= max_count
-ORDER BY
-    start_date;
+SELECT  DISTINCT
+    cg.consecutive_count,
+    cg.start_date,
+    csx1.name AS start_competition,
+    cg.end_date,
+    csx2.name AS end_competition
+FROM 
+    (SELECT 
+        *,
+        @max_count := IF(@max_count IS NULL OR @max_count <= consecutive_count, consecutive_count, @max_count) AS current_max
+     FROM 
+        RankedCounts, (SELECT @max_count := 0) AS var_init
+     HAVING 
+        consecutive_count >= current_max) cg
+JOIN 
+    GroupedSubX csx1 ON cg.start_date = csx1.date AND cg.group_num = csx1.group_num
+JOIN 
+    GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num;
 
 
 
