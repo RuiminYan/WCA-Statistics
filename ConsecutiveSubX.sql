@@ -17,7 +17,7 @@ WITH ConsecutiveSubX AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
 ),
 GroupedSubX AS (
@@ -95,7 +95,7 @@ WITH ConsecutiveSubX AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
 ),
 GroupedSubX AS (
