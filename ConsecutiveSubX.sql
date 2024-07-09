@@ -82,7 +82,25 @@ JOIN
 JOIN 
     GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num;
 
-    GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -226,6 +244,8 @@ WITH AllValues AS (
 ),
 ConsecutiveSubX AS (
     SELECT 
+        personName,
+        personId,
         value,
         date,
         competition_name,
@@ -239,6 +259,8 @@ ConsecutiveSubX AS (
 ),
 GroupedSubX AS (
     SELECT 
+        personName,
+        personId,
         value,
         date,
         competition_name,
@@ -250,6 +272,8 @@ GroupedSubX AS (
 ),
 CountSubXGroups AS (
     SELECT 
+        personName,
+        personId,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -261,6 +285,8 @@ CountSubXGroups AS (
     WHERE 
         is_sub_X = 1
     GROUP BY 
+        personName,
+        personId,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -273,11 +299,13 @@ RankedCounts AS (
         CountSubXGroups
 )
 SELECT DISTINCT
+    cg.personName,
     cg.consecutive_count,
     cg.start_date,
     cg.start_competition,
     cg.end_date,
-    cg.end_competition
+    cg.end_competition,
+    cg.personId
 FROM 
     (SELECT 
         *,
@@ -288,6 +316,7 @@ FROM
         consecutive_count >= current_max) cg
 ORDER BY
     start_date;
+
 
 
 
