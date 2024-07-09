@@ -81,7 +81,7 @@ JOIN
 
 
 /*
-计算 value 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行
+计算 value 列中有多少个连续低于 500 的值，并舍去 consecutive_count = 1 的行
 */
 WITH AllValues AS (
     SELECT 
