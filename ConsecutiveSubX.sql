@@ -250,7 +250,7 @@ ConsecutiveSubX AS (
         date,
         competition_name,
         CASE 
-            WHEN value < 600 THEN 1
+            WHEN value < 600 AND value > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
         ROW_NUMBER() OVER (ORDER BY date, FIELD(roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
@@ -565,7 +565,7 @@ ConsecutiveSubX AS (
         date,
         competition_name,
         CASE 
-            WHEN value < 600 THEN 1
+            WHEN value < 600 AND value > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
         ROW_NUMBER() OVER (ORDER BY date, FIELD(roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
