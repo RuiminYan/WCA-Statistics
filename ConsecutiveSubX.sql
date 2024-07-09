@@ -77,10 +77,7 @@ JOIN
 
 -- 平均连续数PR
 /*
-计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行。给出连续数的纪录历史。当前连续数大于等于以前的所有连续数，则说明这是一条纪录。使用变量逐步跟踪。
-*/
-/*
-计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
+当当前行的consecutive_count的值大于等于之前行的所有consecutive_count时，则保留这行，否则删除这行。使用变量逐步跟踪的方法。
 */
 WITH ConsecutiveSubX AS (
     SELECT 
