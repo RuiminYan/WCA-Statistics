@@ -4,6 +4,8 @@
 */
 WITH ConsecutiveSubX AS (
     SELECT 
+        r.personName,
+        r.personId,
         r.average,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name,
@@ -22,6 +24,8 @@ WITH ConsecutiveSubX AS (
 ),
 GroupedSubX AS (
     SELECT 
+        personName,
+        personId,
         average,
         date,
         name,
@@ -33,6 +37,8 @@ GroupedSubX AS (
 ),
 CountSubXGroups AS (
     SELECT 
+        personName,
+        personId,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -42,6 +48,8 @@ CountSubXGroups AS (
     WHERE 
         is_sub_X = 1
     GROUP BY 
+        personName,
+        personId,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -53,12 +61,14 @@ RankedCounts AS (
     FROM 
         CountSubXGroups
 )
-SELECT  DISTINCT
+SELECT DISTINCT
+    cg.personName,
     cg.consecutive_count,
     cg.start_date,
     csx1.name AS start_competition,
     cg.end_date,
-    csx2.name AS end_competition
+    csx2.name AS end_competition,
+    cg.personId
 FROM 
     (SELECT 
         *,
@@ -70,6 +80,8 @@ FROM
 JOIN 
     GroupedSubX csx1 ON cg.start_date = csx1.date AND cg.group_num = csx1.group_num
 JOIN 
+    GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num;
+
     GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num;
 
 
