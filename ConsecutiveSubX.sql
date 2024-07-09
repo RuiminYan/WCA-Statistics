@@ -191,7 +191,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value1 != 0
 
@@ -210,7 +210,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value2 != 0
 
@@ -229,7 +229,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value3 != 0
 
@@ -248,7 +248,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value4 != 0
 
@@ -267,7 +267,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value5 != 0
 ),
@@ -358,7 +358,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value1 != 0
 
@@ -377,7 +377,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value2 != 0
 
@@ -396,7 +396,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value3 != 0
 
@@ -415,7 +415,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value4 != 0
 
@@ -434,7 +434,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2019WANY36'
+        r.personId = '2016KOLA02'
         AND r.eventId = '333'
         AND r.value5 != 0
 ),
@@ -502,3 +502,4 @@ FROM
         consecutive_count >= current_max) cg
 ORDER BY
     start_date;
+
