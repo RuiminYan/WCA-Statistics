@@ -68,6 +68,7 @@ IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock'
 ```
 
 ## WR History
+在date递增的前提下，使用以下公式，是WR则输出1
 ```
 =IF(C2 <= MAX(INDIRECT("C1:C" & ROW()-1)), 1, "")
 =IF(C2 >= MAX(INDIRECT("C1:C" & ROW()-1)), 1, "")
