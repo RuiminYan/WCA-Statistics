@@ -168,38 +168,38 @@ WITH AllValues AS (
         AND r.eventId = '333'
         AND r.value5 != 0
 ),
-ConsecutiveSub600 AS (
+ConsecutiveSubX AS (
     SELECT 
         value,
         date,
         CASE 
-            WHEN value < 600 THEN 1
+            WHEN value < 500 THEN 1
             ELSE 0
-        END AS is_sub_600,
+        END AS is_sub_X,
         ROW_NUMBER() OVER (ORDER BY date, FIELD(roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
     FROM 
         AllValues
 ),
-GroupedSub600 AS (
+GroupedSubX AS (
     SELECT 
         value,
         date,
-        is_sub_600,
+        is_sub_X,
         row_num,
-        row_num - ROW_NUMBER() OVER (PARTITION BY is_sub_600 ORDER BY row_num) AS group_num
+        row_num - ROW_NUMBER() OVER (PARTITION BY is_sub_X ORDER BY row_num) AS group_num
     FROM 
-        ConsecutiveSub600
+        ConsecutiveSubX
 ),
-CountSub600Groups AS (
+CountSubXGroups AS (
     SELECT 
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
         COUNT(*) AS consecutive_count
     FROM 
-        GroupedSub600
+        GroupedSubX
     WHERE 
-        is_sub_600 = 1
+        is_sub_X = 1
     GROUP BY 
         group_num
     HAVING 
@@ -210,5 +210,5 @@ SELECT
     start_date,
     end_date
 FROM 
-    CountSub600Groups;
+    CountSubXGroups;
 
