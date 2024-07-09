@@ -19,9 +19,9 @@ ALTER TABLE Results ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
 eventId取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, pyram, skewb, sq1, 444bf, 555bf, 333mbf, 333ft, magic, mmagic, 333mbo，分别表示三阶魔方，二阶魔方，四阶魔方，五阶魔方，六阶魔方，七阶魔方，三盲，FMC，单手，魔表，五魔，斜转，SQ1，四盲，五盲，多盲，脚拧，八板，十二板，旧多盲
 
 轮次roundTypeId取值为:
-1或d, 表示第一轮 (即初赛)
-2或e, 表示第二轮 (即复赛)
-3或g, 表示第三轮 (即半决赛)
+1或d, 表示第一轮 (即初赛);
+2或e, 表示第二轮 (即复赛);
+3或g, 表示第三轮 (即半决赛);
 f或b或c, 表示第四轮 (即决赛)
 还有0表示资格轮次, 但这个很多年前的比赛才采用的，目前比赛已弃用.
 
@@ -65,6 +65,12 @@ eventId="333mbf", 均使用333mbf格式
 ## Events
 ```
 IN ('333', '222', '444', '555', '666', '777', '333bf', '333fm', '333oh', 'clock', 'minx', 'pyram', 'skewb', 'sq1', '444bf', '555bf', '333mbf', '333ft', 'magic', 'mmagic', '333mbo')
+```
+
+## WR History
+```
+=IF(C2 <= MAX(INDIRECT("C1:C" & ROW()-1)), 1, "")
+=IF(C2 >= MAX(INDIRECT("C1:C" & ROW()-1)), 1, "")
 ```
 
 ## Batch image link
