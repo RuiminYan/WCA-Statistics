@@ -30,7 +30,7 @@ ORDER BY
 
 /*
 单次成绩
-想用一列value输出所有value，先按日期排，然后按roundTypeId排，然后按value1,value2.value3,value4,value5排
+用一列value输出所有value，先按日期排，然后按roundTypeId排，然后按value1,value2.value3,value4,value5排
 */
 WITH AllValues AS (
     SELECT 
