@@ -1,7 +1,6 @@
 /*
 计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
 */
-
 WITH ConsecutiveSubX AS (
     SELECT 
         r.average,
