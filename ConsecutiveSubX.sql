@@ -148,10 +148,6 @@ JOIN
 单次连续数PR
 计算 value 列中有多少个连续低于 600 且大于0的值，并舍去 consecutive_count = 1 的行
 */
-/*
-单次连续数PR
-计算 value 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行
-*/
 WITH AllValues AS (
     SELECT 
         r.personName,
