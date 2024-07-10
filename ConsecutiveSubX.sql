@@ -146,7 +146,7 @@ JOIN
 
 /*
 单次连续数PR
-计算 value 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行
+计算 value 列中有多少个连续低于 600 且大于0的值，并舍去 consecutive_count = 1 的行
 */
 WITH AllValues AS (
     SELECT 
@@ -368,7 +368,7 @@ ORDER BY
 ------------------------------------------------------参考--------------------------------------------
 /*
 平均连续数
-计算 average 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
+计算 average 列中有多少个连续低于 600且大于0 的值，并舍去 consecutive_count = 1 的行，还需要给出每一个分组的开始日期和结束日期
 */
 WITH ConsecutiveSubX AS (
     SELECT 
@@ -463,7 +463,7 @@ JOIN
 
 /*
 单次连续数
-计算 value 列中有多少个连续低于 600 的值，并舍去 consecutive_count = 1 的行
+计算 value 列中有多少个连续低于 600 且大于0的值，并舍去 consecutive_count = 1 的行
 */
 WITH AllValues AS (
     SELECT 
