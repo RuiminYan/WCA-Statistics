@@ -16,8 +16,8 @@ WHERE
     r.personId = '2019WANY36'
     AND r.eventId = '333'
 ORDER BY 
-    date;
-
+    date,
+    FIELD(r.roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c');
 
 
 
