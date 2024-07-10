@@ -6,6 +6,7 @@ WITH ConsecutiveSubX AS (
     SELECT 
         r.personName,
         r.personId,
+        r.personCountryId,
         r.average,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name,
@@ -26,6 +27,7 @@ GroupedSubX AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         average,
         date,
         name,
@@ -39,6 +41,7 @@ CountSubXGroups AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -50,6 +53,7 @@ CountSubXGroups AS (
     GROUP BY 
         personName,
         personId,
+        personCountryId,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -68,7 +72,8 @@ SELECT DISTINCT
     csx1.name AS start_competition,
     cg.end_date,
     csx2.name AS end_competition,
-    cg.personId
+    cg.personId,
+    cg.personCountryId
 FROM 
     (SELECT 
         *,
@@ -144,6 +149,7 @@ JOIN
 
 
 
+
 /*
 单次连续数PR
 计算 value 列中有多少个连续低于 600 且大于0的值，并舍去 consecutive_count = 1 的行
@@ -156,7 +162,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '1' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -175,7 +182,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '2' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -194,7 +202,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '3' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -213,7 +222,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '4' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -232,7 +242,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '5' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -246,6 +257,7 @@ ConsecutiveSubX AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         value,
         date,
         competition_name,
@@ -261,6 +273,7 @@ GroupedSubX AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         value,
         date,
         competition_name,
@@ -274,6 +287,7 @@ CountSubXGroups AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -285,6 +299,7 @@ CountSubXGroups AS (
     GROUP BY 
         personName,
         personId,
+        personCountryId,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -303,7 +318,8 @@ SELECT DISTINCT
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.start_date AND group_num = cg.group_num LIMIT 1) AS start_competition,
     cg.end_date,
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.end_date AND group_num = cg.group_num LIMIT 1) AS end_competition,
-    cg.personId
+    cg.personId,
+    cg.personCountryId
 FROM 
     (SELECT 
         *,
@@ -314,6 +330,7 @@ FROM
         consecutive_count >= current_max) cg
 ORDER BY
     start_date;
+
 
 
 
@@ -358,6 +375,7 @@ WITH ConsecutiveSubX AS (
     SELECT 
         r.personName,
         r.personId,
+        r.personCountryId,
         r.average,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name,
@@ -378,6 +396,7 @@ GroupedSubX AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         average,
         date,
         name,
@@ -391,6 +410,7 @@ CountSubXGroups AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -402,6 +422,7 @@ CountSubXGroups AS (
     GROUP BY 
         personName,
         personId,
+        personCountryId,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -413,7 +434,8 @@ SELECT DISTINCT
     csx1.name AS start_competition,
     cg.end_date,
     csx2.name AS end_competition,
-    cg.personId
+    cg.personId,
+    cg.personCountryId
 FROM 
     CountSubXGroups cg
 JOIN 
@@ -422,6 +444,7 @@ JOIN
     GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num
 ORDER BY
     cg.start_date;
+
 
 
 
@@ -462,7 +485,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '1' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -481,7 +505,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '2' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -500,7 +525,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '3' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -519,7 +545,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '4' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -538,7 +565,8 @@ WITH AllValues AS (
         c.name AS competition_name,
         r.roundTypeId,
         '5' AS value_order,
-        r.personId
+        r.personId,
+        r.personCountryId
     FROM 
         Results r
     JOIN 
@@ -552,6 +580,7 @@ ConsecutiveSubX AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         value,
         date,
         competition_name,
@@ -567,6 +596,7 @@ GroupedSubX AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         value,
         date,
         competition_name,
@@ -580,11 +610,10 @@ CountSubXGroups AS (
     SELECT 
         personName,
         personId,
+        personCountryId,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
-        MIN(competition_name) AS start_competition,
-        MAX(competition_name) AS end_competition,
         COUNT(*) AS consecutive_count
     FROM 
         GroupedSubX
@@ -593,6 +622,7 @@ CountSubXGroups AS (
     GROUP BY 
         personName,
         personId,
+        personCountryId,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -611,7 +641,8 @@ SELECT DISTINCT
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.start_date AND group_num = cg.group_num LIMIT 1) AS start_competition,
     cg.end_date,
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.end_date AND group_num = cg.group_num LIMIT 1) AS end_competition,
-    cg.personId
+    cg.personId,
+    cg.personCountryId
 FROM 
     (SELECT 
         *,
@@ -622,6 +653,7 @@ FROM
         consecutive_count >= current_max) cg
 ORDER BY
     start_date;
+
 
 
 
