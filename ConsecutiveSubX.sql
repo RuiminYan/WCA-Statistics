@@ -365,7 +365,7 @@ WITH ConsecutiveSubX AS (
             WHEN r.average < 600 AND r.average > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
-        ROW_NUMBER() OVER (ORDER BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d')) AS row_num
+        ROW_NUMBER() OVER (ORDER BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d'), FIELD(r.roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c')) AS row_num
     FROM 
         Results r
     JOIN 
@@ -422,6 +422,7 @@ JOIN
     GroupedSubX csx2 ON cg.end_date = csx2.date AND cg.group_num = csx2.group_num
 ORDER BY
     cg.start_date;
+
 
 
 
