@@ -1,6 +1,6 @@
 /*
 平均连续数PR
-当前行的consecutive_count的值大于等于之前行的所有consecutive_count时，则保留这行，否则删除这行。使用变量逐步跟踪的方法。
+当前行的consecutive_count的值大于等于之前行的所有consecutive_count时，则保留这行，否则删除这行。使用变量逐步跟踪的方法。WCAID为2019WANY36
 */
 WITH ConsecutiveSubX AS (
     SELECT 
@@ -20,7 +20,7 @@ WITH ConsecutiveSubX AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
 ),
 GroupedSubX AS (
@@ -152,7 +152,7 @@ JOIN
 
 /*
 单次连续数PR
-计算 value 列中有多少个连续低于 600 且大于0的值，并舍去 consecutive_count = 1 的行
+计算 value 列中有多少个连续低于 600 且大于0的值，并舍去 consecutive_count = 1 的行。WCAID为2019WANY36
 */
 WITH AllValues AS (
     SELECT 
@@ -169,7 +169,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value1 != 0
 
@@ -189,7 +189,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value2 != 0
 
@@ -209,7 +209,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value3 != 0
 
@@ -229,7 +229,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value4 != 0
 
@@ -249,7 +249,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value5 != 0
 ),
@@ -389,7 +389,7 @@ WITH ConsecutiveSubX AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
 ),
 GroupedSubX AS (
@@ -492,7 +492,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value1 != 0
 
@@ -512,7 +512,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value2 != 0
 
@@ -532,7 +532,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value3 != 0
 
@@ -552,7 +552,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value4 != 0
 
@@ -572,7 +572,7 @@ WITH AllValues AS (
     JOIN 
         Competitions c ON r.competitionId = c.id
     WHERE 
-        r.personId = '2016KOLA02'
+        r.personId = '2019WANY36'
         AND r.eventId = '333'
         AND r.value5 != 0
 ),
