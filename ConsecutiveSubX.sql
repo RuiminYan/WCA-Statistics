@@ -1,6 +1,6 @@
 /*
 平均连续数PR
-当当前行的consecutive_count的值大于等于之前行的所有consecutive_count时，则保留这行，否则删除这行。使用变量逐步跟踪的方法。
+当前行的consecutive_count的值大于等于之前行的所有consecutive_count时，则保留这行，否则删除这行。使用变量逐步跟踪的方法。
 */
 WITH ConsecutiveSubX AS (
     SELECT 
