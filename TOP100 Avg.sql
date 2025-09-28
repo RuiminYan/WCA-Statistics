@@ -12,7 +12,7 @@ JOIN
 WHERE 
     r.eventId = '333'
     AND r.average > 0
-    AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') < '2025-01-01'
+    AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') <= '2025-01-01'
 ORDER BY 
     r.average ASC
 LIMIT 100;
@@ -35,7 +35,7 @@ FROM (
     JOIN wca_export.Competitions c ON r.competitionId = c.id
     WHERE r.eventId = '333'
       AND r.average > 0
-      AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') < '2024-08-25'
+      AND STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') <= '2024-08-25'
     ORDER BY r.average ASC
     LIMIT 100
 ) t
