@@ -28,7 +28,7 @@ FROM wca_export.scrambles
 WHERE eventId in ('333', '333oh', '333ft', '333fm')
 ORDER BY scrambleId
 LIMIT 10000, 10000;
-
+-- 偏移量10000
 
 
 -- 打乱按编号，加入行号和其他信息
