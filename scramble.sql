@@ -25,7 +25,7 @@ ORDER BY
 -- 打乱按编号
 SELECT scramble
 FROM wca_export.scrambles
-WHERE eventId in ('333', '333oh', '333ft', '333fm')
+WHERE eventId in ('333', '333bf', '333oh', '333ft', '333fm')
 ORDER BY scrambleId
 LIMIT 10000, 10000;
 -- 偏移量10000
@@ -39,7 +39,7 @@ SELECT
     isExtra,
     scramble
 FROM wca_export.scrambles, (SELECT @rownum := 0) AS r
-WHERE eventId in ('333', '333oh', '333ft', '333fm')
+WHERE eventId in ('333', '333bf', '333oh', '333ft', '333fm')
 ORDER BY scrambleId;
 
 
