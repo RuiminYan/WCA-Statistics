@@ -31,13 +31,20 @@ LIMIT 10000, 10000;
 -- 偏移量10000
 
 
--- 打乱,含信息
-SELECT 
-    scrambleId, competitionId, eventId, isExtra, scramble
-FROM wca_export.scrambles
-WHERE eventId in ('333', '333bf', '333oh', '333ft', '333fm')
-ORDER BY scrambleId;
-
+-- 打乱,含行号和信息
+SELECT
+    ROW_NUMBER() OVER (ORDER BY scrambleId) AS row_num,
+    scrambleId,
+    competitionId,
+    eventId,
+    isExtra,
+    scramble
+FROM
+    wca_export.scrambles
+WHERE
+    eventId IN ('333', '333bf', '333oh', '333ft', '333fm')
+ORDER BY
+    scrambleId;
 
 
 
