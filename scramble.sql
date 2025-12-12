@@ -33,11 +33,8 @@ LIMIT 10000, 10000;
 
 -- 打乱,含信息
 SELECT 
-    scrambleId,
-    competitionId,
-    eventId,
-    isExtra,
-    scramble
+    scrambleId, competitionId, eventId, isExtra, scramble
+FROM wca_export.scrambles
 WHERE eventId in ('333', '333bf', '333oh', '333ft', '333fm')
 ORDER BY scrambleId;
 
