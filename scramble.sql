@@ -23,17 +23,17 @@ ORDER BY
 
 
 -- 打乱
-SELECT scramble
+SELECT scrambleId, scramble
 FROM wca_export.scrambles
 WHERE eventId in ('333', '333bf', '333oh', '333ft', '333fm')
 ORDER BY scrambleId
-LIMIT 10000, 10000;
+-- LIMIT 10000, 10000;
 -- 偏移量10000
 
 
--- 打乱,含行号和信息
+-- 打乱和信息
 SELECT
-    ROW_NUMBER() OVER (ORDER BY scrambleId) AS row_num,
+-- 行号 ROW_NUMBER() OVER (ORDER BY scrambleId) AS row_num,
     scrambleId,
     competitionId,
     eventId,
