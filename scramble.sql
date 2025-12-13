@@ -42,7 +42,7 @@ FROM
     wca_export.scrambles
 WHERE
     eventId IN ('333', '333bf', '333oh', '333ft', '333fm')
--- LIMIT 10000, 10000; -- 偏移量10000
+    AND scrambleId > 5259372
 
 
 
