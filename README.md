@@ -1,3 +1,34 @@
+# 导入WCA数据库教程
+
+从 https://worldcubeassociation.org/export/results 下载 `sql.zip` , 解压后将其中的文件放到 `D:\WCA_export` , 打开**MySQL Workbench**. 
+
+在SCHEMAS中，右键wca_export并Drop Schema.
+
+点击三个堆叠圆柱符号，建立新的Schema.
+
+```
+Name: wca_export
+
+Charset/Collation: utf8mb4_unicode_ci (第二个)
+```
+
+Apply-Apply-Finish, 选中wca_export, 点击第二个图标打开SQL文件, Open, 点击闪电⚡️图标运行.
+
+Scheme-右键-Refresh All
+
+更新Google Sheet中的Comp表:
+```
+SELECT 
+  name, 
+  cellName, 
+  countryId, 
+  STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date
+FROM 
+  wca_export.competitions;
+```
+  
+全选输出, 复制到CubeAlgWB的Comp表, 必须下拉flag！！再次复制到WCADB的Comp表.
+
 # WCA-Statistics
 Some interesting WCA statistics 一些WCA趣味数据统计
 
