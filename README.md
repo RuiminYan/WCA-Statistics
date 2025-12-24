@@ -1,6 +1,10 @@
 # WCA-Statistics
 Some interesting WCA statistics 一些WCA趣味数据统计
 
+## bug
+
+id=2077041的多盲打乱末尾多余换行，而且不止这个
+
 ## 添加环境变量
 
 如果想直接输入 mysql 就能用，那就配置一下：
