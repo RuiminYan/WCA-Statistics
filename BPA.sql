@@ -3,14 +3,14 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         r.value1,
         r.value2,
         r.value3,
         r.value4,
         r.value5,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         -- 计算 bpa
@@ -22,7 +22,7 @@ WITH RankedResults AS (
             WHEN r.value4 <= 0 THEN ROUND((r.value1 + r.value2 + r.value3) / 3, 0)
             ELSE ROUND((r.value1 + r.value2 + r.value3 + r.value4 - GREATEST(r.value1, r.value2, r.value3, r.value4)) / 3, 0)
         END AS bpa,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
             CASE 
                 WHEN (r.value1 <= 0 AND r.value2 <= 0) OR (r.value1 <= 0 AND r.value3 <= 0) OR (r.value1 <= 0 AND r.value4 <= 0) OR (r.value2 <= 0 AND r.value3 <= 0) OR (r.value2 <= 0 AND r.value4 <= 0) OR (r.value3 <= 0 AND r.value4 <= 0) THEN NULL
@@ -36,9 +36,9 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '333' AND
+        r.event_id = '333' AND
         CASE 
             WHEN (r.value1 <= 0 AND r.value2 <= 0) OR (r.value1 <= 0 AND r.value3 <= 0) OR (r.value1 <= 0 AND r.value4 <= 0) OR (r.value2 <= 0 AND r.value3 <= 0) OR (r.value2 <= 0 AND r.value4 <= 0) OR (r.value3 <= 0 AND r.value4 <= 0) THEN NULL
             WHEN r.value1 <= 0 THEN ROUND((r.value2 + r.value3 + r.value4) / 3, 0) 
@@ -49,7 +49,7 @@ WITH RankedResults AS (
         END > 0
 )
 SELECT
-    personName,
+    person_name,
     bpa,
     date,
     name,
@@ -58,9 +58,9 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId,
-    regionalAverageRecord
+    person_id,
+    person_country_id,
+    regional_average_record
 FROM
     RankedResults
 WHERE
@@ -70,9 +70,9 @@ WHERE
 SET @min_bpa = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     bpa,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -80,11 +80,11 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM (
     SELECT
-        personName,
+        person_name,
         bpa,
         date,
         name,
@@ -93,9 +93,9 @@ FROM (
         value3,
         value4,
         value5,
-        personId,
-        personCountryId,
-        regionalAverageRecord,
+        person_id,
+        person_country_id,
+        regional_average_record,
         @min_bpa := LEAST(@min_bpa, bpa) AS current_min_bpa
     FROM
         FilteredResults

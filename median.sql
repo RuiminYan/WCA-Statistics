@@ -4,7 +4,7 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         -- 计算 median
         CASE
             -- 如果5个值都大于0，返回排序后的第3个值
@@ -58,11 +58,11 @@ WITH RankedResults AS (
         r.value3,
         r.value4,
         r.value5,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
             CASE
                 -- 如果5个值都大于0，返回排序后的第3个值
@@ -115,9 +115,9 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '333' AND
+        r.event_id = '333' AND
         CASE
             -- 如果5个值都大于0，返回排序后的第3个值
             WHEN r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 AND r.value4 > 0 AND r.value5 > 0 THEN
@@ -167,9 +167,9 @@ WITH RankedResults AS (
         END > 0
 )
 SELECT
-    personName,
+    person_name,
     median,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -177,8 +177,8 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -188,7 +188,7 @@ WHERE
 SET @min_median = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     median,
     NULL,
     date,
@@ -198,14 +198,14 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId,
-    regionalAverageRecord
+    person_id,
+    person_country_id,
+    regional_average_record
 FROM (
     SELECT
-        personName,
+        person_name,
         median,
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
@@ -213,8 +213,8 @@ FROM (
         value3,
         value4,
         value5,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_median := LEAST(@min_median, median) AS current_min_median
     FROM
         FilteredResults
@@ -250,7 +250,7 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         -- 计算中位数
         CASE
             -- 如果3个值都大于0，返回排序后的第2个值
@@ -272,11 +272,11 @@ WITH RankedResults AS (
         r.value1,
         r.value2,
         r.value3,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
             CASE
                 -- 如果3个值都大于0，返回排序后的第2个值
@@ -299,9 +299,9 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '666' AND
+        r.event_id = '666' AND
         CASE
             -- 如果3个值都大于0，返回排序后的第2个值
             WHEN r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 THEN
@@ -321,16 +321,16 @@ WITH RankedResults AS (
         END > 0
 )
 SELECT
-    personName,
+    person_name,
     median,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
     value2,
     value3,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -340,7 +340,7 @@ WHERE
 SET @min_median = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     median,
     NULL,
     date,
@@ -350,21 +350,21 @@ SELECT
     value3,
     NULL,
     NULL,
-    personId,
-    personCountryId,
-    regionalAverageRecord
+    person_id,
+    person_country_id,
+    regional_average_record
 FROM (
     SELECT
-        personName,
+        person_name,
         median,
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
         value2,
         value3,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_median := LEAST(@min_median, median) AS current_min_median
     FROM
         FilteredResults

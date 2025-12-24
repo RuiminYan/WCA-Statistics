@@ -4,9 +4,9 @@
 */
 WITH ConsecutiveSubX AS (
     SELECT 
-        r.personName,
-        r.personId,
-        r.personCountryId,
+        r.person_name,
+        r.person_id,
+        r.person_country_id,
         r.average,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name,
@@ -14,20 +14,20 @@ WITH ConsecutiveSubX AS (
             WHEN r.average < 600 AND r.average > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
-        ROW_NUMBER() OVER (ORDER BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d'), FIELD(r.roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c')) AS row_num
+        ROW_NUMBER() OVER (ORDER BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d'), FIELD(r.round_type_id, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c')) AS row_num
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
 ),
 GroupedSubX AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         average,
         date,
         name,
@@ -39,9 +39,9 @@ GroupedSubX AS (
 ),
 CountSubXGroups AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -51,9 +51,9 @@ CountSubXGroups AS (
     WHERE 
         is_sub_X = 1
     GROUP BY 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -66,14 +66,14 @@ RankedCounts AS (
         CountSubXGroups
 )
 SELECT DISTINCT
-    cg.personName,
+    cg.person_name,
     cg.consecutive_count,
     cg.start_date,
     csx1.name AS start_competition,
     cg.end_date,
     csx2.name AS end_competition,
-    cg.personId,
-    cg.personCountryId
+    cg.person_id,
+    cg.person_country_id
 FROM 
     (SELECT 
         *,
@@ -156,108 +156,108 @@ JOIN
 */
 WITH AllValues AS (
     SELECT 
-        r.personName,
+        r.person_name,
         r.value1 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '1' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value1 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value2 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '2' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value2 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value3 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '3' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value3 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value4 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '4' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value4 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value5 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '5' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value5 != 0
 ),
 ConsecutiveSubX AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         value,
         date,
         competition_name,
@@ -265,15 +265,15 @@ ConsecutiveSubX AS (
             WHEN value < 600 AND value > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
-        ROW_NUMBER() OVER (ORDER BY date, FIELD(roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
+        ROW_NUMBER() OVER (ORDER BY date, FIELD(round_type_id, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
     FROM 
         AllValues
 ),
 GroupedSubX AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         value,
         date,
         competition_name,
@@ -285,9 +285,9 @@ GroupedSubX AS (
 ),
 CountSubXGroups AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -297,9 +297,9 @@ CountSubXGroups AS (
     WHERE 
         is_sub_X = 1
     GROUP BY 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -312,14 +312,14 @@ RankedCounts AS (
         CountSubXGroups
 )
 SELECT DISTINCT
-    cg.personName,
+    cg.person_name,
     cg.consecutive_count,
     cg.start_date,
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.start_date AND group_num = cg.group_num LIMIT 1) AS start_competition,
     cg.end_date,
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.end_date AND group_num = cg.group_num LIMIT 1) AS end_competition,
-    cg.personId,
-    cg.personCountryId
+    cg.person_id,
+    cg.person_country_id
 FROM 
     (SELECT 
         *,
@@ -373,9 +373,9 @@ ORDER BY
 */
 WITH ConsecutiveSubX AS (
     SELECT 
-        r.personName,
-        r.personId,
-        r.personCountryId,
+        r.person_name,
+        r.person_id,
+        r.person_country_id,
         r.average,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name,
@@ -383,20 +383,20 @@ WITH ConsecutiveSubX AS (
             WHEN r.average < 600 AND r.average > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
-        ROW_NUMBER() OVER (ORDER BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d'), FIELD(r.roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c')) AS row_num
+        ROW_NUMBER() OVER (ORDER BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d'), FIELD(r.round_type_id, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c')) AS row_num
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
 ),
 GroupedSubX AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         average,
         date,
         name,
@@ -408,9 +408,9 @@ GroupedSubX AS (
 ),
 CountSubXGroups AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -420,22 +420,22 @@ CountSubXGroups AS (
     WHERE 
         is_sub_X = 1
     GROUP BY 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num
     HAVING 
         COUNT(*) > 1
 )
 SELECT DISTINCT
-    cg.personName,
+    cg.person_name,
     cg.consecutive_count,
     cg.start_date,
     csx1.name AS start_competition,
     cg.end_date,
     csx2.name AS end_competition,
-    cg.personId,
-    cg.personCountryId
+    cg.person_id,
+    cg.person_country_id
 FROM 
     CountSubXGroups cg
 JOIN 
@@ -479,108 +479,108 @@ ORDER BY
 */
 WITH AllValues AS (
     SELECT 
-        r.personName,
+        r.person_name,
         r.value1 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '1' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value1 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value2 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '2' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value2 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value3 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '3' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value3 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value4 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '4' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value4 != 0
 
     UNION ALL
 
     SELECT 
-        r.personName,
+        r.person_name,
         r.value5 AS value,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
         c.name AS competition_name,
-        r.roundTypeId,
+        r.round_type_id,
         '5' AS value_order,
-        r.personId,
-        r.personCountryId
+        r.person_id,
+        r.person_country_id
     FROM 
         Results r
     JOIN 
-        Competitions c ON r.competitionId = c.id
+        Competitions c ON r.competition_id = c.id
     WHERE 
-        r.personId = '2019WANY36'
-        AND r.eventId = '333'
+        r.person_id = '2019WANY36'
+        AND r.event_id = '333'
         AND r.value5 != 0
 ),
 ConsecutiveSubX AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         value,
         date,
         competition_name,
@@ -588,15 +588,15 @@ ConsecutiveSubX AS (
             WHEN value < 600 AND value > 0 THEN 1
             ELSE 0
         END AS is_sub_X,
-        ROW_NUMBER() OVER (ORDER BY date, FIELD(roundTypeId, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
+        ROW_NUMBER() OVER (ORDER BY date, FIELD(round_type_id, '0', '1', 'd', '2', 'e', '3', 'g', 'f', 'b', 'c'), value_order) AS row_num
     FROM 
         AllValues
 ),
 GroupedSubX AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         value,
         date,
         competition_name,
@@ -608,9 +608,9 @@ GroupedSubX AS (
 ),
 CountSubXGroups AS (
     SELECT 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num,
         MIN(date) AS start_date,
         MAX(date) AS end_date,
@@ -620,9 +620,9 @@ CountSubXGroups AS (
     WHERE 
         is_sub_X = 1
     GROUP BY 
-        personName,
-        personId,
-        personCountryId,
+        person_name,
+        person_id,
+        person_country_id,
         group_num
     HAVING 
         COUNT(*) > 1
@@ -635,14 +635,14 @@ RankedCounts AS (
         CountSubXGroups
 )
 SELECT DISTINCT
-    cg.personName,
+    cg.person_name,
     cg.consecutive_count,
     cg.start_date,
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.start_date AND group_num = cg.group_num LIMIT 1) AS start_competition,
     cg.end_date,
     (SELECT competition_name FROM GroupedSubX WHERE date = cg.end_date AND group_num = cg.group_num LIMIT 1) AS end_competition,
-    cg.personId,
-    cg.personCountryId
+    cg.person_id,
+    cg.person_country_id
 FROM 
     (SELECT 
         *,

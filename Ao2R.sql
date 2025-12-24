@@ -1,14 +1,14 @@
 WITH selected_persons AS (
-    SELECT DISTINCT personName, personId, personCountryId, average
+    SELECT DISTINCT person_name, person_id, person_country_id, average
     FROM (
-        SELECT r.personName, r.personId, r.personCountryId, r.average
+        SELECT r.person_name, r.person_id, r.person_country_id, r.average
         FROM Results r
         JOIN (
-            SELECT personName, MIN(average) AS min_average
+            SELECT person_name, MIN(average) AS min_average
             FROM Results
-            WHERE eventId = '333' AND average > 0
-            GROUP BY personName
-        ) sub ON r.personName = sub.personName AND r.average = sub.min_average
+            WHERE event_id = '333' AND average > 0
+            GROUP BY person_name
+        ) sub ON r.person_name = sub.person_name AND r.average = sub.min_average
         ORDER BY r.average
     ) AS sorted_results
     ORDER BY average
@@ -16,29 +16,29 @@ WITH selected_persons AS (
 ),
 temp AS (
     SELECT
-        r.competitionId,
-        r.personName,
-        r.personId,
-        r.personCountryId,
-        MAX(CASE WHEN r.roundTypeId IN ('1', 'd') THEN r.average END) AS R1,
-        MAX(CASE WHEN r.roundTypeId = 'f' THEN r.average END) AS Fi,
+        r.competition_id,
+        r.person_name,
+        r.person_id,
+        r.person_country_id,
+        MAX(CASE WHEN r.round_type_id IN ('1', 'd') THEN r.average END) AS R1,
+        MAX(CASE WHEN r.round_type_id = 'f' THEN r.average END) AS Fi,
         COUNT(r.average) AS num_averages
     FROM
         results r
     WHERE
-        r.eventId = '333'
-        AND r.personId IN (SELECT personId FROM selected_persons)
+        r.event_id = '333'
+        AND r.person_id IN (SELECT person_id FROM selected_persons)
     GROUP BY
-        r.competitionId, r.personName, r.personId, r.personCountryId
+        r.competition_id, r.person_name, r.person_id, r.person_country_id
     HAVING
         num_averages = 2 AND R1 > 0  -- 排除 R1 为 0 的行
 ),
 Ao2R AS (
     SELECT
-        competitionId,
-        personName,
-        personId,
-        personCountryId,
+        competition_id,
+        person_name,
+        person_id,
+        person_country_id,
         CASE
             WHEN R1 <= 0 OR Fi <= 0 THEN -1
             ELSE ROUND((R1 + Fi) / 2)
@@ -49,7 +49,7 @@ Ao2R AS (
         temp
 )
 SELECT
-    Ao2R.personName,
+    Ao2R.person_name,
     Ao2R.Ao2R,
     NULL,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
@@ -59,12 +59,12 @@ SELECT
     NULL,
     NULL,
     NULL,
-    Ao2R.personId,
-    Ao2R.personCountryId
+    Ao2R.person_id,
+    Ao2R.person_country_id
 FROM
     Ao2R
 JOIN
-    competitions c ON Ao2R.competitionId = c.id
+    competitions c ON Ao2R.competition_id = c.id
 WHERE
     Ao2R.Ao2R > 0
 ORDER BY

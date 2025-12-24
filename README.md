@@ -45,8 +45,8 @@ Scheme-右键-Refresh All
 ```
 SELECT 
   name, 
-  cellName, 
-  countryId, 
+  cell_name, 
+  country_id, 
   STR_TO_DATE(CONCAT(year, '-', month, '-', day), '%Y-%m-%d') AS date
 FROM 
   wca_export.competitions;
@@ -63,29 +63,31 @@ ALTER TABLE Results ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
 ## Prompt
 使用Windows11, 用户名CubeRoot. 用MySQL Workbench 8.0. 数据库wca_export, 是世界魔方协会的官方数据库，有
 
-表格competitions的列名有：id, name, cityName, countryId, information, year, month, day, endMonth, endDay, cancelled, eventSpecs, wcaDelegate, organiser, venue, venueAddress, venueDetails, external_website, cellName, latitude, longitude. 其中year, month, day表示比赛开始的年, 月, 日, endMonth, endDay表示比赛结束的月, 日
+表格competitions的列名有：`id`, `name`, `city_name`, `country_id`, `information`, `year`, `month`, `day`, `end_month`, `end_day`, `cancelled`, `event_specs`, `wca_delegate`, `organiser`, `venue`, `venue_address`, `venue_details`, `external_website`, `cell_name`, `latitude`, `longitude` . 其中year, month, day表示比赛开始的年, 月, 日, endMonth, endDay表示比赛结束的月, 日
 
-表格results的列名有：competitionId, eventId, roundTypeId, pos, best, average, personName, personId, personCountryId, formatId, value1, value2, value3, value4, value5, regionalSingleRecord, regionalAverageRecord, id.
+表格results的列名有：`competition_id`, `event_id`, `round_type_id`, `pos`, `best`, `average`, `person_name`, `person_id`, `person_country_id`, `format_id`, `value1`, `value2`, `value3`, `value4`, `value5`, `regional_single_record`, `regional_average_record`, `id`
 
-eventId取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, pyram, skewb, sq1, 444bf, 555bf, 333mbf, 333ft, magic, mmagic, 333mbo，分别表示三阶魔方，二阶魔方，四阶魔方，五阶魔方，六阶魔方，七阶魔方，三盲，FMC，单手，魔表，五魔，斜转，SQ1，四盲，五盲，多盲，脚拧，八板，十二板，旧多盲
+表格scrambles的列名有：id,competition_id,event_id,round_type_id,group_id,is_extra,scramble_num,scramble
 
-轮次roundTypeId取值为:
+event_id取值为333, 222, 444, 555, 666, 777, 333bf, 333fm, 333oh, clock, minx, pyram, skewb, sq1, 444bf, 555bf, 333mbf, 333ft, magic, mmagic, 333mbo，分别表示三阶魔方，二阶魔方，四阶魔方，五阶魔方，六阶魔方，七阶魔方，三盲，FMC，单手，魔表，五魔，斜转，SQ1，四盲，五盲，多盲，脚拧，八板，十二板，旧多盲
+
+轮次round_type_id取值为:
 1或d, 表示第一轮 (即初赛);
 2或e, 表示第二轮 (即复赛);
 3或g, 表示第三轮 (即半决赛);
 f或b或c, 表示第四轮 (即决赛)
 还有0表示资格轮次, 但这个很多年前的比赛才采用的，目前比赛已弃用.
 
-输出表的表头有NULL AS flag, personName, value, NULL AS nothing, date, name, value1, value2, value3, value4, value5, personId, personCountryId.
+输出表的表头有NULL AS flag, person_name, value, NULL AS nothing, date, name, value1, value2, value3, value4, value5, person_id, person_country_id.
 
 
 
 The format "multi" is for old and new multi-blind, encoding the time as well as the number of cubes attempted and solved. This is a decimal value, which can be interpreted ("decoded") as follows:
 
-eventId="333mbf", 均使用333mbf格式
+event_id="333mbf", 均使用333mbf格式
 
-由于历史遗留问题，在eventId="333mbo"中，每一行中value1~3可能既有333mbf还有333mbo的格式，在计算平均的时候，需要先将333mbf转化为333mbo格式，然后再算. 给出完整代码.
-注意：eventId只使用"333mbo";
+由于历史遗留问题，在event_id="333mbo"中，每一行中value1~3可能既有333mbf还有333mbo的格式，在计算平均的时候，需要先将333mbf转化为333mbo格式，然后再算. 给出完整代码.
+注意：event_id只使用"333mbo";
 333mbf转换为333mbo时需要用的公式：SS = DD - MM, AA = 99 - DD + MM * 2;
 333mbo格式为1SSAATTTTT，也就是说共10位，而且最高位一定是1;
 333mbf格式为DDTTTTTMM，也就是说共9位

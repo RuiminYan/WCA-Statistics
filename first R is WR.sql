@@ -2,49 +2,49 @@
 
 WITH all_records AS (
   SELECT
-    personId,
-    personName,
-    eventId,
-    competitionId,
+    person_id,
+    person_name,
+    event_id,
+    competition_id,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     'single' AS record_type,
     best AS result,
-    regionalSingleRecord AS record
+    regional_single_record AS record
   FROM Results r
-  JOIN Competitions c ON r.competitionId = c.id
-  WHERE regionalSingleRecord IS NOT NULL
+  JOIN Competitions c ON r.competition_id = c.id
+  WHERE regional_single_record IS NOT NULL
 
   UNION ALL
 
   SELECT
-    personId,
-    personName,
-    eventId,
-    competitionId,
+    person_id,
+    person_name,
+    event_id,
+    competition_id,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     'average' AS record_type,
     average AS result,
-    regionalAverageRecord AS record
+    regional_average_record AS record
   FROM Results r
-  JOIN Competitions c ON r.competitionId = c.id
-  WHERE regionalAverageRecord IS NOT NULL
+  JOIN Competitions c ON r.competition_id = c.id
+  WHERE regional_average_record IS NOT NULL
 ),
 first_record_per_person AS (
   SELECT *
   FROM (
     SELECT *,
-           ROW_NUMBER() OVER (PARTITION BY personId ORDER BY date) AS rn
+           ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY date) AS rn
     FROM all_records
   ) ranked
   WHERE rn = 1
 )
 SELECT
-  personName,
-  personId,
-  eventId,
+  person_name,
+  person_id,
+  event_id,
   record_type,
   result,
-  competitionId,
+  competition_id,
   date,
   record
 FROM first_record_per_person

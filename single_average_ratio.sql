@@ -4,18 +4,18 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         r.value1,
         r.value2,
         r.value3,
         r.value4,
         r.value5,
         r.average,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
             ELSE ROUND(r.best / r.average, 2) 
@@ -31,18 +31,18 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '333' AND 
+        r.event_id = '333' AND 
         CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.value4 <= 0 OR r.value5 <= 0 THEN NULL
             ELSE ROUND(r.best / r.average, 2) 
         END IS NOT NULL
 )
 SELECT
-    personName,
+    person_name,
     single_average_ratio,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -50,8 +50,8 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -61,7 +61,7 @@ WHERE
 SET @min_single_average_ratio = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     single_average_ratio,
     NULL,
     date,
@@ -71,14 +71,14 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId,
-    regionalAverageRecord
+    person_id,
+    person_country_id,
+    regional_average_record
 FROM (
     SELECT
-        personName,
+        person_name,
         single_average_ratio,
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
@@ -86,8 +86,8 @@ FROM (
         value3,
         value4,
         value5,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_single_average_ratio := LEAST(@min_single_average_ratio, single_average_ratio) AS current_min_single_average_ratio
     FROM
         FilteredResults
@@ -122,16 +122,16 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         r.value1,
         r.value2,
         r.value3,
         r.average,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.average = 0 THEN NULL
             ELSE ROUND(r.best / r.average, 2) 
@@ -147,25 +147,25 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '666' AND 
+        r.event_id = '666' AND 
         CASE 
             WHEN r.value1 <= 0 OR r.value2 <= 0 OR r.value3 <= 0 OR r.average = 0 THEN NULL
             ELSE ROUND(r.best / r.average, 2) 
         END IS NOT NULL
 )
 SELECT
-    personName,
+    person_name,
     single_average_ratio,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
     value2,
     value3,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -175,7 +175,7 @@ WHERE
 SET @min_single_average_ratio = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     single_average_ratio,
     NULL,
     date,
@@ -185,21 +185,21 @@ SELECT
     value3,
     NULL,
     NULL,
-    personId,
-    personCountryId,
-    regionalAverageRecord
+    person_id,
+    person_country_id,
+    regional_average_record
 FROM (
     SELECT
-        personName,
+        person_name,
         single_average_ratio,
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
         value2,
         value3,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_single_average_ratio := LEAST(@min_single_average_ratio, single_average_ratio) AS current_min_single_average_ratio
     FROM
         FilteredResults

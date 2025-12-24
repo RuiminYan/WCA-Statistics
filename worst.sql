@@ -4,7 +4,7 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         -- 计算 worst
         CASE 
             WHEN LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) <= 0 THEN NULL
@@ -15,11 +15,11 @@ WITH RankedResults AS (
         r.value3,
         r.value4,
         r.value5,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
             CASE 
                 WHEN LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) <= 0 THEN NULL
@@ -29,18 +29,18 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '333' AND
+        r.event_id = '333' AND
         CASE 
             WHEN LEAST(r.value1, r.value2, r.value3, r.value4, r.value5) <= 0 THEN NULL
             ELSE GREATEST(r.value1, r.value2, r.value3, r.value4, r.value5)
         END > 0
 )
 SELECT
-    personName,
+    person_name,
     worst,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -48,8 +48,8 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -59,9 +59,9 @@ WHERE
 SET @min_worst = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     worst,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -69,13 +69,13 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM (
     SELECT
-        personName,
+        person_name,
         worst,
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
@@ -83,8 +83,8 @@ FROM (
         value3,
         value4,
         value5,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_worst := LEAST(@min_worst, worst) AS current_min_worst
     FROM
         FilteredResults
@@ -117,7 +117,7 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         -- 计算 worst
         CASE 
             WHEN LEAST(r.value1, r.value2, r.value3) <= 0 THEN NULL
@@ -126,11 +126,11 @@ WITH RankedResults AS (
         r.value1,
         r.value2,
         r.value3,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY 
             CASE 
                 WHEN LEAST(r.value1, r.value2, r.value3) <= 0 THEN NULL
@@ -140,25 +140,25 @@ WITH RankedResults AS (
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '666' AND
+        r.event_id = '666' AND
         CASE 
             WHEN LEAST(r.value1, r.value2, r.value3) <= 0 THEN NULL
             ELSE GREATEST(r.value1, r.value2, r.value3)
         END > 0
 )
 SELECT
-    personName,
+    person_name,
     worst,
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
     value2,
     value3,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -168,7 +168,7 @@ WHERE
 SET @min_worst = 9999999999; -- 假设一个初始的最大值
 
 SELECT
-    personName,
+    person_name,
     worst,
     NULL,
     date,
@@ -178,21 +178,21 @@ SELECT
     value3,
     NULL,
     NULL,
-    personId,
-    personCountryId,
-	regionalAverageRecord
+    person_id,
+    person_country_id,
+	regional_average_record
 FROM (
     SELECT
-        personName,
+        person_name,
         worst,
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
         value2,
         value3,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_worst := LEAST(@min_worst, worst) AS current_min_worst
     FROM
         FilteredResults

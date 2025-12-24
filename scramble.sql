@@ -1,7 +1,7 @@
 -- 3x3 Scramble by Movecount
 -- HTM
-select length(scramble)-length(replace(scramble,' ',''))+1 HTM, scramble, eventId, competitionId, scrambleNum, isExtra from Scrambles
-where eventId in ('333', '333oh', '333ft', '333fm')
+select length(scramble)-length(replace(scramble,' ',''))+1 HTM, scramble, event_id, competition_id, scramble_num, is_extra from Scrambles
+where event_id in ('333', '333oh', '333ft', '333fm')
 order by  HTM -- DESC
 
 -- QTM
@@ -9,14 +9,14 @@ SELECT
     (LENGTH(scramble) - LENGTH(REPLACE(scramble, ' ', '')) + 1) +
     (LENGTH(scramble) - LENGTH(REPLACE(scramble, '2', ''))) AS QTM,
     scramble,
-    eventId,
-    competitionId,
-    scrambleNum,
-    isExtra
+    event_id,
+    competition_id,
+    scramble_num,
+    is_extra
 FROM
     Scrambles
 WHERE
-    eventId IN ('333', '333oh', '333ft', '333fm')
+    event_id IN ('333', '333oh', '333ft', '333fm')
 ORDER BY
     QTM;  -- DESC
 
@@ -25,7 +25,7 @@ ORDER BY
 -- 打乱
 SELECT scrambleId, scramble
 FROM wca_export.scrambles
-WHERE eventId in ('333', '333bf', '333oh', '333ft', '333fm')
+WHERE event_id in ('333', '333bf', '333oh', '333ft', '333fm')
 -- LIMIT 10000, 10000; -- 偏移量10000
 
 
@@ -35,13 +35,13 @@ SELECT
 -- 行号 ROW_NUMBER() OVER (ORDER BY scrambleId) AS row_num,
     scrambleId,
     scramble,
-    competitionId,
-    eventId,
-    isExtra
+    competition_id,
+    event_id,
+    is_extra
 FROM
     wca_export.scrambles
 WHERE
-    eventId IN ('333', '333bf', '333oh', '333ft', '333fm')
+    event_id IN ('333', '333bf', '333oh', '333ft', '333fm')
     AND scrambleId > 5259372
 
 

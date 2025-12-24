@@ -1,8 +1,8 @@
 -- WR
 SELECT
-	r.personName,
+	r.person_name,
     r.average AS average,
-    r.regionalAverageRecord,
+    r.regional_average_record,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
 	r.value1,
@@ -10,21 +10,21 @@ SELECT
 	r.value3,
 	r.value4,
 	r.value5,
-	    r.personId,
-    r.personCountryId
+	    r.person_id,
+    r.person_country_id
 FROM
     results r
 JOIN
-    competitions c ON r.competitionId = c.id
+    competitions c ON r.competition_id = c.id
 WHERE
-    r.eventId = '333ft' AND r.regionalAverageRecord = "WR"
+    r.event_id = '333ft' AND r.regional_average_record = "WR"
 ORDER BY
     date;
 
 
 -- magic, mmagic, 333ft ao5   有错误，不再使用
 SELECT
-	r.personName,
+	r.person_name,
     -- 计算去掉最大值和最小值后的平均值
     CASE -- 如果value中至少有2个≤0，则average= -1
         WHEN (
@@ -53,14 +53,14 @@ SELECT
     r.value3,
     r.value4,
     r.value5,
-	    r.personId,
-    r.personCountryId
+	    r.person_id,
+    r.person_country_id
 FROM
     results r
 JOIN
-    competitions c ON r.competitionId = c.id
+    competitions c ON r.competition_id = c.id
 WHERE
-    r.eventId = 'magic'
+    r.event_id = 'magic'
     AND r.value4 != 0
     AND r.value5 != 0
 HAVING
@@ -96,7 +96,7 @@ ORDER BY
 
 -- 333ft mo3     有错误，不再使用
 SELECT
-	r.personName,
+	r.person_name,
     ROUND((r.value1 + r.value2 + r.value3) / 3, 0) AS average,
     NULL AS nothing,
 	STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
@@ -106,14 +106,14 @@ SELECT
     r.value3,
 	NULL AS nothing,
 	NULL AS nothing,
-	    r.personId,
-    r.personCountryId
+	    r.person_id,
+    r.person_country_id
 FROM
     results r
 JOIN
-    competitions c ON r.competitionId = c.id
+    competitions c ON r.competition_id = c.id
 WHERE
-    r.eventId = '333ft' 
+    r.event_id = '333ft' 
     AND r.value1 > 0 
     AND r.value2 > 0 
     AND r.value3 > 0
@@ -129,9 +129,9 @@ ORDER BY
 
 --- 333mbf mo3
 SELECT
-    r.personName,
-    r.personId,
-    r.personCountryId,
+    r.person_name,
+    r.person_id,
+    r.person_country_id,
     -- 计算 DD, TTTTT, MM 的平均值，并将其合并成新的 DDTTTTTMM 格式的 average
     CONCAT(
         LPAD(ROUND((CAST(SUBSTRING(r.value1, 1, 2) AS UNSIGNED) + 
@@ -154,14 +154,14 @@ SELECT
 FROM
     results r
 JOIN
-    competitions c ON r.competitionId = c.id
+    competitions c ON r.competition_id = c.id
 WHERE
-    r.eventId = '333mbf' 
+    r.event_id = '333mbf' 
     AND r.value1 > 0 
     AND r.value2 > 0 
     AND r.value3 > 0
 GROUP BY
-    r.personName, r.personId, r.personCountryId, c.year, c.month, c.day, c.name,
+    r.person_name, r.person_id, r.person_country_id, c.year, c.month, c.day, c.name,
     r.value1, r.value2, r.value3
 ORDER BY
     date;
@@ -174,11 +174,11 @@ ORDER BY
 
 -- 333mbo mo3. 查询后，自己算平均
 SELECT
-    r.personName,
-    r.personId,
-    r.personCountryId,
+    r.person_name,
+    r.person_id,
+    r.person_country_id,
     r.best AS single,
-    r.regionalSingleRecord,
+    r.regional_single_record,
     STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
     c.name,
     r.value1,
@@ -187,8 +187,8 @@ SELECT
 FROM
     results r
 JOIN
-    competitions c ON r.competitionId = c.id
+    competitions c ON r.competition_id = c.id
 WHERE
-    r.eventId = '333mbo' AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 
+    r.event_id = '333mbo' AND r.value1 > 0 AND r.value2 > 0 AND r.value3 > 0 
 ORDER BY
     date;

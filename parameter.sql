@@ -13,26 +13,26 @@ variance, worst, median, bpa, wpa, mo5, best_counting, worst_counting, best_aver
 -- Step 1: Create a temporary table
 CREATE TEMPORARY TABLE TempResults AS
 SELECT 
-  r.personName,
+  r.person_name,
   r.best,
   r.average,
-  r.regionalAverageRecord,
-  r.competitionId,
+  r.regional_average_record,
+  r.competition_id,
   r.value1, 
   r.value2, 
   r.value3, 
   r.value4, 
   r.value5,
-  r.personId,
-  r.personCountryId
+  r.person_id,
+  r.person_country_id
 FROM 
   Results r
 WHERE 
-  r.eventId = '333';
+  r.event_id = '333';
 
 -- Step 2: Join with Competitions table and perform calculations
 SELECT
-  tr.personName,
+  tr.person_name,
   -- mo5, set to NULL if any value is <= 0
   CASE 
     WHEN tr.value1 <= 0 OR tr.value2 <= 0 OR tr.value3 <= 0 OR tr.value4 <= 0 OR tr.value5 <= 0 THEN NULL
@@ -293,7 +293,7 @@ END AS WAo5
 
 
   
-  tr.regionalAverageRecord,
+  tr.regional_average_record,
   STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
   c.name,
   tr.value1, 
@@ -301,12 +301,12 @@ END AS WAo5
   tr.value3, 
   tr.value4, 
   tr.value5,
-  tr.personId,
-  tr.personCountryId
+  tr.person_id,
+  tr.person_country_id
 FROM 
   TempResults tr
 JOIN
-  Competitions c ON tr.competitionId = c.id
+  Competitions c ON tr.competition_id = c.id
 ORDER BY
   date;
 

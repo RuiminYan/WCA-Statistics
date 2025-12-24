@@ -6,30 +6,30 @@ DROP TEMPORARY TABLE IF EXISTS FilteredResults;
 CREATE TEMPORARY TABLE FilteredResults AS
 WITH RankedResults AS (
     SELECT
-        r.personName,
+        r.person_name,
         r.best, -- r.best替换为目标函数, 例如CASE ... END AS test
         r.value1,
         r.value2,
         r.value3,
         r.value4,
         r.value5,
-        r.personId,
-        r.personCountryId,
+        r.person_id,
+        r.person_country_id,
         c.name,
         STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') AS date,
-        r.regionalAverageRecord,
+        r.regional_average_record,
         ROW_NUMBER() OVER (PARTITION BY STR_TO_DATE(CONCAT(c.year, '-', c.month, '-', c.day), '%Y-%m-%d') ORDER BY r.best) AS rn -- r.best替换为目标函数, 例如CASE ... END
     FROM
         results r
     JOIN
-        competitions c ON r.competitionId = c.id
+        competitions c ON r.competition_id = c.id
     WHERE
-        r.eventId = '333' AND r.best > 0 -- r.best替换为目标函数, 例如CASE ... END
+        r.event_id = '333' AND r.best > 0 -- r.best替换为目标函数, 例如CASE ... END
 )
 SELECT
-    personName,
+    person_name,
     best, -- 替换为目标函数名称, 例如test
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -37,8 +37,8 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM
     RankedResults
 WHERE
@@ -48,9 +48,9 @@ WHERE
 SET @min_best = 9999999999; -- 假设一个初始的最大值 -- 替换为目标函数名称
 
 SELECT
-    personName,
+    person_name,
     best, -- 替换为目标函数名称, 例如test
-    regionalAverageRecord,
+    regional_average_record,
     date,
     name,
     value1,
@@ -58,13 +58,13 @@ SELECT
     value3,
     value4,
     value5,
-    personId,
-    personCountryId
+    person_id,
+    person_country_id
 FROM (
     SELECT
-        personName,
+        person_name,
         best, -- 替换为目标函数名称, 例如test
-        regionalAverageRecord,
+        regional_average_record,
         date,
         name,
         value1,
@@ -72,8 +72,8 @@ FROM (
         value3,
         value4,
         value5,
-        personId,
-        personCountryId,
+        person_id,
+        person_country_id,
         @min_best := LEAST(@min_best, best) AS current_min_best -- 替换为目标函数名称, 例如test
     FROM
         FilteredResults

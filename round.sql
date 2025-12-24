@@ -1,14 +1,14 @@
 -- 查询拥有最多333mbf 轮次的比赛
 WITH RoundCounts AS (
     SELECT
-        competitionId,
-        COUNT(DISTINCT roundTypeId) AS roundCount
+        competition_id,
+        COUNT(DISTINCT round_type_id) AS roundCount
     FROM
         results
     WHERE
-        eventId = '333mbf'
+        event_id = '333mbf'
     GROUP BY
-        competitionId
+        competition_id
 )
 SELECT
     rc.roundCount AS totalRounds,
@@ -17,7 +17,7 @@ SELECT
 FROM
     RoundCounts rc
 JOIN
-    competitions c ON rc.competitionId = c.id
+    competitions c ON rc.competition_id = c.id
 ORDER BY
     rc.roundCount DESC
 LIMIT 100
@@ -26,36 +26,36 @@ LIMIT 100
     
 
 -- 比赛分项目轮次
-SELECT eventId, SUM(distinctRoundTypes) AS totalDistinctRoundTypes
+SELECT event_id, SUM(distinctRoundTypes) AS totalDistinctRoundTypes
 FROM (
-    SELECT eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+    SELECT event_id, COUNT(DISTINCT round_type_id) AS distinctRoundTypes
     FROM results
-    WHERE competitionId = 'NortheastChampionship2022'
-      AND roundTypeId IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
-    GROUP BY eventId
+    WHERE competition_id = 'NortheastChampionship2022'
+      AND round_type_id IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
+    GROUP BY event_id
 ) AS t
-GROUP BY eventId;
+GROUP BY event_id;
 
 
 
 -- 比赛轮次和
 SELECT SUM(distinctRoundTypes) AS overallDistinctRoundTypes
 FROM (
-    SELECT eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+    SELECT event_id, COUNT(DISTINCT round_type_id) AS distinctRoundTypes
     FROM results
-    WHERE competitionId = 'NortheastChampionship2022'
-      AND roundTypeId IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
-    GROUP BY eventId
+    WHERE competition_id = 'NortheastChampionship2022'
+      AND round_type_id IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
+    GROUP BY event_id
 ) AS t;
 
 
 -- 最多轮比赛
-SELECT competitionId, SUM(distinctRoundTypes) AS overallDistinctRoundTypes
+SELECT competition_id, SUM(distinctRoundTypes) AS overallDistinctRoundTypes
 FROM (
-    SELECT competitionId, eventId, COUNT(DISTINCT roundTypeId) AS distinctRoundTypes
+    SELECT competition_id, event_id, COUNT(DISTINCT round_type_id) AS distinctRoundTypes
     FROM results
-    WHERE roundTypeId IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
-    GROUP BY competitionId, eventId
+    WHERE round_type_id IN ('1', '2', '3', 'f', 'd', 'e', 'g', 'b', 'c')
+    GROUP BY competition_id, event_id
 ) AS t
-GROUP BY competitionId
+GROUP BY competition_id
 ORDER BY overallDistinctRoundTypes DESC;
