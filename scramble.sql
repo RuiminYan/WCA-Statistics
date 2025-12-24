@@ -23,7 +23,7 @@ ORDER BY
 
 
 -- 打乱
-SELECT scrambleId, scramble
+SELECT id, scramble
 FROM wca_export.scrambles
 WHERE event_id in ('333', '333bf', '333oh', '333ft', '333fm')
 -- LIMIT 10000, 10000; -- 偏移量10000
@@ -32,8 +32,8 @@ WHERE event_id in ('333', '333bf', '333oh', '333ft', '333fm')
 
 -- 打乱和信息
 SELECT
--- 行号 ROW_NUMBER() OVER (ORDER BY scrambleId) AS row_num,
-    scrambleId,
+-- 行号 ROW_NUMBER() OVER (ORDER BY id) AS row_num,
+    id,
     scramble,
     competition_id,
     event_id,
@@ -42,7 +42,7 @@ FROM
     wca_export.scrambles
 WHERE
     event_id IN ('333', '333bf', '333oh', '333ft', '333fm')
-    AND scrambleId > 5259372
+    AND id > 5259372
 
 
 
