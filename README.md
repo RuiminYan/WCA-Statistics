@@ -15,7 +15,17 @@ Some interesting WCA statistics 一些WCA趣味数据统计
 
 ## 导入WCA数据库教程
 
-从 https://worldcubeassociation.org/export/results 下载 `sql.zip` , 解压后将其中的文件放到 `D:\WCA_export` , 打开**MySQL Workbench**. 
+从 https://worldcubeassociation.org/export/results 下载 `sql.zip` , 解压后将其中的文件放到 `D:\WCA_export` , 
+
+### 方案1 (cmd)
+```
+mysql -u root -p -e "DROP DATABASE IF EXISTS wca_export; CREATE DATABASE wca_export CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p --binary-mode wca_export < "D:\WCA_export\WCA_export.sql"
+```
+
+### 方案2 (目前由于wca_export.sql体积过大，该方法失效)
+
+打开**MySQL Workbench**. 
 
 在SCHEMAS中，右键 `wca_export` (如果有) 并Drop Schema.
 
