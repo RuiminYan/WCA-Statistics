@@ -1,6 +1,18 @@
 # WCA-Statistics
 Some interesting WCA statistics 一些WCA趣味数据统计
 
+## 添加环境变量
+
+如果想直接输入 mysql 就能用，那就配置一下：
+
+按 `Win + S` 搜索“环境变量”，选择 “编辑系统环境变量”。
+
+点击 “环境变量” 按钮。
+
+在“系统变量”下找到 Path，点击编辑。
+
+点击“新建”，粘贴：`C:\Program Files\MySQL\MySQL Server 8.0\bin` 。
+
 ## 导入WCA数据库教程
 
 从 https://worldcubeassociation.org/export/results 下载 `sql.zip` , 解压后将其中的文件放到 `D:\WCA_export` , 打开**MySQL Workbench**. 
